@@ -22,4 +22,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile files('libs/Parse-1.10.0.jar')
+    /* This piece of code was taken from the parse.com quick start guide, which can be found under the following link:
+    * https://parse.com/apps/quickstart#parse_data/mobile/android/native/existing .*/
+    compile 'com.parse.bolts:bolts-android:1.+'
+    compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }

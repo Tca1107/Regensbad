@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -12,6 +15,17 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // Enable Local Datastore.
+        /* This piece of code (the following five lines) was taken from the parse.com quick start guide, which can be found under the following link:
+         * https://parse.com/apps/quickstart#parse_data/mobile/android/native/existing .*/
+        // code for setting up and testing parse.com
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "lrveDDA87qqqf7FfRTjPfOFdZ0DrVLEypfg6dDql", "JYvtqFzgpOHVq9OTn8yKcJdC7xM7eRe3hciBhVh8");
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+
+
     }
 
 
