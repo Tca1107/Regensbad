@@ -3,4 +3,19 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="app_icon_content_description">app icon</string>
+
+    <string name="login_with_user_account">Mit Nutzer-Account anmelden?</string>
+    <string name="button_login">Anmelden</string>
+    <string name="button_skip">Überspringen</string>
+
+    <string name="title_activity_create_account_or_sign_in">Anmelden</string>
+    <string name="create_an_account">Sie haben noch keinen Account?</string>
+    <string name="username">Nutzername</string>
+    <string name="password">Passwort</string>
+    <string name="submit_account">Registrieren</string>
+    <string name="submission_failed">Dieser Nutzername ist leider bereits vergeben. Bitte versuchen Sie es erneut.</string>
+
+
+
 </resources>

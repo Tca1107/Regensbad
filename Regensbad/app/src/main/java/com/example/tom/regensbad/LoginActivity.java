@@ -1,33 +1,104 @@
 package com.example.tom.regensbad;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
 
 
-public class LoginActivity extends ActionBarActivity {
+
+/* Das ist der Plan:
+The following activity will only be shown when the user opens the app and he or she has never used it before or
+* has logged out when he or she used it the last time. In all other cases, the app will start with the home screen activity. */
+
+public class LoginActivity extends Activity implements View.OnClickListener{
+
+    /* Constants that are needed to initialize parse.com as the backend of the application. */
+    private static final String PARSE_COM_APPLICATION_ID = "lrveDDA87qqqf7FfRTjPfOFdZ0DrVLEypfg6dDql";
+    private static final String PARSE_COM_CLIENT_ID = "JYvtqFzgpOHVq9OTn8yKcJdC7xM7eRe3hciBhVh8";
+
+    /* User interface elements */
+    private ImageView appIcon;
+    private TextView appName;
+    private TextView registration;
+    private Button login;
+    private Button skip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Enable Local Datastore.
-        /* This piece of code (the following five lines) was taken from the parse.com quick start guide, which can be found under the following link:
-         * https://parse.com/apps/quickstart#parse_data/mobile/android/native/existing .*/
-        // code for setting up and testing parse.com
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "lrveDDA87qqqf7FfRTjPfOFdZ0DrVLEypfg6dDql", "JYvtqFzgpOHVq9OTn8yKcJdC7xM7eRe3hciBhVh8");
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
-
+        setUpParseComAsBackend();
+        initializeUIElements();
+        registerOnClickListeners();
 
     }
 
+    private void registerOnClickListeners() {
+        login.setOnClickListener(this);
+        skip.setOnClickListener(this);
+    }
+
+    /* Initializes the elements of the user interface. */
+    private void initializeUIElements() {
+        appIcon = (ImageView)findViewById(R.id.image_view_app_icon);
+        setIconOfImageView();
+        appName = (TextView)findViewById(R.id.text_view_app_name);
+        registration = (TextView)findViewById(R.id.text_view_login);
+        login = (Button)findViewById(R.id.button_login);
+        skip = (Button)findViewById(R.id.button_skip);
+    }
+
+
+    /* Provides the image view with the application's icon*/
+    private void setIconOfImageView() {
+        appIcon.setImageResource(R.drawable.placeholder_icon_for_login_activity);
+    }
+
+
+    /* This piece of code (the following five lines) was taken from the parse.com quick start guide, which can be found under the following link:
+    * https://parse.com/apps/quickstart#parse_data/mobile/android/native/existing .
+    * This method sets up parse.com as the backend of the application. */
+    private void setUpParseComAsBackend() {
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, PARSE_COM_APPLICATION_ID, PARSE_COM_CLIENT_ID);
+        // this is just test data for checking whether the connection to the backend works
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+    }
+
+    /* Processes the user's clicks on the buttons. */
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.button_login:
+                switchToCreateAccountOrSignInActivity();
+                break;
+
+            case R.id.button_skip:
+               //do stuff
+                break;
+        }
+
+    }
+
+    private void switchToCreateAccountOrSignInActivity() {
+        Intent switchToCreateAccountOrSignInActivity = new Intent(LoginActivity.this, CreateAccountOrSignInActivity.class);
+        startActivity(switchToCreateAccountOrSignInActivity);
+    }
+
+
+    /*
+    Methods that would only be necessary, if there was an action bar.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,4 +121,5 @@ public class LoginActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    */
 }
