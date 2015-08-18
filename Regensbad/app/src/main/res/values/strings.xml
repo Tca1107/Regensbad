@@ -15,6 +15,9 @@
     <string name="password">Passwort</string>
     <string name="submit_account">Registrieren</string>
     <string name="submission_failed">Dieser Nutzername ist leider bereits vergeben. Bitte versuchen Sie es erneut.</string>
+    <string name="submission_succeeded">Die Registrierung war erfolgreich.</string>
+    <string name="submission_succesful_description">Registrierung erflogreich</string>
+    <string name="okay">OK</string>
 
 
 
