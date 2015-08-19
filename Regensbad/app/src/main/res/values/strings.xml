@@ -19,6 +19,20 @@
     <string name="submission_succesful_description">Registrierung erflogreich</string>
     <string name="okay">OK</string>
 
+    <!--Main Activity-->
+    <string name="button_closest_lake">Nächsten See finden</string>
+    <string name="button_all_lakes">Alle Seen anzeigen</string>
+
+    <!--Single List Item-->
+    <string name="string_km">km</string>
+    <string name="string_open">geöffnet</string>
+    <string name="string_closed">geschlossen</string>
+
+    <!--Dummies-->
+    <string name="string_lakeName">Name des Sees</string>
+    <string name="string_bathType">Typ</string>
+    <string name="string_distance">5,2</string>
+
 
 
 </resources>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:layout_margin="10dp"
+    >
+
+    <TextView
+        android:id="@+id/textview_lakeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/string_lakeName"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/textview_bathType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/string_bathType"
+        android:textStyle="italic"/>
+
+    <RatingBar
+        android:id="@+id/ratingbar_averageRatingPreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageview_arrow"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:src="@drawable/ic_directions_black_24dp" />
+
+            <TextView
+                android:id="@+id/textview_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/string_distance"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/string_km"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textview_openStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_open"
+            android:textStyle="bold"
+            android:textColor="@color/green"
+            android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>
