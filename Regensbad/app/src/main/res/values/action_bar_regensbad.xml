@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This action bar style xml file was created by taking the official
+android developers guide tutorial "Styling the Action Bar" as a guideline, which is
+available at https://developer.android.com/training/basics/actionbar/styling.html-->
+
+<resources>
+    <style name="action_bar_regensbad_theme"
+        parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/RegensbadActionBar</item>
+        <item name="actionBarStyle">@style/RegensbadActionBar</item>
+    </style>
+
+    <style name="RegensbadActionBar"
+           parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/blue_dark_primary_color</item>
+        <item name="background">@color/blue_dark_primary_color</item>
+    </style>
+
+
+
+</resources>

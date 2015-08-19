@@ -1,8 +1,10 @@
 package com.example.tom.regensbad;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -39,8 +41,14 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         setContentView(R.layout.activity_create_account_or_sign_in);
         initializeUIElements();
         registerOnClickListeners();
+        initializeActionBar();
     }
 
+    /* Initializes the Action Bar*/
+    private void initializeActionBar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // hier noch Methode zum Icon einfügen, sobald wir das Icon haben
+    }
 
 
     private void registerOnClickListeners() {
@@ -59,7 +67,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_account_or_sign_in, menu);
+        // getMenuInflater().inflate(R.menu.menu_create_account_or_sign_in, menu);
         return true;
     }
 
@@ -69,6 +77,11 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if (id == android.R.id.home){
+            finish();
+            return true;
+        }
+
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

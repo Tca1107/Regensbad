@@ -1,3 +1,4 @@
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -6,42 +7,75 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.tom.regensbad.CreateAccountOrSignInActivity"
     android:orientation="vertical"
-    android:weightSum="10">
+    android:weightSum="10"
+    android:background="@drawable/background_for_activities">
 
-    <TextView
-        android:id="@+id/text_view_create_an_account"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        android:text="@string/create_an_account"
-        android:textSize="17sp"
-        android:gravity="center"/>
 
-    <EditText
-        android:id="@+id/edit_text_username"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        android:hint="@string/username"
-        android:textSize="17sp"/>
 
-    <EditText
-        android:id="@+id/edit_text_password"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        android:hint="@string/password"
-        android:password="true"
-        android:textSize="17dp"
-        android:inputType="text" />
 
-    <Button
-        android:id="@+id/button_sign_in"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp"
-        android:hint="@string/submit_account"
-        android:textSize="17sp"
-        />
+        <TextView
+            android:id="@+id/text_view_create_an_account"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:paddingLeft="15dp"
+            android:text="@string/create_an_account"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+
+
+
+
+        <EditText
+            android:id="@+id/edit_text_username"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_marginLeft="15dp"
+            android:hint="@string/username"
+            android:textColorHint="@color/blue_primary_color"
+            android:textSize="17sp"
+            android:background="@drawable/edit_text_shape"
+            android:paddingLeft="15dp"
+            />
+
+
+
+
+        <EditText
+                android:id="@+id/edit_text_password"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:layout_marginLeft="15dp"
+                android:hint="@string/password"
+                android:password="true"
+                android:textSize="17sp"
+                android:textColorHint="@color/blue_primary_color"
+                android:inputType="text"
+                android:paddingLeft="15dp"
+                android:background="@drawable/edit_text_shape"
+                />
+
+
+
+
+
+            <Button
+                android:id="@+id/button_sign_in"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:layout_marginLeft="15dp"
+                android:hint="@string/submit_account"
+                android:textSize="15sp"
+                android:background="@drawable/button_selector"
+                android:textColor="@drawable/button_text_color"
+                />
+
+
+
+
 
 </LinearLayout>

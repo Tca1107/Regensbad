@@ -26,6 +26,7 @@
 
     <item>
         <shape>
+
             <corners
                 android:bottomLeftRadius="7dp"
                 android:bottomRightRadius="7dp"
@@ -35,6 +36,9 @@
             <stroke
                 android:width="2dp"
                 android:color="@color/white"/>
+
+            <solid
+                android:color="@android:color/transparent"/>
         </shape>
 
 
