@@ -5,18 +5,21 @@
     <string name="action_settings">Settings</string>
     <string name="app_icon_content_description">app icon</string>
 
+    <!--Login Activity-->
     <string name="login_with_user_account">Mit Nutzer-Account anmelden?</string>
     <string name="button_login">Anmelden</string>
     <string name="button_skip">Überspringen</string>
 
+    <!--CreateAccountOrSignInActivity-->
     <string name="title_activity_create_account_or_sign_in">Anmelden</string>
     <string name="create_an_account">Sie haben noch keinen Account?</string>
     <string name="username">Nutzername</string>
     <string name="password">Passwort</string>
     <string name="submit_account">Registrieren</string>
-    <string name="submission_failed">Dieser Nutzername ist leider bereits vergeben. Bitte versuchen Sie es erneut.</string>
+    <string name="submission_failed">Die Registrierung war leider nicht erfolgreich. Versuchen Sie es mit einem anderen Nutzernamen.</string>
     <string name="submission_succeeded">Die Registrierung war erfolgreich.</string>
     <string name="submission_succesful_description">Registrierung erflogreich</string>
+    <string name="submission_failed_description">Registrierung nicht erfolgreich</string>
     <string name="okay">OK</string>
 
     <!--Main Activity-->

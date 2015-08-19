@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This xml file was written using http://www.compiletimeerror.com/2014/03/android-button-selector-tutorial-with.html
+    as a guideline. -->
+
+    <item
+        android:state_pressed="true"
+        >
+        <shape>
+            <solid
+                android:color="@color/white"/>
+            <corners
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"/>
+
+            <stroke
+                android:width="2dp"
+                android:color="@color/white"/>
+        </shape>
+
+
+    </item>
+
+
+    <item>
+        <shape>
+            <corners
+                android:bottomLeftRadius="7dp"
+                android:bottomRightRadius="7dp"
+                android:topLeftRadius="7dp"
+                android:topRightRadius="7dp"/>
+
+            <stroke
+                android:width="2dp"
+                android:color="@color/white"/>
+        </shape>
+
+
+    </item>
+
+
+</selector>

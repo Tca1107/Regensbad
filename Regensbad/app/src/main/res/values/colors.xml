@@ -3,8 +3,11 @@
 
     <color name="blue_primary_color">#2196F3</color>
     <color name="blue_dark_primary_color">#1976D2</color>
+    <color name="light_primary_color">#BBDEFB</color>
     <color name="white">#FFFFFF</color>
     <color name="green">#4CAF50</color>
+    <color name="green_for_gradient_start">#00796B</color>
+    <color name="green_for_gradient_end">#009688</color>
     <color name="red">#F44336</color>
 
 </resources>

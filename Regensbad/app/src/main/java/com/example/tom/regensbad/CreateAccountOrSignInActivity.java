@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -99,9 +100,10 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    showSuccessfulDialog();
+                    showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay);
+                    // switchToTheNextActivityWithALoggedInUser
                 } else {
-                    showFailToast();
+                    showDialog(R.layout.dialog_sign_in_failed, R.string.okay);
                 }
             }
         });
@@ -110,12 +112,12 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
 
     /* This method as well the corresponding layout resource was written using Google Android's developer guide for
     * dialogs as a guideline (http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog).
-    * It shows a dialog that lets the user know that his or her registration was successful.*/
-    private void showSuccessfulDialog() {
+    * It shows a dialog that lets the user know that his or her registration failed or succeeded.*/
+    private void showDialog(int layoutResource, int messageOnButton){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        dialogBuilder.setView(inflater.inflate(R.layout.dialog_sign_in_succeeded, null));
-        dialogBuilder.setPositiveButton(R.string.okay, new Dialog.OnClickListener() {
+        dialogBuilder.setView(inflater.inflate(layoutResource, null));
+        dialogBuilder.setPositiveButton(messageOnButton, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // nothing, since the dialog only closes
@@ -123,12 +125,9 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         });
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+
     }
 
-    private void showFailToast() {
-        int duration = Toast.LENGTH_LONG;
-        Toast toast = Toast.makeText(CreateAccountOrSignInActivity.this, R.string.submission_failed, duration);
-        toast.show();
-    }
+
 
 }

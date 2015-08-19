@@ -60,7 +60,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     /* Provides the image view with the application's icon*/
     private void setIconOfImageView() {
-        appIcon.setImageResource(R.drawable.placeholder_icon_for_login_activity);
+        //appIcon.setImageResource(R.drawable.placeholder_icon_for_login_activity);
     }
 
 
@@ -70,10 +70,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private void setUpParseComAsBackend() {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, PARSE_COM_APPLICATION_ID, PARSE_COM_CLIENT_ID);
-        // this is just test data for checking whether the connection to the backend works
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
     }
 
     /* Processes the user's clicks on the buttons. */
