@@ -2,6 +2,7 @@ package com.example.tom.regensbad;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,9 +53,22 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         appIcon = (ImageView)findViewById(R.id.image_view_app_icon);
         setIconOfImageView();
         appName = (TextView)findViewById(R.id.text_view_app_name);
+        setFontOfAppName();
         registration = (TextView)findViewById(R.id.text_view_login);
         login = (Button)findViewById(R.id.button_login);
         skip = (Button)findViewById(R.id.button_skip);
+    }
+
+
+    /* This method was created using the tutorial on including external fonts in Android Studio which can be found
+    * at the following website: http://www.thedevline.com/2014/03/how-to-include-fonts-in-android.html .
+    * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
+    * https://www.google.com/fonts/ .*/
+    private void setFontOfAppName() {
+        String path = "Fonts/Pacifico.ttf";
+        Typeface typeface = Typeface.createFromAsset(getAssets(), path);
+        appName.setTypeface(typeface);
+
     }
 
 
