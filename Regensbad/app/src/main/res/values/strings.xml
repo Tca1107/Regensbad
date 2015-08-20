@@ -31,6 +31,15 @@
     <string name="string_open">geöffnet</string>
     <string name="string_closed">geschlossen</string>
 
+    <!--Detail View-->
+    <string name="string_openTime">Öffnungszeiten:</string>
+    <string name="string_price">Eintritt</string>
+    <string name="string_euro">€</string>
+    <string name="string_showOnMap">auf Karte zeigen</string>
+    <string name="string_nav">Navigation</string>
+    <string name="string_infos">Informationen</string>
+    <string name="string_ratings">Bewertungen</string>
+
     <!--Dummies-->
     <string name="string_lakeName">Name des Sees</string>
     <string name="string_bathType">Typ</string>
