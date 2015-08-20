@@ -9,9 +9,11 @@
     <string name="login_with_user_account">Mit Nutzer-Account anmelden?</string>
     <string name="button_login">Anmelden</string>
     <string name="button_skip">Überspringen</string>
+    <string name="pacifico_font_path">Fonts/Pacifico.ttf</string>
 
     <!--CreateAccountOrSignInActivity-->
     <string name="title_activity_create_account_or_sign_in">Anmelden</string>
+    <string name="sign_in">Anmelden </string>
     <string name="create_an_account">Sie haben noch keinen Account?</string>
     <string name="username">Nutzername</string>
     <string name="password">Passwort</string>
@@ -21,6 +23,11 @@
     <string name="submission_succesful_description">Registrierung erflogreich</string>
     <string name="submission_failed_description">Registrierung nicht erfolgreich</string>
     <string name="okay">OK</string>
+    <string name="create_new_account">Neuen Account anlegen</string>
+
+    <!--CreateAccountActivity-->
+    <string name="create_new_account_with_colon">Neuen Account anlegen: </string>
+    <string name="create_account_activity_name">Registrieren</string>
 
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>
@@ -35,6 +42,7 @@
     <string name="string_lakeName">Name des Sees</string>
     <string name="string_bathType">Typ</string>
     <string name="string_distance">5,2</string>
+    <string name="title_activity_create_account">CreateAccountActivity</string>
 
 
 

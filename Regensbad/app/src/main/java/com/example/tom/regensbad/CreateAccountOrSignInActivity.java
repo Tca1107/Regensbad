@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -26,13 +27,18 @@ import com.parse.SignUpCallback;
 
 public class CreateAccountOrSignInActivity extends ActionBarActivity implements View.OnClickListener{
 
-
+    /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
+    private static final String FONT_PACIFICO_FILE_PATH = "Fonts/Pacifico.ttf";
 
     /* User interface elements */
-    private TextView createAccount;
+    private TextView appName;
+    private View marginKeeperOne;
     private EditText username;
     private EditText password;
-    private Button submitAccount;
+    private Button signIn;
+    private View marginKeeperTwo;
+    private TextView createNewAccount;
+    private Button submitNewAccount;
 
 
     @Override
@@ -42,6 +48,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         initializeUIElements();
         registerOnClickListeners();
         initializeActionBar();
+        setFontOfAppName();
     }
 
     /* Initializes the Action Bar*/
@@ -52,15 +59,29 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
 
 
     private void registerOnClickListeners() {
-        submitAccount.setOnClickListener(this);
+        signIn.setOnClickListener(this);
+        submitNewAccount.setOnClickListener(this);
     }
 
     /* Initializes the elements of the user interface. */
     private void initializeUIElements () {
-        createAccount = (TextView)findViewById(R.id.text_view_create_an_account);
+        appName = (TextView)findViewById(R.id.text_view_app_name_in_create_account_or_sign_in_activity);
+        marginKeeperOne = findViewById(R.id.view_to_keep_margin_one);
         username = (EditText)findViewById(R.id.edit_text_username);
         password = (EditText)findViewById(R.id.edit_text_password);
-        submitAccount = (Button)findViewById(R.id.button_sign_in);
+        signIn = (Button)findViewById(R.id.button_sign_in);
+        marginKeeperTwo = findViewById(R.id.view_to_keep_margin_two);
+        createNewAccount = (TextView)findViewById(R.id.text_view_create_an_account);
+        submitNewAccount = (Button)findViewById(R.id.button_create_new_account);
+    }
+
+    /* This method was created using the tutorial on including external fonts in Android Studio which can be found
+    * at the following website: http://www.thedevline.com/2014/03/how-to-include-fonts-in-android.html .
+    * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
+    * https://www.google.com/fonts/ .*/
+    private void setFontOfAppName() {
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
+        appName.setTypeface(typeface);
     }
 
 
@@ -95,51 +116,23 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
     public void onClick(View v) {
        switch(v.getId()) {
            case R.id.button_sign_in:
-               processUserInputForAccountCreation();
+               // hier noch das Anmelden auf parse.com ermöglichen!
+               break;
+
+           case R.id.button_create_new_account:
+               changeToCreateAccountActivity();
+               break;
 
        }
        }
 
-    /* This method was created using the parse.com documentation, which can be found under
-    https://parse.com/docs/android/guide#users as a guideline.
-    This method creates a new user account and saves the information to the backend. */
-    private void processUserInputForAccountCreation() {
-        String username = this.username.getText().toString();
-        String password = this.password.getText().toString();
-        ParseUser user = new ParseUser();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay);
-                    // switchToTheNextActivityWithALoggedInUser
-                } else {
-                    showDialog(R.layout.dialog_sign_in_failed, R.string.okay);
-                }
-            }
-        });
 
+    /* Makes the system change to the CreateAccountActivity. */
+    private void changeToCreateAccountActivity() {
+        Intent changeToCreateAccountActivity = new Intent (CreateAccountOrSignInActivity.this, CreateAccountActivity.class);
+        startActivity(changeToCreateAccountActivity);
     }
 
-    /* This method as well the corresponding layout resource was written using Google Android's developer guide for
-    * dialogs as a guideline (http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog).
-    * It shows a dialog that lets the user know that his or her registration failed or succeeded.*/
-    private void showDialog(int layoutResource, int messageOnButton){
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        dialogBuilder.setView(inflater.inflate(layoutResource, null));
-        dialogBuilder.setPositiveButton(messageOnButton, new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // nothing, since the dialog only closes
-            }
-        });
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.show();
-
-    }
 
 
 
