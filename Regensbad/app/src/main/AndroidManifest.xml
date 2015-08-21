@@ -31,6 +31,10 @@
             android:name=".CreateAccountActivity"
             android:label="@string/title_activity_create_account" >
         </activity>
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:label="@string/title_activity_reset_password" >
+        </activity>
     </application>
 
 </manifest>

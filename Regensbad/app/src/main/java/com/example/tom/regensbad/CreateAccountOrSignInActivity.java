@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -36,7 +37,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
     private EditText username;
     private EditText password;
     private Button signIn;
-    private View marginKeeperTwo;
+    private TextView forgotPassword;
     private TextView createNewAccount;
     private Button submitNewAccount;
 
@@ -60,6 +61,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
 
     private void registerOnClickListeners() {
         signIn.setOnClickListener(this);
+        forgotPassword.setOnClickListener(this);
         submitNewAccount.setOnClickListener(this);
     }
 
@@ -70,7 +72,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         username = (EditText)findViewById(R.id.edit_text_username);
         password = (EditText)findViewById(R.id.edit_text_password);
         signIn = (Button)findViewById(R.id.button_sign_in);
-        marginKeeperTwo = findViewById(R.id.view_to_keep_margin_two);
+        forgotPassword = (TextView)findViewById(R.id.text_view_forgot_password);
         createNewAccount = (TextView)findViewById(R.id.text_view_create_an_account);
         submitNewAccount = (Button)findViewById(R.id.button_create_new_account);
     }
@@ -116,15 +118,42 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
     public void onClick(View v) {
        switch(v.getId()) {
            case R.id.button_sign_in:
+               signInWithUserAccount();
                // hier noch das Anmelden auf parse.com ermöglichen!
                break;
 
+           case R.id.text_view_forgot_password:
+               changeToResetPasswordActivity();
+               break;
            case R.id.button_create_new_account:
                changeToCreateAccountActivity();
                break;
+       }
+       }
 
-       }
-       }
+    private void changeToResetPasswordActivity() {
+        Intent changeToResetPasswordActivity = new Intent (CreateAccountOrSignInActivity.this, ResetPasswordActivity.class);
+        startActivity(changeToResetPasswordActivity);
+    }
+
+    /* This method was created using the parse.com documentation, which can be found under
+   https://parse.com/docs/android/guide#users as a guideline.
+   It allows the user to login with his or her account. */
+    private void signInWithUserAccount() {
+        String username = this.username.getText().toString();
+        String password = this.password.getText().toString();
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser parseUser, ParseException e) {
+                if (parseUser != null) {
+                    // user is logged in. From Here we should probably switch to the main menu.
+                } else {
+                    // sign up failed.
+                }
+            }
+        });
+
+    }
 
 
     /* Makes the system change to the CreateAccountActivity. */

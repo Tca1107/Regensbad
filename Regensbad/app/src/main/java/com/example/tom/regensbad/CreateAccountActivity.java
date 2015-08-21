@@ -27,6 +27,7 @@ public class CreateAccountActivity extends ActionBarActivity {
     private TextView appName;
     private View marginKeeper;
     private TextView createNewAccount;
+    private EditText mailAddress;
     private EditText username;
     private EditText password;
     private Button submitNewAccount;
@@ -77,6 +78,7 @@ public class CreateAccountActivity extends ActionBarActivity {
         appName = (TextView)findViewById(R.id.text_view_app_name_in_create_account_activity);
         marginKeeper = findViewById(R.id.view_to_keep_margin);
         createNewAccount = (TextView)findViewById(R.id.text_view_create_an_account);
+        mailAddress = (EditText)findViewById(R.id.edit_text_mail_address);
         username = (EditText)findViewById(R.id.edit_text_username);
         password = (EditText)findViewById(R.id.edit_text_password);
         submitNewAccount = (Button)findViewById(R.id.button_submit_new_account);
@@ -86,9 +88,11 @@ public class CreateAccountActivity extends ActionBarActivity {
    https://parse.com/docs/android/guide#users as a guideline.
    This method creates a new user account and saves the information to the backend. */
     private void processUserInputForAccountCreation() {
+        String mailAddress = this.mailAddress.getText().toString();
         String username = this.username.getText().toString();
         String password = this.password.getText().toString();
         ParseUser user = new ParseUser();
+        user.setEmail(mailAddress);
         user.setUsername(username);
         user.setPassword(password);
         user.signUpInBackground(new SignUpCallback() {
