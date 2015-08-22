@@ -26,6 +26,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private static final String PARSE_COM_APPLICATION_ID = "lrveDDA87qqqf7FfRTjPfOFdZ0DrVLEypfg6dDql";
     private static final String PARSE_COM_CLIENT_ID = "JYvtqFzgpOHVq9OTn8yKcJdC7xM7eRe3hciBhVh8";
 
+    /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
+    private static final String FONT_PACIFICO_FILE_PATH = "Fonts/Pacifico.ttf";
+
     /* User interface elements */
     private ImageView appIcon;
     private TextView appName;
@@ -65,8 +68,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
     * https://www.google.com/fonts/ .*/
     private void setFontOfAppName() {
-        String path = "Fonts/Pacifico.ttf";
-        Typeface typeface = Typeface.createFromAsset(getAssets(), path);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
         appName.setTypeface(typeface);
 
     }

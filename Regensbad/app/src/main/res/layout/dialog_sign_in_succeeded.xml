@@ -18,7 +18,8 @@
     
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="@string/submission_succeeded"
         android:layout_below="@+id/image_view_succesful_registration"
         android:textSize="20dp"

@@ -11,7 +11,7 @@
     android:background="@drawable/background_for_activities">
 
     <TextView
-        android:id="@+id/text_view_app_name_in_create_account_or_sign_in_activity"
+        android:id="@+id/text_view_app_name_in_create_account_activity"
         android:layout_width="match_parent"
         android:layout_weight="2.5"
         android:layout_height="0dp"
@@ -23,10 +23,50 @@
         android:gravity="center"/>
 
     <View
-        android:id="@+id/view_to_keep_margin_one"
+        android:id="@+id/view_to_keep_margin"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.3"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        >
+
+        <TextView
+            android:id="@+id/text_view_create_an_account"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:text="@string/create_new_account_with_colon"
+            android:textSize="15sp"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            android:id="@+id/edit_text_mail_address"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:hint="@string/mail_address"
+            android:textColorHint="@color/blue_primary_color"
+            android:textSize="15sp"
+            android:background="@drawable/edit_text_shape"
+            android:paddingLeft="15dp"
+            />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,85 +99,20 @@
         android:layout_marginBottom="10dp">
 
         <EditText
-                android:id="@+id/edit_text_password"
-                android:layout_width="0dp"
-                android:layout_weight="4"
-                android:layout_height="match_parent"
-                android:hint="@string/password"
-                android:password="true"
-                android:textSize="15sp"
-                android:textColorHint="@color/blue_primary_color"
-                android:inputType="text"
-                android:paddingLeft="15dp"
-                android:background="@drawable/edit_text_shape"
-                />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        android:gravity="center">
-
-            <Button
-                android:id="@+id/button_sign_in"
-                android:layout_width="0dp"
-                android:layout_weight="4"
-                android:layout_height="match_parent"
-                android:text="@string/sign_in"
-                android:textSize="15sp"
-                android:background="@drawable/button_selector"
-                android:textColor="@drawable/button_text_color"
-                />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        android:gravity="center"
-        >
-
-        <TextView
-            android:id="@+id/text_view_forgot_password"
-            android:layout_width="0dp"
-            android:layout_weight="2.5"
-            android:layout_height="40dp"
-            android:text="@string/forgot_password"
-            android:textSize="15sp"
-            android:textColor="@drawable/button_text_color"
-            android:background="@drawable/text_view_selector"
-            android:gravity="center"
-
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        >
-
-        <TextView
-            android:id="@+id/text_view_create_an_account"
+            android:id="@+id/edit_text_password"
             android:layout_width="0dp"
             android:layout_weight="4"
             android:layout_height="match_parent"
-            android:text="@string/create_an_account"
+            android:hint="@string/password"
+            android:password="true"
             android:textSize="15sp"
-            android:gravity="center_vertical"
-            android:textColor="@color/white"/>
+            android:textColorHint="@color/blue_primary_color"
+            android:inputType="text"
+            android:paddingLeft="15dp"
+            android:background="@drawable/edit_text_shape"
+            />
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -148,11 +123,11 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/button_create_new_account"
+            android:id="@+id/button_submit_new_account"
             android:layout_width="0dp"
             android:layout_weight="4"
             android:layout_height="match_parent"
-            android:text="@string/create_new_account"
+            android:text="@string/submit_account"
             android:textSize="15sp"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"

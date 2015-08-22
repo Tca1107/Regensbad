@@ -9,9 +9,11 @@
     <string name="login_with_user_account">Mit Nutzer-Account anmelden?</string>
     <string name="button_login">Anmelden</string>
     <string name="button_skip">Überspringen</string>
+    <string name="pacifico_font_path">Fonts/Pacifico.ttf</string>
 
     <!--CreateAccountOrSignInActivity-->
     <string name="title_activity_create_account_or_sign_in">Anmelden</string>
+    <string name="sign_in">Anmelden </string>
     <string name="create_an_account">Sie haben noch keinen Account?</string>
     <string name="username">Nutzername</string>
     <string name="password">Passwort</string>
@@ -21,6 +23,19 @@
     <string name="submission_succesful_description">Registrierung erflogreich</string>
     <string name="submission_failed_description">Registrierung nicht erfolgreich</string>
     <string name="okay">OK</string>
+    <string name="create_new_account">Neuen Account anlegen</string>
+    <string name="forgot_password">Passwort vergessen?</string>
+
+    <!--CreateAccountActivity-->
+    <string name="create_new_account_with_colon">Neuen Account anlegen: </string>
+    <string name="create_account_activity_name">Registrieren</string>
+    <string name="mail_address">E-Mail Adresse</string>
+
+    <!--ResetPasswordActivity-->
+    <string name="enter_mail_to_reset_password">Bitte geben Sie Ihre E-Mail Adresse ein: </string>
+    <string name="reset_password">Passwort Zurücksetzen</string>
+    <string name="reset_succesful">Das Zurücksetzen war erfolgreich. Eine E-Mail wurde an folgende Mail-Adresse gesandt: </string>
+    <string name="reset_failed">Für die folgende E-Mail Adresse existiert kein Account: </string>
 
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>
@@ -44,6 +59,8 @@
     <string name="string_lakeName">Name des Sees</string>
     <string name="string_bathType">Typ</string>
     <string name="string_distance">5,2</string>
+    <string name="title_activity_create_account">CreateAccountActivity</string>
+    <string name="title_activity_reset_password">ResetPasswordActivity</string>
 
 
 

@@ -12,8 +12,8 @@ available at https://developer.android.com/training/basics/actionbar/styling.htm
 
     <style name="RegensbadActionBar"
            parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/blue_dark_primary_color</item>
-        <item name="background">@color/blue_dark_primary_color</item>
+        <item name="android:background">@color/blue_primary_color</item>
+        <item name="background">@color/blue_primary_color</item>
     </style>
 
 
