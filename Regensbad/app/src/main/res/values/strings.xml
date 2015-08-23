@@ -20,7 +20,7 @@
     <string name="submit_account">Registrieren</string>
     <string name="submission_failed">Die Registrierung war leider nicht erfolgreich. Versuchen Sie es mit einem anderen Nutzernamen.</string>
     <string name="submission_succeeded">Die Registrierung war erfolgreich.</string>
-    <string name="submission_succesful_description">Registrierung erflogreich</string>
+    <string name="submission_successful_description">Registrierung erflogreich</string>
     <string name="submission_failed_description">Registrierung nicht erfolgreich</string>
     <string name="okay">OK</string>
     <string name="create_new_account">Neuen Account anlegen</string>
@@ -34,8 +34,10 @@
     <!--ResetPasswordActivity-->
     <string name="enter_mail_to_reset_password">Bitte geben Sie Ihre E-Mail Adresse ein: </string>
     <string name="reset_password">Passwort Zurücksetzen</string>
-    <string name="reset_succesful">Das Zurücksetzen war erfolgreich. Eine E-Mail wurde an folgende Mail-Adresse gesandt: </string>
-    <string name="reset_failed">Für die folgende E-Mail Adresse existiert kein Account: </string>
+    <string name="reset_password_succeeded">Das Zurücksetzen war erfolgreich. Eine E-Mail wurde an die angegebene Mail-Adresse gesandt.</string>
+    <string name="reset_password_failed">Für die angegebene Mail-Adresse existiert leider kein Account.</string>
+    <string name="reset_password_successful_description">Registrierung erflogreich</string>
+    <string name="reset_password_failed_description">Registrierung nicht erfolgreich</string>
 
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>
@@ -61,7 +63,16 @@
     <string name="string_distance">5,2</string>
     <string name="title_activity_create_account">CreateAccountActivity</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
+
     <string name="title_activity_maps">Map</string>
+
+    <string name="title_activity_weather_detail">WeatherDetailActivity</string>
+    <string name="title_activity_all_civic_pools">AllCivicPoolsActivity</string>
+    <string name="title_activity_home_screen">HomeScreenActivity</string>
+    <string name="title_activity_closest_civic_pool">ClosestCivicPoolActivity</string>
+    <string name="title_activity_all_civic_pools_on_map">AllCivicPoolsOnMapActivity</string>
+    <string name="title_activity_civic_pool_detail">CivicPoolDetailActivity</string>
+
 
 
 

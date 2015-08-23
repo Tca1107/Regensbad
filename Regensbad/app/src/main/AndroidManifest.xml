@@ -44,6 +44,7 @@
             android:label="@string/title_activity_reset_password" >
         </activity>
 
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -54,6 +55,32 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
+            </activity>
+
+        <activity
+            android:name=".WeatherDetailActivity"
+            android:label="@string/title_activity_weather_detail" >
+        </activity>
+        <activity
+            android:name=".AllCivicPoolsActivity"
+            android:label="@string/title_activity_all_civic_pools" >
+        </activity>
+        <activity
+            android:name=".HomeScreenActivity"
+            android:label="@string/title_activity_home_screen" >
+        </activity>
+        <activity
+            android:name=".ClosestCivicPoolActivity"
+            android:label="@string/title_activity_closest_civic_pool" >
+        </activity>
+        <activity
+            android:name=".AllCivicPoolsOnMapActivity"
+            android:label="@string/title_activity_all_civic_pools_on_map" >
+        </activity>
+        <activity
+            android:name=".CivicPoolDetailActivity"
+            android:label="@string/title_activity_civic_pool_detail" >
+>>>>>>> origin/master
         </activity>
     </application>
 
