@@ -57,9 +57,9 @@ public class ResetPasswordActivity extends ActionBarActivity {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
-                            showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay, R.string.reset_succesful);
+                            showDialog(R.layout.dialog_reset_password_succeeded, R.string.okay);
                         } else {
-                            showDialog(R.layout.dialog_sign_in_failed, R.string.okay, R.string.reset_failed);
+                            showDialog(R.layout.dialog_reset_password_failed, R.string.okay);
                         }
                     }
                 });
@@ -70,13 +70,9 @@ public class ResetPasswordActivity extends ActionBarActivity {
     /* This method as well the corresponding layout resource was written using Google Android's developer guide for
     * dialogs as a guideline (http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog).
     * It shows a dialog that lets the user know that his or her registration failed or succeeded.*/
-    private void showDialog(int layoutResource, int messageOnButton, int text){
+    private void showDialog(int layoutResource, int messageOnButton){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        String textPlusPassword = getResources().getString(text) + mailAddress.getText().toString();
-
-        // nicht die setTitle Methode! Eine andere wird hier gebraucht!
-        dialogBuilder.setTitle(textPlusPassword);
         dialogBuilder.setView(inflater.inflate(layoutResource, null));
         dialogBuilder.setPositiveButton(messageOnButton, new Dialog.OnClickListener() {
             @Override
