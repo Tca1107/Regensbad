@@ -61,6 +61,7 @@
     <string name="string_distance">5,2</string>
     <string name="title_activity_create_account">CreateAccountActivity</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
+    <string name="title_activity_maps">Map</string>
 
 
 
