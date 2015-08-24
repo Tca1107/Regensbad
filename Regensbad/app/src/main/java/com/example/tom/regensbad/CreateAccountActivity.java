@@ -3,11 +3,9 @@ package com.example.tom.regensbad;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -102,21 +100,13 @@ public class CreateAccountActivity extends ActionBarActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay);
-                    switchToHomeScreenActivityWithALoggedInUser();
+                    // switchToTheNextActivityWithALoggedInUser
                 } else {
                     showDialog(R.layout.dialog_sign_in_failed, R.string.okay);
                 }
             }
         });
 
-    }
-
-    private void switchToHomeScreenActivityWithALoggedInUser() {
-        // just for debugging (following two lines)
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        Log.d("current Uzer", currentUser.toString());
-        Intent switchToHomeScreenActivity = new Intent (CreateAccountActivity.this, HomeScreenActivity.class);
-        startActivity(switchToHomeScreenActivity);
     }
 
     /* This method as well the corresponding layout resource was written using Google Android's developer guide for

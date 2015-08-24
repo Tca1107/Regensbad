@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,9 +13,6 @@ import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
-
-import java.text.ParseException;
 
 
 
@@ -45,28 +41,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setUpParseComAsBackend();
-        checkIfUserIsStillLoggedIn();
         initializeUIElements();
         registerOnClickListeners();
-    }
 
-
-    /* This method of code (the following five lines) was taken from the parse.com quick start guide, which can be found under the following link:
-    * https://parse.com/apps/quickstart#parse_data/mobile/android/native/existing .
-    * This method checks whether the user is still logged in and, if so, makes the system open the HomeScreenActivity immediately.
-     * In doing so, it is highly probable that a NullPointer Exception is thrown, which is why the method's body is surrounded by
-     * a try and catch block. */
-    private void checkIfUserIsStillLoggedIn() {
-        try {
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            Log.d("currentUser", currentUser.toString());
-            if (currentUser != null) {
-                Log.d("currentUser", currentUser.toString());
-                switchToHomeScreenActivity();
-            }
-        } catch (NullPointerException e) {
-
-        }
     }
 
     private void registerOnClickListeners() {
@@ -120,19 +97,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 break;
 
             case R.id.button_skip:
-                switchToHomeScreenActivity();
+               //do stuff
                 break;
         }
 
     }
 
-    /* Method that makes the system switch into the HomeScreenActivity. */
-    private void switchToHomeScreenActivity() {
-        Intent switchToHomeScreenActivity = new Intent (LoginActivity.this, HomeScreenActivity.class);
-        startActivity(switchToHomeScreenActivity);
-    }
-
-    /* Method that makes the system switch into the CreateAccountOrSignInActivity. */
     private void switchToCreateAccountOrSignInActivity() {
         Intent switchToCreateAccountOrSignInActivity = new Intent(LoginActivity.this, CreateAccountOrSignInActivity.class);
         startActivity(switchToCreateAccountOrSignInActivity);
