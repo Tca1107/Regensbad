@@ -15,7 +15,7 @@ import com.parse.ParseUser;
 
 public class HomeScreenActivity extends ActionBarActivity {
 
-
+// Hier ein Comment, um zu sehen, dass git läuft
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
