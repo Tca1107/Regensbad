@@ -1,24 +1,26 @@
-package com.example.tom.regensbad;
+package com.example.tom.regensbad.Activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.tom.regensbad.R;
 
-public class AllCivicPoolsActivity extends ActionBarActivity {
+
+public class AllCivicPoolsOnMapActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_civic_pools);
+        setContentView(R.layout.activity_all_civic_pools_on_map);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_all_civic_pools, menu);
+        getMenuInflater().inflate(R.menu.menu_all_civic_pools_on_map, menu);
         return true;
     }
 

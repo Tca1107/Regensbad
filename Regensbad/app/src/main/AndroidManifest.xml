@@ -23,7 +23,7 @@
         android:label="@string/app_name"
         android:theme="@style/action_bar_regensbad_theme" >
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,15 +32,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateAccountOrSignInActivity"
+            android:name=".Activities.CreateAccountOrSignInActivity"
             android:label="@string/title_activity_create_account_or_sign_in" >
         </activity>
         <activity
-            android:name=".CreateAccountActivity"
+            android:name=".Activities.CreateAccountActivity"
             android:label="@string/title_activity_create_account" >
         </activity>
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name=".Activities.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password" >
         </activity>
 
@@ -53,32 +53,32 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps" >
             </activity>
 
         <activity
-            android:name=".WeatherDetailActivity"
+            android:name=".Activities.WeatherDetailActivity"
             android:label="@string/title_activity_weather_detail" >
         </activity>
         <activity
-            android:name=".AllCivicPoolsActivity"
+            android:name=".Activities.AllCivicPoolsActivity"
             android:label="@string/title_activity_all_civic_pools" >
         </activity>
         <activity
-            android:name=".HomeScreenActivity"
+            android:name=".Activities.HomeScreenActivity"
             android:label="@string/title_activity_home_screen" >
         </activity>
         <activity
-            android:name=".ClosestCivicPoolActivity"
+            android:name=".Activities.ClosestCivicPoolActivity"
             android:label="@string/title_activity_closest_civic_pool" >
         </activity>
         <activity
-            android:name=".AllCivicPoolsOnMapActivity"
+            android:name=".Activities.AllCivicPoolsOnMapActivity"
             android:label="@string/title_activity_all_civic_pools_on_map" >
         </activity>
         <activity
-            android:name=".CivicPoolDetailActivity"
+            android:name=".Activities.CivicPoolDetailActivity"
             android:label="@string/title_activity_civic_pool_detail" >
 >>>>>>> origin/master
         </activity>

@@ -1,48 +1,26 @@
-package com.example.tom.regensbad;
+package com.example.tom.regensbad.Activities;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
-import com.parse.ParseUser;
+import com.example.tom.regensbad.R;
 
 
-public class HomeScreenActivity extends ActionBarActivity {
-
-    private Button testButton;
+public class WeatherDetailActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
-        // debugging and testing
-        testButton = (Button)findViewById(R.id.button_test_button);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser();
-
-
-            }
-        });
-
-
+        setContentView(R.layout.activity_weather_detail);
     }
-
-
-
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home_screen, menu);
+        getMenuInflater().inflate(R.menu.menu_weather_detail, menu);
         return true;
     }
 

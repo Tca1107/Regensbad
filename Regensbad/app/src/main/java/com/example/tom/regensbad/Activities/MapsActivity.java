@@ -1,8 +1,9 @@
-package com.example.tom.regensbad;
+package com.example.tom.regensbad.Activities;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.example.tom.regensbad.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
