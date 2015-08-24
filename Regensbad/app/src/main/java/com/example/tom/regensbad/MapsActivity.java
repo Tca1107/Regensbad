@@ -2,15 +2,25 @@ package com.example.tom.regensbad;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
+    private Marker guggiMarker;
+
+    private static final double START_LAT = 49.012985;
+    private static final double START_LANG = 12.092370;
+    private static final float START_ZOOM = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,29 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        setStartPosition();
+        handleClick();
+        guggiMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(48.977177, 12.223866)).title("Guggenberger See").snippet("Details"));    }
+
+    private void handleClick() {
+        /*From: http://stackoverflow.com/questions/14226453/google-maps-api-v2-how-to-make-markers-clickable*/
+        mMap.setOnInfoWindowClickListener(this);
+    }
+
+    private void setStartPosition() {
+        /*From: http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in*/
+        CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(START_LAT, START_LANG));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(START_ZOOM);
+
+        mMap.moveCamera(start);
+        mMap.animateCamera(zoom);
+    }
+
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        if (marker.equals(guggiMarker)){
+            Toast.makeText(MapsActivity.this, "Es hat funktioniert!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
