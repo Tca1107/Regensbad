@@ -1,0 +1,47 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	deleted:    GoogleMapsTest/.gitignore
+#	deleted:    GoogleMapsTest/.idea/.name
+#	deleted:    GoogleMapsTest/.idea/compiler.xml
+#	deleted:    GoogleMapsTest/.idea/copyright/profiles_settings.xml
+#	deleted:    GoogleMapsTest/.idea/encodings.xml
+#	deleted:    GoogleMapsTest/.idea/gradle.xml
+#	deleted:    GoogleMapsTest/.idea/misc.xml
+#	deleted:    GoogleMapsTest/.idea/modules.xml
+#	deleted:    GoogleMapsTest/.idea/runConfigurations.xml
+#	deleted:    GoogleMapsTest/.idea/vcs.xml
+#	deleted:    GoogleMapsTest/GoogleMapsTest.iml
+#	deleted:    GoogleMapsTest/app/.gitignore
+#	deleted:    GoogleMapsTest/app/app.iml
+#	deleted:    GoogleMapsTest/app/build.gradle
+#	deleted:    GoogleMapsTest/app/proguard-rules.pro
+#	deleted:    GoogleMapsTest/app/src/androidTest/java/sebastian/peiser/mi/ur/de/googlemapstest/ApplicationTest.java
+#	deleted:    GoogleMapsTest/app/src/debug/res/values/google_maps_api.xml
+#	deleted:    GoogleMapsTest/app/src/main/AndroidManifest.xml
+#	deleted:    GoogleMapsTest/app/src/main/java/sebastian/peiser/mi/ur/de/googlemapstest/MapsActivity.java
+#	deleted:    GoogleMapsTest/app/src/main/res/layout/activity_maps.xml
+#	deleted:    GoogleMapsTest/app/src/main/res/mipmap-hdpi/ic_launcher.png
+#	deleted:    GoogleMapsTest/app/src/main/res/mipmap-mdpi/ic_launcher.png
+#	deleted:    GoogleMapsTest/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+#	deleted:    GoogleMapsTest/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+#	deleted:    GoogleMapsTest/app/src/main/res/values/strings.xml
+#	deleted:    GoogleMapsTest/app/src/main/res/values/styles.xml
+#	deleted:    GoogleMapsTest/app/src/release/res/values/google_maps_api.xml
+#	deleted:    GoogleMapsTest/build.gradle
+#	deleted:    GoogleMapsTest/gradle.properties
+#	deleted:    GoogleMapsTest/gradle/wrapper/gradle-wrapper.jar
+#	deleted:    GoogleMapsTest/gradle/wrapper/gradle-wrapper.properties
+#	deleted:    GoogleMapsTest/gradlew
+#	deleted:    GoogleMapsTest/gradlew.bat
+#	deleted:    GoogleMapsTest/settings.gradle
+#	modified:   Regensbad/.idea/gradle.xml
+#	modified:   Regensbad/Regensbad.iml
+#	modified:   Regensbad/app/app.iml
+#	modified:   Regensbad/app/src/main/java/com/example/tom/regensbad/MapsActivity.java
+#
+
