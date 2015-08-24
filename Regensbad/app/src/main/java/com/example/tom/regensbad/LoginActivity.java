@@ -12,13 +12,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-
+import java.text.ParseException;
 
 
 
