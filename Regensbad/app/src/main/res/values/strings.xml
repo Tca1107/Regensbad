@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">Regensbad</string>
+    <string name="app_label">Regensbad</string>
+    <string name="search_hint">Nach Bad Suchen</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="app_icon_content_description">app icon</string>
+    <string name="user_online_description">User Online</string>
 
     <!--Login Activity-->
     <string name="login_with_user_account">Mit Nutzer-Account anmelden?</string>
@@ -24,6 +27,7 @@
     <string name="check_in_failed">Die Anmeldung war leider nicht erfolgreich. Bitte versuchen Sie es erneut.</string>
 
     <!--CreateAccountActivity-->
+    <string name="title_activity_create_account">Account Anlegen</string>
     <string name="create_new_account_with_colon">Neuen Account anlegen: </string>
     <string name="create_account_activity_name">Registrieren</string>
     <string name="mail_address">E-Mail Adresse</string>
@@ -33,6 +37,7 @@
     <string name="submission_failed_description">Registrierung nicht erfolgreich</string>
 
     <!--ResetPasswordActivity-->
+    <string name="title_activity_reset_password">Passwort Zurücksetzen</string>
     <string name="enter_mail_to_reset_password">Bitte geben Sie Ihre E-Mail Adresse ein: </string>
     <string name="reset_password">Passwort Zurücksetzen</string>
     <string name="reset_password_succeeded">Das Zurücksetzen war erfolgreich. Eine E-Mail wurde an die angegebene Mail-Adresse gesandt.</string>
@@ -62,14 +67,14 @@
     <string name="string_lakeName">Name des Sees</string>
     <string name="string_bathType">Typ</string>
     <string name="string_distance">5,2</string>
-    <string name="title_activity_create_account">CreateAccountActivity</string>
-    <string name="title_activity_reset_password">ResetPasswordActivity</string>
+
+
 
     <string name="title_activity_maps">Map</string>
 
     <string name="title_activity_weather_detail">WeatherDetailActivity</string>
     <string name="title_activity_all_civic_pools">AllCivicPoolsActivity</string>
-    <string name="title_activity_home_screen">HomeScreenActivity</string>
+    <string name="title_activity_home_screen">Regensbad</string>
     <string name="title_activity_closest_civic_pool">ClosestCivicPoolActivity</string>
     <string name="title_activity_all_civic_pools_on_map">AllCivicPoolsOnMapActivity</string>
     <string name="title_activity_civic_pool_detail">CivicPoolDetailActivity</string>
