@@ -10,17 +10,22 @@
     android:weightSum="10"
     android:background="@drawable/background_for_activities">
 
-    <TextView
-        android:id="@+id/text_view_app_name_in_create_account_or_sign_in_activity"
+
+    <View
+        android:id="@+id/view_to_keep_margin"
         android:layout_width="match_parent"
-        android:layout_weight="2.5"
         android:layout_height="0dp"
-        android:layout_marginTop="-10dp"
-        android:layout_marginBottom="-5dp"
-        android:text="@string/app_name"
-        android:textSize="50sp"
-        android:textColor="@color/white"
-        android:gravity="center"/>
+        android:layout_weight="0.5"/>
+
+    <TextView
+        android:id="@+id/text_view_sign_in_with_account"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:text="@string/create_an_account"
+        android:textSize="15sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"/>
 
     <View
         android:id="@+id/view_to_keep_margin_one"
@@ -95,6 +100,12 @@
 
     </LinearLayout>
 
+
+    <View
+        android:id="@+id/view_to_keep_margin_two"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"/>
 
     <LinearLayout
         android:layout_width="match_parent"

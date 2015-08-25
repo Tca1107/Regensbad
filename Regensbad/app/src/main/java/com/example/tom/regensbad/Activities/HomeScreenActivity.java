@@ -1,5 +1,7 @@
 package com.example.tom.regensbad.Activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.R;
@@ -24,16 +27,47 @@ public class HomeScreenActivity extends ActionBarActivity {
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Fonts/Pacifico.ttf";
 
+    private static final String KEY_FOR_INTENT_EXTRA = "query";
+
     private TextView appName;
+    private SearchView searchForCivicPools;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        //initializeUIElements();
+        initializeUIElements();
         initializeActionBar();
-       // setFontOfAppName();
+        initializeSearchForCivicPools();
 
+
+    }
+
+    /* This method was written using the tutorial "Creating a Search Interface", which is available at
+     * http://developer.android.com/guide/topics/search/search-dialog.html .*/
+    private void initializeSearchForCivicPools() {
+        searchForCivicPools.setSubmitButtonEnabled(true);
+        searchForCivicPools.setIconifiedByDefault(true);
+        searchForCivicPools.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                changeToSearchCivicPoolsActivity(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
+
+
+    private void changeToSearchCivicPoolsActivity(String query) {
+        Intent changeToSearchCivicPoolsActivity = new Intent(HomeScreenActivity.this, SearchCivicPoolsActivity.class);
+        changeToSearchCivicPoolsActivity.putExtra(KEY_FOR_INTENT_EXTRA, query);
+        startActivity(changeToSearchCivicPoolsActivity);
     }
 
 
@@ -51,12 +85,12 @@ public class HomeScreenActivity extends ActionBarActivity {
     }
 
 
-    /*
+
     private void initializeUIElements() {
-        appName = (TextView)findViewById(R.id.text_view_app_name_in_home_screen_activity);
+        searchForCivicPools = (SearchView)findViewById(R.id.search_view_search_for_civic_pool);
     }
 
-    */
+
 
 
 
@@ -73,10 +107,17 @@ public class HomeScreenActivity extends ActionBarActivity {
 
 
     @Override
+    /* Depending on whether a user is signed in, this method loads the respective menu resource file. */
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home_screen, menu);
-        return super.onCreateOptionsMenu(menu);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            getMenuInflater().inflate(R.menu.menu_home_screen, menu);
+            return super.onCreateOptionsMenu(menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_home_screen_user_not_signed_in, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
     }
 
     @Override

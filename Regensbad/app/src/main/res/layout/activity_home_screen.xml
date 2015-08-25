@@ -9,12 +9,30 @@
     android:background="@drawable/background_for_activities">
 
 
+    <View
+        android:id="@+id/view_to_keep_margin_one"
+        android:layout_width="match_parent"
+        android:layout_weight="0.3"
+        android:layout_height="0dp"/>
+
+
+    <SearchView
+        android:id="@+id/search_view_search_for_civic_pool"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/edit_text_shape"
+        android:queryHint="@string/search_hint"
+        ></SearchView>
+
 
     <View
-        android:id="@+id/view_one"
+        android:id="@+id/view_to_keep_margin_two"
         android:layout_width="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
         android:layout_height="0dp"/>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,21 +40,20 @@
         android:layout_weight="3"
         android:orientation="horizontal"
         android:weightSum="4"
-
         >
 
         <View
-            android:id="@+id/view_one"
+            android:id="@+id/view_to_keep_margin_three"
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="match_parent"/>
 
         <Button
-            android:id="@+id/button_login"
+            android:id="@+id/button_all_civic_pools"
             android:layout_width="0dp"
             android:layout_weight="1.7"
             android:layout_height="match_parent"
-            android:text="@string/button_login"
+            android:text="@string/all_civic_pools"
             android:textSize="15sp"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
@@ -45,17 +62,17 @@
             />
 
         <View
-            android:id="@+id/view_three"
+            android:id="@+id/view_to_keep_margin_four"
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="match_parent"/>
 
         <Button
-            android:id="@+id/button_login2"
+            android:id="@+id/button_closest_civic_pool"
             android:layout_width="0dp"
             android:layout_weight="1.7"
             android:layout_height="match_parent"
-            android:text="@string/button_login"
+            android:text="@string/closest_civic_pool"
             android:textSize="15sp"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
@@ -64,7 +81,7 @@
             />
 
         <View
-            android:id="@+id/view_two"
+            android:id="@+id/view_to_keep_margin_five"
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="match_parent"/>
@@ -72,7 +89,7 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/view_two"
+        android:id="@+id/view_to_keep_margin_six"
         android:layout_width="match_parent"
         android:layout_weight="0.5"
         android:layout_height="0dp"/>
@@ -84,21 +101,20 @@
         android:layout_weight="3"
         android:orientation="horizontal"
         android:weightSum="4"
-
         >
 
         <View
-            android:id="@+id/view_one"
+            android:id="@+id/view_to_keep_margin_seven"
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="match_parent"/>
 
         <Button
-            android:id="@+id/button_login"
+            android:id="@+id/button_weather"
             android:layout_width="0dp"
             android:layout_weight="1.7"
             android:layout_height="match_parent"
-            android:text="@string/button_login"
+            android:text="@string/weather_regensburg"
             android:textSize="15sp"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
@@ -107,17 +123,17 @@
             />
 
         <View
-            android:id="@+id/view_three"
+            android:id="@+id/view_to_keep_margin_eight"
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="match_parent"/>
 
         <Button
-            android:id="@+id/button_login2"
+            android:id="@+id/button_my_account"
             android:layout_width="0dp"
             android:layout_weight="1.7"
             android:layout_height="match_parent"
-            android:text="@string/button_login"
+            android:text="@string/my_account"
             android:textSize="15sp"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
@@ -126,7 +142,7 @@
             />
 
         <View
-            android:id="@+id/view_two"
+            android:id="@+id/view_to_keep_margin_nine"
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="match_parent"/>

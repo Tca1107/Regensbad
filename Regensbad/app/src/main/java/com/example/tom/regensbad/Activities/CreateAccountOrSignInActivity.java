@@ -27,7 +27,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
     private static final String FONT_PACIFICO_FILE_PATH = "Fonts/Pacifico.ttf";
 
     /* User interface elements */
-    private TextView appName;
+    //private TextView appName;
     private View marginKeeperOne;
     private EditText username;
     private EditText password;
@@ -44,13 +44,21 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         initializeUIElements();
         registerOnClickListeners();
         initializeActionBar();
-        setFontOfAppName();
+        //setFontOfAppName();
     }
 
-    /* Initializes the Action Bar*/
+    /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
+    with Android", which is available at:
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
     private void initializeActionBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // hier noch Methode zum Icon einfügen, sobald wir das Icon haben
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.home_screen_action_bar, null);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
+        ((TextView)view.findViewById(R.id.text_view_action_bar_home_screen)).setTypeface(typeface);
+        this.getSupportActionBar().setCustomView(view);
     }
 
 
@@ -62,7 +70,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
 
     /* Initializes the elements of the user interface. */
     private void initializeUIElements () {
-        appName = (TextView)findViewById(R.id.text_view_app_name_in_create_account_or_sign_in_activity);
+        //appName = (TextView)findViewById(R.id.text_view_app_name_in_create_account_or_sign_in_activity);
         marginKeeperOne = findViewById(R.id.view_to_keep_margin_one);
         username = (EditText)findViewById(R.id.edit_text_username);
         password = (EditText)findViewById(R.id.edit_text_password);
@@ -72,14 +80,18 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         submitNewAccount = (Button)findViewById(R.id.button_create_new_account);
     }
 
+
+    /*
     /* This method was created using the tutorial on including external fonts in Android Studio which can be found
     * at the following website: http://www.thedevline.com/2014/03/how-to-include-fonts-in-android.html .
     * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
-    * https://www.google.com/fonts/ .*/
+    * https://www.google.com/fonts/ .
     private void setFontOfAppName() {
         Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
         appName.setTypeface(typeface);
     }
+
+    */
 
 
     @Override
