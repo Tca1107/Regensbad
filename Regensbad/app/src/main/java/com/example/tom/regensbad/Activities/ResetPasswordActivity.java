@@ -130,6 +130,10 @@ public class ResetPasswordActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.home) {
+            finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

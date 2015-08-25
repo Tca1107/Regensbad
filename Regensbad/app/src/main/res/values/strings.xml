@@ -18,18 +18,19 @@
     <string name="username">Nutzername</string>
     <string name="password">Passwort</string>
     <string name="submit_account">Registrieren</string>
-    <string name="submission_failed">Die Registrierung war leider nicht erfolgreich. Versuchen Sie es mit einem anderen Nutzernamen.</string>
-    <string name="submission_succeeded">Die Registrierung war erfolgreich.</string>
-    <string name="submission_successful_description">Registrierung erflogreich</string>
-    <string name="submission_failed_description">Registrierung nicht erfolgreich</string>
     <string name="okay">OK</string>
     <string name="create_new_account">Neuen Account anlegen</string>
     <string name="forgot_password">Passwort vergessen?</string>
+    <string name="check_in_failed">Die Anmeldung war leider nicht erfolgreich. Bitte versuchen Sie es erneut.</string>
 
     <!--CreateAccountActivity-->
     <string name="create_new_account_with_colon">Neuen Account anlegen: </string>
     <string name="create_account_activity_name">Registrieren</string>
     <string name="mail_address">E-Mail Adresse</string>
+    <string name="submission_failed">Die Registrierung war leider nicht erfolgreich. Versuchen Sie es mit einem anderen Nutzernamen.</string>
+    <string name="submission_succeeded">Die Registrierung war erfolgreich.</string>
+    <string name="submission_successful_description">Registrierung erflogreich</string>
+    <string name="submission_failed_description">Registrierung nicht erfolgreich</string>
 
     <!--ResetPasswordActivity-->
     <string name="enter_mail_to_reset_password">Bitte geben Sie Ihre E-Mail Adresse ein: </string>

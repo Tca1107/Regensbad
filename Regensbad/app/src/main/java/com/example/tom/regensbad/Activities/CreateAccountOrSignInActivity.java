@@ -1,9 +1,13 @@
 package com.example.tom.regensbad.Activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -110,7 +114,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
        switch(v.getId()) {
            case R.id.button_sign_in:
                signInWithUserAccount();
-               // hier noch das Anmelden auf parse.com ermöglichen!
+
                break;
 
            case R.id.text_view_forgot_password:
@@ -137,13 +141,36 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
             @Override
             public void done(ParseUser parseUser, ParseException e) {
                 if (parseUser != null) {
-                    // user is logged in. From Here we should probably switch to the main menu.
+                    changeToHomeScreenActivity();
                 } else {
-                    // sign up failed.
+                    showDialog(R.layout.dialog_check_in_failed, R.string.okay);
                 }
             }
         });
 
+    }
+
+    /* This method as well the corresponding layout resource was written using Google Android's developer guide for
+    * dialogs as a guideline (http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog).
+    * It shows a dialog that lets the user know that his or her registration failed.*/
+    private void showDialog(int layoutResource, int messageOnButton){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        dialogBuilder.setView(inflater.inflate(layoutResource, null));
+        dialogBuilder.setPositiveButton(messageOnButton, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // nothing since the dialog only closes.
+            }
+        });
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+    /* Method that makes the system switch into the HomeScreenActivity. */
+    private void changeToHomeScreenActivity() {
+        Intent switchToHomeScreenActivity = new Intent (CreateAccountOrSignInActivity.this, HomeScreenActivity.class);
+        startActivity(switchToHomeScreenActivity);
     }
 
 

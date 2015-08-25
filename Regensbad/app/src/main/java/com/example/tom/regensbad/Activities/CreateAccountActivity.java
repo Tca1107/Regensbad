@@ -103,7 +103,6 @@ public class CreateAccountActivity extends ActionBarActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay);
-                    switchToHomeScreenActivityWithALoggedInUser();
                 } else {
                     showDialog(R.layout.dialog_sign_in_failed, R.string.okay);
                 }
@@ -130,7 +129,7 @@ public class CreateAccountActivity extends ActionBarActivity {
         dialogBuilder.setPositiveButton(messageOnButton, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // nothing, since the dialog only closes
+                switchToHomeScreenActivityWithALoggedInUser();
             }
         });
         AlertDialog dialog = dialogBuilder.create();
