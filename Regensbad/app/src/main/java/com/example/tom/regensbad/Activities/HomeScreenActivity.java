@@ -38,7 +38,7 @@ public class HomeScreenActivity extends ActionBarActivity {
         setContentView(R.layout.activity_home_screen);
         initializeUIElements();
         initializeActionBar();
-        initializeSearchForCivicPools();
+        //initializeSearchForCivicPools();
 
 
     }
@@ -87,7 +87,14 @@ public class HomeScreenActivity extends ActionBarActivity {
 
 
     private void initializeUIElements() {
-        searchForCivicPools = (SearchView)findViewById(R.id.search_view_search_for_civic_pool);
+        appName = (TextView)findViewById(R.id.text_view_app_name);
+        setFontOfAppName();
+       //searchForCivicPools = (SearchView)findViewById(R.id.search_view_search_for_civic_pool);
+    }
+
+    private void setFontOfAppName() {
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
+        appName.setTypeface(typeface);
     }
 
 

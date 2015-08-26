@@ -5,150 +5,49 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".LoginActivity"
     android:orientation="vertical"
-    android:weightSum="10"
+    android:weightSum="3"
     android:background="@drawable/background_for_activities">
 
-
-    <View
-        android:id="@+id/view_to_keep_margin_one"
+    <RelativeLayout
+        android:id="@+id/weather_container"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.3">
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_view_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:text="@string/app_name"
+        android:textSize="50sp"
+        android:textColor="@color/white"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:id="@+id/button_closest_lake"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="0.3"
-        android:layout_height="0dp"/>
+        android:text="@string/button_closest_lake"
+        android:background="@drawable/button_selector"
+        android:textColor="@drawable/button_text_color"
+        android:textSize="15sp"
+        android:layout_gravity="center"/>
 
-
-    <SearchView
-        android:id="@+id/search_view_search_for_civic_pool"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/button_goToList"
+        android:layout_width="300dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/edit_text_shape"
-        android:queryHint="@string/search_hint"
-        ></SearchView>
-
-
-    <View
-        android:id="@+id/view_to_keep_margin_two"
-        android:layout_width="match_parent"
-        android:layout_weight="0.7"
-        android:layout_height="0dp"/>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        >
-
-        <View
-            android:id="@+id/view_to_keep_margin_three"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="match_parent"/>
-
-        <Button
-            android:id="@+id/button_all_civic_pools"
-            android:layout_width="0dp"
-            android:layout_weight="1.7"
-            android:layout_height="match_parent"
-            android:text="@string/all_civic_pools"
-            android:textSize="15sp"
-            android:background="@drawable/button_selector"
-            android:textColor="@drawable/button_text_color"
-            android:drawableTop="@drawable/button_icon_selector_perm_identity"
-            android:paddingTop="30dp"
-            />
-
-        <View
-            android:id="@+id/view_to_keep_margin_four"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="match_parent"/>
-
-        <Button
-            android:id="@+id/button_closest_civic_pool"
-            android:layout_width="0dp"
-            android:layout_weight="1.7"
-            android:layout_height="match_parent"
-            android:text="@string/closest_civic_pool"
-            android:textSize="15sp"
-            android:background="@drawable/button_selector"
-            android:textColor="@drawable/button_text_color"
-            android:drawableTop="@drawable/button_icon_selector_perm_identity"
-            android:paddingTop="30dp"
-            />
-
-        <View
-            android:id="@+id/view_to_keep_margin_five"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/view_to_keep_margin_six"
-        android:layout_width="match_parent"
-        android:layout_weight="0.5"
-        android:layout_height="0dp"/>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        >
-
-        <View
-            android:id="@+id/view_to_keep_margin_seven"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="match_parent"/>
-
-        <Button
-            android:id="@+id/button_weather"
-            android:layout_width="0dp"
-            android:layout_weight="1.7"
-            android:layout_height="match_parent"
-            android:text="@string/weather_regensburg"
-            android:textSize="15sp"
-            android:background="@drawable/button_selector"
-            android:textColor="@drawable/button_text_color"
-            android:drawableTop="@drawable/button_icon_selector_perm_identity"
-            android:paddingTop="30dp"
-            />
-
-        <View
-            android:id="@+id/view_to_keep_margin_eight"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="match_parent"/>
-
-        <Button
-            android:id="@+id/button_my_account"
-            android:layout_width="0dp"
-            android:layout_weight="1.7"
-            android:layout_height="match_parent"
-            android:text="@string/my_account"
-            android:textSize="15sp"
-            android:background="@drawable/button_selector"
-            android:textColor="@drawable/button_text_color"
-            android:drawableTop="@drawable/button_icon_selector_perm_identity"
-            android:paddingTop="30dp"
-            />
-
-        <View
-            android:id="@+id/view_to_keep_margin_nine"
-            android:layout_width="0dp"
-            android:layout_weight="0.2"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.3"
+        android:text="@string/button_all_lakes"
+        android:background="@drawable/button_selector"
+        android:textColor="@drawable/button_text_color"
+        android:textSize="15sp"
+        android:layout_gravity="center"/>
 
 
 
