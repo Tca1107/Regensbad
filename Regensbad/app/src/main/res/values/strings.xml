@@ -8,6 +8,10 @@
     <string name="app_icon_content_description">app icon</string>
     <string name="user_online_description">User Online</string>
 
+    <!--Action Menü-->
+    <string name="action_myAccount">Mein Account</string>
+    <string name="action_logout">Logout</string>
+
     <!--Login Activity-->
     <string name="login_with_user_account">Mit Nutzer-Account anmelden?</string>
     <string name="button_login">Anmelden</string>

@@ -8,9 +8,19 @@
     following link: https://developer.android.com/training/basics/actionbar/adding-buttons.html .-->
 
 
+    <item android:id="@+id/action_button_search"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/search_title_description"
+        app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+
+
+
+    <item android:id="@+id/action_myAccount" android:title="@string/action_myAccount"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_logout" android:title="@string/action_logout"
+        android:orderInCategory="100" app:showAsAction="never" />
+
 
 
 

@@ -133,7 +133,9 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_myAccount) {
+            return true;
+        }else if (id == R.id.action_logout){
             return true;
         }
 
