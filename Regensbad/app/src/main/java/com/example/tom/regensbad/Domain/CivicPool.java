@@ -50,8 +50,18 @@ public class CivicPool {
         return phoneNumber;
     }
 
+    public String getPhoneNumberAsString(){
+        String numberString = String.valueOf(phoneNumber);
+        return numberString;
+    }
+
     public URI getWebsite(){
         return website;
+    }
+
+    public String getWebsiteAsString(){
+        String webstieString = website.toString();
+        return webstieString;
     }
 
     public double getOpenTime(){
@@ -65,5 +75,6 @@ public class CivicPool {
     public String getPicPath(){
         return picPath;
     }
+    
 
 }
