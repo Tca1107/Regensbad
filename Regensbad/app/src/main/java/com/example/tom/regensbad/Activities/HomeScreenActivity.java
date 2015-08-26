@@ -100,19 +100,6 @@ public class HomeScreenActivity extends ActionBarActivity {
 
 
 
-
-
-
-    /* This method was created using the tutorial on including external fonts in Android Studio which can be found
-    * at the following website: http://www.thedevline.com/2014/03/how-to-include-fonts-in-android.html .
-    * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
-    * https://www.google.com/fonts/ .
-    private void setFontOfAppName() {
-        Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
-        appName.setTypeface(typeface);
-    } */
-
-
     @Override
     /* Depending on whether a user is signed in, this method loads the respective menu resource file. */
     public boolean onCreateOptionsMenu(Menu menu) {
