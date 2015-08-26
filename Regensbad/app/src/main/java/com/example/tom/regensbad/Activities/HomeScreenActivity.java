@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -113,17 +114,37 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
     @Override
     /* Depending on whether a user is signed in, this method loads the respective menu resource file. */
+      /* http://developer.android.com/guide/topics/search/search-dialog.html .*/
+    /* http://developer.android.com/guide/topics/ui/actionbar.html#ActionView */
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             getMenuInflater().inflate(R.menu.menu_home_screen, menu);
+            addTheSearchView(menu);
             return super.onCreateOptionsMenu(menu);
         } else {
             getMenuInflater().inflate(R.menu.menu_home_screen_user_not_signed_in, menu);
+            addTheSearchView(menu);
             return super.onCreateOptionsMenu(menu);
         }
     }
+
+
+    /* http://developer.android.com/guide/topics/search/search-dialog.html .*/
+    /* http://developer.android.com/guide/topics/ui/actionbar.html#ActionView */
+    private void addTheSearchView(Menu menu) {
+        //SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = menu.findItem(R.id.action_button_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setQueryHint(getResources().getString(R.string.search_hint));
+    }
+
+    /* http://developer.android.com/guide/topics/search/search-dialog.html .*/
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
