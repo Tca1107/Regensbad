@@ -27,7 +27,6 @@ public class CreateAccountActivity extends ActionBarActivity {
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
-    private TextView appName;
     private View marginKeeper;
     private TextView createNewAccount;
     private EditText mailAddress;
@@ -41,7 +40,6 @@ public class CreateAccountActivity extends ActionBarActivity {
         setContentView(R.layout.activity_create_account);
         initializeUIElements();
         initializeActionBar();
-        setFontOfAppName();
         registerOnClickListener();
     }
 
@@ -58,27 +56,28 @@ public class CreateAccountActivity extends ActionBarActivity {
         });
     }
 
-    /* Initializes the Action Bar. */
+    /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
+    with Android", which is available at:
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
     private void initializeActionBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String actionBarTitle = getResources().getString(R.string.create_account_activity_name);
-        getSupportActionBar().setTitle(actionBarTitle);
-        // hier noch Methode zum Icon einfügen, sobald wir das Icon haben
+            String actionBarTitle = getResources().getString(R.string.app_name);
+            getSupportActionBar().setTitle(actionBarTitle);
+            this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+            this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+            this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View view = inflater.inflate(R.layout.home_screen_action_bar, null);
+            Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
+            ((TextView)view.findViewById(R.id.text_view_action_bar_home_screen)).setTypeface(typeface);
+            this.getSupportActionBar().setCustomView(view);
+            // hier noch Methode zum Icon einfügen, sobald wir das Icon haben
     }
 
-    /* This method was created using the tutorial on including external fonts in Android Studio which can be found
-    * at the following website: http://www.thedevline.com/2014/03/how-to-include-fonts-in-android.html .
-    * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
-    * https://www.google.com/fonts/ .*/
-    private void setFontOfAppName() {
-        Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
-        appName.setTypeface(typeface);
-    }
+
 
 
     /* Initializes the elements of the user interface. */
     private void initializeUIElements() {
-        appName = (TextView)findViewById(R.id.text_view_app_name_in_create_account_activity);
         marginKeeper = findViewById(R.id.view_to_keep_margin);
         createNewAccount = (TextView)findViewById(R.id.text_view_create_an_account);
         mailAddress = (EditText)findViewById(R.id.edit_text_mail_address);
