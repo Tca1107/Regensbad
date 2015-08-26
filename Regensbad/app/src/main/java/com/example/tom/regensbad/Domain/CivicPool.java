@@ -75,6 +75,6 @@ public class CivicPool {
     public String getPicPath(){
         return picPath;
     }
-    
+
 
 }
