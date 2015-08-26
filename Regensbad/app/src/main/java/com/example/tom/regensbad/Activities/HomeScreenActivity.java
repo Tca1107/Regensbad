@@ -2,6 +2,7 @@ package com.example.tom.regensbad.Activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
@@ -22,7 +23,7 @@ import com.example.tom.regensbad.R;
 import com.parse.ParseUser;
 
 
-public class HomeScreenActivity extends ActionBarActivity {
+public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener{
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
@@ -30,7 +31,8 @@ public class HomeScreenActivity extends ActionBarActivity {
     private static final String KEY_FOR_INTENT_EXTRA = "query";
 
     private TextView appName;
-    private SearchView searchForCivicPools;
+    private Button buttonClosestLake;
+    private Button buttonGoToList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +40,21 @@ public class HomeScreenActivity extends ActionBarActivity {
         setContentView(R.layout.activity_home_screen);
         initializeUIElements();
         initializeActionBar();
+        registerOnClickListeners();
         //initializeSearchForCivicPools();
 
 
     }
 
+    private void registerOnClickListeners() {
+        buttonClosestLake.setOnClickListener(this);
+        buttonGoToList.setOnClickListener(this);
+    }
+
+
+    /*
     /* This method was written using the tutorial "Creating a Search Interface", which is available at
-     * http://developer.android.com/guide/topics/search/search-dialog.html .*/
+     * http://developer.android.com/guide/topics/search/search-dialog.html .
     private void initializeSearchForCivicPools() {
         searchForCivicPools.setSubmitButtonEnabled(true);
         searchForCivicPools.setIconifiedByDefault(true);
@@ -61,7 +71,7 @@ public class HomeScreenActivity extends ActionBarActivity {
             }
         });
     }
-
+*/
 
 
     private void changeToSearchCivicPoolsActivity(String query) {
@@ -89,7 +99,8 @@ public class HomeScreenActivity extends ActionBarActivity {
     private void initializeUIElements() {
         appName = (TextView)findViewById(R.id.text_view_app_name);
         setFontOfAppName();
-       //searchForCivicPools = (SearchView)findViewById(R.id.search_view_search_for_civic_pool);
+        buttonClosestLake = (Button)findViewById(R.id.button_closest_lake);
+        buttonGoToList = (Button)findViewById(R.id.button_goToList);
     }
 
     private void setFontOfAppName() {
@@ -127,5 +138,10 @@ public class HomeScreenActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        // buttons zu activities
     }
 }

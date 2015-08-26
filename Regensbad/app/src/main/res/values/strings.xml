@@ -51,6 +51,7 @@
     <string name="closest_civic_pool">Nähestes Bad</string>
     <string name="weather_regensburg">Wetter für Regensburg</string>
     <string name="my_account">Mein Account</string>
+    <string name="search_title_description">Suche</string>
 
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>
