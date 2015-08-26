@@ -25,7 +25,7 @@ import com.parse.SignUpCallback;
 public class CreateAccountActivity extends ActionBarActivity {
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
-    private static final String FONT_PACIFICO_FILE_PATH = "Fonts/Pacifico.ttf";
+    private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
     private TextView appName;
     private View marginKeeper;

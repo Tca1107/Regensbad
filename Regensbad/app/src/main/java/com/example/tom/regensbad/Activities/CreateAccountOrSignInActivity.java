@@ -24,7 +24,7 @@ import com.parse.ParseUser;
 public class CreateAccountOrSignInActivity extends ActionBarActivity implements View.OnClickListener{
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
-    private static final String FONT_PACIFICO_FILE_PATH = "Fonts/Pacifico.ttf";
+    private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
     /* User interface elements */
     //private TextView appName;

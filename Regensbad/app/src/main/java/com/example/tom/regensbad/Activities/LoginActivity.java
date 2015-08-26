@@ -27,7 +27,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private static final String PARSE_COM_CLIENT_ID = "JYvtqFzgpOHVq9OTn8yKcJdC7xM7eRe3hciBhVh8";
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
-    private static final String FONT_PACIFICO_FILE_PATH = "Fonts/Pacifico.ttf";
+    private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
     /* User interface elements */
     private ImageView appIcon;
