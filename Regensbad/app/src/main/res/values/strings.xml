@@ -58,6 +58,7 @@
     <string name="my_account">Mein Account</string>
     <string name="search_title_description">Suche</string>
     <string name="weather_image_view_description">Wetter Icon</string>
+    <string name="last_updated">zuletzt aktualisiert: </string>
 
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>
@@ -81,8 +82,10 @@
     <string name="string_lakeName">Name des Sees</string>
     <string name="string_bathType">Typ</string>
     <string name="string_distance">5,2</string>
-    <string name="degrees">25°C</string>
+    <string name="degrees">25°</string>
     <string name="weather_description">stark bewölkt</string>
+    <string name="max_temp">H 30°</string>
+    <string name="min_temp">T 18°</string>
 
 
 

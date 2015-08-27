@@ -28,6 +28,8 @@ import com.example.tom.regensbad.Persistence.WeatherDataProvider;
 import com.example.tom.regensbad.R;
 import com.parse.ParseUser;
 
+import org.w3c.dom.Text;
+
 
 public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener, WeatherDataProvider.WeatherDataReceivedListener{
 
@@ -37,7 +39,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     /* Constant of the type string defining the key for the intent extras. */
     private static final String KEY_FOR_INTENT_EXTRA = "query";
 
-    private static final String CELSIUS= "°C";
+    private static final String CELSIUS= "°";
 
     private static final int WEATHER_DIVISION_CONSTANT = 100;
     private static final int WEATHER_ID_THUNDERSTORM = 2;
@@ -56,7 +58,10 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private static final String WEB_ADDRESS_TO_RETRIEVE_WEATHER_DATA = "http://api.openweathermap.org/data/2.5/weather?q=Regensburg,germany&lang=de&units=metric";
 
 
-
+    private TextView cityName;
+    private TextView maxDegrees;
+    private TextView minDegrees;
+    private TextView lastUpdated;
     private TextView degrees;
     private TextView weatherDescription;
     private ImageView weatherIcon;
@@ -108,7 +113,10 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
             setStatusBarColor();
         }
-
+        cityName = (TextView)findViewById(R.id.text_view_weather_city);
+        maxDegrees = (TextView)findViewById(R.id.text_view_max_degrees);
+        minDegrees = (TextView)findViewById(R.id.text_view_min_degrees);
+        lastUpdated = (TextView)findViewById(R.id.text_view_weather_last_updated);
         degrees = (TextView)findViewById(R.id.text_view_weather_degrees);
         weatherDescription = (TextView)findViewById(R.id.text_view_weather_description);
         weatherIcon = (ImageView)findViewById(R.id.image_view_weather_icon);
@@ -232,14 +240,21 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     public void onDataWeatherDataReceived(Weather weather) {
         Log.d("Communication", "worked");
         if (weather != null) {
-            degrees.setText(weather.getDegrees() + CELSIUS);
+            int weatherDegreesInt = calculateWeatherInt(Double.valueOf(weather.getDegrees()));
+            int weatherMaxDegreesInt = calculateWeatherInt(Double.valueOf(weather.getMaxDegrees()));
+            int weatherMinDegreesInt = calculateWeatherInt(Double.valueOf(weather.getMinDegrees()));
+            degrees.setText(weatherDegreesInt + CELSIUS);
+            maxDegrees.setText(weatherMaxDegreesInt + CELSIUS);
+            minDegrees.setText(weatherMinDegreesInt + CELSIUS);
             weatherDescription.setText(weather.getWeatherDescription());
             assignWeatherIcon(weather.getweatherIcon());
-
-            // hier dann noch die Methode für die Icons!!
         } else {
-
+            // show last updated Object!
         }
+    }
+
+    private int calculateWeatherInt(double degreeDouble) {
+        return (int)degreeDouble;
     }
 
 

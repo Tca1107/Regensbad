@@ -10,5 +10,7 @@
     <color name="green_for_gradient_start">#00796B</color>
     <color name="green_for_gradient_end">#009688</color>
     <color name="red">#F44336</color>
+    <color name="grey">#B1B1B1</color>
+    <color name="yellow">#EDBB08</color>
 
 </resources>
