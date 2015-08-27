@@ -108,6 +108,9 @@ public class CreateAccountActivity extends ActionBarActivity {
         String mailAddress = this.mailAddress.getText().toString();
         String username = this.username.getText().toString();
         String password = this.password.getText().toString();
+        if (mailAddress.length() == 0 || username.length() == 0 || password.length() == 0) {
+            showWhatIsMissing(mailAddress, username, password);
+        }
         ParseUser user = new ParseUser();
         user.setEmail(mailAddress);
         user.setUsername(username);
@@ -123,6 +126,9 @@ public class CreateAccountActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    private void showWhatIsMissing(String mailAddress, String username, String password) {
     }
 
     private void switchToHomeScreenActivityWithALoggedInUser() {
