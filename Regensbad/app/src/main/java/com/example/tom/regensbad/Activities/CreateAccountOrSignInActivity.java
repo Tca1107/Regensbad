@@ -126,9 +126,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
        switch(v.getId()) {
            case R.id.button_sign_in:
                signInWithUserAccount();
-
                break;
-
            case R.id.text_view_forgot_password:
                changeToResetPasswordActivity();
                break;

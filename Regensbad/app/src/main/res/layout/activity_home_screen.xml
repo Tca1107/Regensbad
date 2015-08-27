@@ -13,6 +13,38 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.4">
+
+        <TextView
+            android:id="@+id/text_view_weather_degrees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/degrees"
+            android:textSize="40sp"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/text_view_weather_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/weather_description"
+            android:textSize="22sp"
+            android:layout_below="@+id/text_view_weather_degrees"
+            android:textColor="@color/white"
+            />
+
+        <ImageView
+            android:id="@+id/image_view_weather_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/text_view_weather_description"
+            android:contentDescription="@+id/weather_image_view_description"/>
+
+
+
+
+
     </RelativeLayout>
 
     <TextView
@@ -36,18 +68,18 @@
         android:gravity="center"
         >
 
-    <Button
-        android:id="@+id/button_closest_lake"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3.5"
-        android:paddingRight="20dp"
-        android:text="@string/button_closest_lake"
-        android:background="@drawable/button_selector"
-        android:textColor="@drawable/button_text_color"
-        android:textSize="15sp"
-        android:layout_gravity="center"
-        android:gravity="center"/>
+        <Button
+            android:id="@+id/button_closest_lake"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.5"
+            android:paddingRight="20dp"
+            android:text="@string/button_closest_lake"
+            android:background="@drawable/button_selector"
+            android:textColor="@drawable/button_text_color"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:gravity="center"/>
 
     </LinearLayout>
 
@@ -61,18 +93,18 @@
         android:layout_marginTop="10dp"
         >
 
-    <Button
-        android:id="@+id/button_goToList"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="3.5"
-        android:text="@string/button_all_lakes"
-        android:background="@drawable/button_selector"
-        android:textColor="@drawable/button_text_color"
-        android:textSize="15sp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingRight="13dp"/>
+        <Button
+            android:id="@+id/button_goToList"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3.5"
+            android:text="@string/button_all_lakes"
+            android:background="@drawable/button_selector"
+            android:textColor="@drawable/button_text_color"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingRight="13dp"/>
 
     </LinearLayout>
 

@@ -2,6 +2,7 @@
     <string name="app_name">Regensbad</string>
     <string name="app_label">Regensbad</string>
     <string name="search_hint">Bad Suchen</string>
+    <string name="regensburg">Regensburg</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -56,6 +57,7 @@
     <string name="weather_regensburg">Wetter für Regensburg</string>
     <string name="my_account">Mein Account</string>
     <string name="search_title_description">Suche</string>
+    <string name="weather_image_view_description">Wetter Icon</string>
 
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>
@@ -79,6 +81,8 @@
     <string name="string_lakeName">Name des Sees</string>
     <string name="string_bathType">Typ</string>
     <string name="string_distance">5,2</string>
+    <string name="degrees">25°C</string>
+    <string name="weather_description">stark bewölkt</string>
 
 
 
