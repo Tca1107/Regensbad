@@ -137,7 +137,7 @@ public class Database {
 
 
         public ArrayList<CivicPool> getAllPoolItems() {
-            ArrayList<CivicPool> poolItems = new ArrayList<>();
+            ArrayList<CivicPool> poolItems = new ArrayList<CivicPool>();
             Cursor cursor = db.query(DATABASE_TABLE, null, null, null, null, null, null);
             if (cursor.moveToFirst()) {
                 do {
