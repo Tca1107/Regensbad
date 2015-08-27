@@ -219,8 +219,12 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     @Override
     public void onDataWeatherDataReceived(Weather weather) {
         Log.d("Communication", "worked");
-        degrees.setText(weather.getDegrees() + "°C");
-        weatherDescription.setText(weather.getWeatherDescription());
-        // hier dann noch die Methode für die Icons!!
+        if (weather != null) {
+            degrees.setText(weather.getDegrees() + "°C");
+            weatherDescription.setText(weather.getWeatherDescription());
+            // hier dann noch die Methode für die Icons!!
+        } else {
+            
+        }
     }
 }
