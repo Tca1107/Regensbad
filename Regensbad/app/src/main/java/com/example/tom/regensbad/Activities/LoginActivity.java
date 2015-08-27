@@ -79,8 +79,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             setStatusBarColor();
         }
 
-        appIcon = (ImageView)findViewById(R.id.image_view_app_icon);
-        setIconOfImageView();
+        appIcon = (ImageView)findViewById(R.id.ic_regensbad_logo);
+        appIcon.setImageResource(R.drawable.ic_regensbad_logo);
         appName = (TextView)findViewById(R.id.text_view_app_name);
         setFontOfAppName();
         registration = (TextView)findViewById(R.id.text_view_login);
