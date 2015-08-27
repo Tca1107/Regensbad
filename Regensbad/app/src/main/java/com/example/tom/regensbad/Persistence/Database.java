@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.telephony.PhoneNumberUtils;
 
 import com.example.tom.regensbad.Domain.CivicPool;
 
@@ -149,7 +150,7 @@ public class Database {
                     String opentime = cursor.getString(COLUMN_OPENTIME_INDEX);
                     String closetime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                     String picpath = cursor.getString(COLUMN_PICPATH_INDEX);
-                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), Integer.parseInt(phonenumber), URI.create(website), Double.parseDouble(opentime), Double.parseDouble(closetime), picpath));
+                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), PhoneNumberUtils.formatNumber(phonenumber), URI.create(website), Double.parseDouble(opentime), Double.parseDouble(closetime), picpath));
 
                 } while (cursor.moveToNext());
             }
@@ -169,15 +170,15 @@ public class Database {
             private static final String DATABASE_CREATE = "create table "
                     + DATABASE_TABLE + " ("
                     + KEY_ID + " integer primary key autoincrement, "
-                    + KEY_NAME + " varchar(256), "
-                    + KEY_TYPE + " varchar(256), "
-                    + KEY_LATI + " long, "
-                    + KEY_LONGI + " long, "
-                    + KEY_PHONENUMBER + " integer, "
-                    + KEY_WEBSITE + " varchar(256), "
-                    + KEY_OPENTIME + " varchar(256), "
-                    + KEY_CLOSETIME + " varchar(256), "
-                    + KEY_PICPATH + " varchar(256) not null);";
+                    + KEY_NAME + " text, "
+                    + KEY_TYPE + " text, "
+                    + KEY_LATI + " text, "
+                    + KEY_LONGI + " text, "
+                    + KEY_PHONENUMBER + " text, "
+                    + KEY_WEBSITE + " text, "
+                    + KEY_OPENTIME + " text, "
+                    + KEY_CLOSETIME + " text, "
+                    + KEY_PICPATH + " text not null);";
 
             public PoolDBOpenHelper(Context c, String dbname, SQLiteDatabase.CursorFactory factory, int version) {
                 super(c, dbname, factory, version);
