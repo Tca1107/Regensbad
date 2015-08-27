@@ -7,8 +7,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.R;
@@ -24,8 +26,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
     private double longi;
     private String phoneNumber;
     private String website;
-    private double openTime;
-    private double closeTime;
+    private int openTime;
+    private int closeTime;
     private String picPath;
 
     TextView textName;
@@ -33,13 +35,29 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
     TextView textPhoneNumber;
     TextView textWebsite;
 
+    Button showMapbutton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getExtras();
         initializeUIElements();
+        handleInput();
 
+    }
 
+    private void handleInput() {
+        showMapbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent goToMap = new Intent(CivicPoolDetailActivity.this, MapsActivity.class);
+                goToMap.putExtra("name", name);
+                goToMap.putExtra("lati", lati);
+                goToMap.putExtra("longi", longi);
+                goToMap.putExtra("origin", "detail");
+                startActivity(goToMap);
+            }
+        });
     }
 
     private void getExtras() {
@@ -51,8 +69,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
         longi = extras.getDouble("longi");
         phoneNumber = extras.getString("number");
         website = extras.getString("website");
-        openTime = extras.getDouble("openTime");
-        closeTime = extras.getDouble("closeTime");
+        openTime = extras.getInt("openTime");
+        closeTime = extras.getInt("closeTime");
         picPath = extras.getString("imgPath");
 
     }
@@ -76,6 +94,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
 
         createTimeView();
 
+        showMapbutton = (Button) findViewById(R.id.button_showOnMap);
     }
 
     private void createTimeView() {
@@ -85,7 +104,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
         System.out.println(openTimeString+"");
         System.out.println(closedTimeString+"");
 
-        String timeString = openTimeString.substring(0,2) + ":" + openTimeString.substring(2) + " - " + closedTimeString.substring(0,2) + ":" + closedTimeString.substring(2);
+        String timeString = " " + openTimeString.substring(0,2) + ":" + openTimeString.substring(2) + " - " + closedTimeString.substring(0,2) + ":" + closedTimeString.substring(2);
         textOpenTime.setText(timeString);
     }
 

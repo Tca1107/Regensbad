@@ -1,5 +1,8 @@
 package com.example.tom.regensbad.Activities;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -20,6 +23,13 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     private Marker guggiMarker;
+    private Marker singleMarker;
+
+    private String origin;
+    private String title;
+
+    private double singleLat;
+    private double singleLong;
 
     private static final double START_LAT = 49.012985;
     private static final double START_LANG = 12.092370;
@@ -28,8 +38,30 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getExtras();
         initializeUIElements();
         setUpMapIfNeeded();
+    }
+
+    private void getExtras() {
+        Intent i = getIntent();
+        Bundle extras = i.getExtras();
+        origin = extras.getString("origin");
+        if (origin.equals("detail")){
+            title = extras.getString("name");
+            singleLat = extras.getDouble("lati");
+            singleLong = extras.getDouble("longi");
+
+        }
+    }
+
+    private void setSingleStartPosition() {
+        /*From: http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in*/
+        CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(singleLat, singleLong));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(START_ZOOM);
+
+        mMap.moveCamera(start);
+        mMap.animateCamera(zoom);
     }
 
     private void initializeUIElements() {
@@ -40,6 +72,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {
         //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
         Window window = MapsActivity.this.getWindow();
@@ -90,29 +123,26 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        setStartPosition();
         handleClick();
-        guggiMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(48.977177, 12.223866)).title("Guggenberger See").snippet("Details"));    }
+        if(origin.equals("detail")){
+            setSingleStartPosition();
+            singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(singleLat, singleLong)).title(title).snippet("Details"));
+        }
+  }
 
     private void handleClick() {
         /*From: http://stackoverflow.com/questions/14226453/google-maps-api-v2-how-to-make-markers-clickable*/
         mMap.setOnInfoWindowClickListener(this);
     }
 
-    private void setStartPosition() {
-        /*From: http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in*/
-        CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(START_LAT, START_LANG));
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(START_ZOOM);
-
-        mMap.moveCamera(start);
-        mMap.animateCamera(zoom);
-    }
 
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        if (marker.equals(guggiMarker)){
+        if (marker.equals(singleMarker)){
             Toast.makeText(MapsActivity.this, "Es hat funktioniert!", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

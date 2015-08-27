@@ -56,6 +56,9 @@ public class AllCivicPoolsActivity extends ActionBarActivity {
                 showDetailView.putExtra("closeTime", pool.getCloseTime());
                 showDetailView.putExtra("imgPath", pool.getPicPath());
 
+                System.out.println(pool.getOpenTime() + "");
+                System.out.println(pool.getCloseTime() + "");
+
                 startActivity(showDetailView);
             }
         });
