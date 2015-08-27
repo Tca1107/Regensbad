@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.example.tom.regensbad.R;
 
@@ -14,6 +16,21 @@ public class WeatherDetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_detail);
+        initializeUIElements();
+    }
+
+    private void initializeUIElements() {
+        if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
+            setStatusBarColor();
+        }
+    }
+
+    private void setStatusBarColor() {
+        //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
+        Window window = WeatherDetailActivity.this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(WeatherDetailActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
     }
 
 

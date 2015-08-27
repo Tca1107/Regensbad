@@ -2,6 +2,8 @@ package com.example.tom.regensbad.Activities;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.tom.regensbad.R;
@@ -26,8 +28,25 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        initializeUIElements();
         setUpMapIfNeeded();
+    }
+
+    private void initializeUIElements() {
+        setContentView(R.layout.activity_maps);
+        //From: http://stackoverflow.com/questions/3993924/get-android-api-level-of-phone-currently-running-my-application
+        if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
+            setStatusBarColor();
+        }
+    }
+
+    private void setStatusBarColor() {
+        //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
+        Window window = MapsActivity.this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(MapsActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
+
     }
 
     @Override

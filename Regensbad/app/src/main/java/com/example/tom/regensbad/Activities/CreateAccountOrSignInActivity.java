@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -70,6 +72,10 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
 
     /* Initializes the elements of the user interface. */
     private void initializeUIElements () {
+        //From: http://stackoverflow.com/questions/3993924/get-android-api-level-of-phone-currently-running-my-application
+        if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
+            setStatusBarColor();
+        }
         //appName = (TextView)findViewById(R.id.text_view_app_name_in_create_account_or_sign_in_activity);
         marginKeeperOne = findViewById(R.id.view_to_keep_margin_one);
         username = (EditText)findViewById(R.id.edit_text_username);
@@ -78,6 +84,15 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         forgotPassword = (TextView)findViewById(R.id.text_view_forgot_password);
         createNewAccount = (TextView)findViewById(R.id.text_view_create_an_account);
         submitNewAccount = (Button)findViewById(R.id.button_create_new_account);
+    }
+
+    private void setStatusBarColor() {
+        //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
+        Window window = CreateAccountOrSignInActivity.this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(CreateAccountOrSignInActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
+
     }
 
 

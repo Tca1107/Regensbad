@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -91,6 +93,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
 
     private void initializeUIElements() {
+        //From: http://stackoverflow.com/questions/3993924/get-android-api-level-of-phone-currently-running-my-application
+        if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
+            setStatusBarColor();
+        }
+
         degrees = (TextView)findViewById(R.id.text_view_weather_degrees);
         weatherDescription = (TextView)findViewById(R.id.text_view_weather_description);
         weatherIcon = (ImageView)findViewById(R.id.image_view_weather_icon);
@@ -98,6 +105,14 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         setFontOfAppName();
         buttonClosestLake = (Button)findViewById(R.id.button_closest_lake);
         buttonGoToList = (Button)findViewById(R.id.button_goToList);
+    }
+
+    private void setStatusBarColor() {
+        //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
+        Window window = HomeScreenActivity.this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(HomeScreenActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
     }
 
     private void setFontOfAppName() {

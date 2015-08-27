@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -87,10 +89,21 @@ public class ResetPasswordActivity extends ActionBarActivity {
 
     /* Initializes the user interface elements. */
     private void initializeUIElements () {
+        if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
+            setStatusBarColor();
+        }
         marginKeeper = findViewById(R.id.view_to_keep_margin);
         enterMailAddress = (TextView)findViewById(R.id.text_view_enter_mail_to_reset_password);
         mailAddress = (EditText)findViewById(R.id.edit_text_mail_address);
         resetButton = (Button)findViewById(R.id.button_reset_password);
+    }
+
+    private void setStatusBarColor() {
+        //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
+        Window window = ResetPasswordActivity.this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ResetPasswordActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
     }
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
