@@ -101,7 +101,7 @@ public class Database {
                 String openTime = cursor.getString(COLUMN_OPENTIME_INDEX);
                 String closeTime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                 String picPath = cursor.getString(COLUMN_PICPATH_INDEX);
-                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), Integer.parseInt(phoneNumber), URI.create(website), Double.parseDouble(openTime), Double.parseDouble(closeTime), picPath);
+                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, URI.create(website), Double.parseDouble(openTime), Double.parseDouble(closeTime), picPath);
                 return result;
             } else {
                 return null;
@@ -150,7 +150,7 @@ public class Database {
                     String opentime = cursor.getString(COLUMN_OPENTIME_INDEX);
                     String closetime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                     String picpath = cursor.getString(COLUMN_PICPATH_INDEX);
-                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), PhoneNumberUtils.formatNumber(phonenumber), URI.create(website), Double.parseDouble(opentime), Double.parseDouble(closetime), picpath));
+                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, URI.create(website), Double.parseDouble(opentime), Double.parseDouble(closetime), picpath));
 
                 } while (cursor.moveToNext());
             }

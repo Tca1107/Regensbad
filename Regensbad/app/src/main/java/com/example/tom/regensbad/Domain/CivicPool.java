@@ -12,13 +12,13 @@ public class CivicPool {
     private String type;
     private double lati;
     private double longi;
-    private Number phoneNumber;
+    private String phoneNumber;
     private URI website;
     private double openTime;
     private double closeTime;
     private String picPath;
 
-    public CivicPool (String name ,String type, double lati, double longi, Number phoneNumber, URI website, double openTime, double closeTime, String picPath){
+    public CivicPool (String name ,String type, double lati, double longi, String phoneNumber, URI website, double openTime, double closeTime, String picPath){
         this.name = name;
         this.type = type;
         this.lati = lati;
@@ -46,7 +46,7 @@ public class CivicPool {
         return longi;
     }
 
-    public Number getPhoneNumber(){
+    public String getPhoneNumber(){
         return phoneNumber;
     }
 
