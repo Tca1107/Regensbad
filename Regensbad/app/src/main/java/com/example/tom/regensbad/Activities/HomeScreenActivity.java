@@ -17,23 +17,38 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.tom.regensbad.Domain.Weather;
+import com.example.tom.regensbad.Persistence.WeatherDataProvider;
 import com.example.tom.regensbad.R;
 import com.parse.ParseUser;
 
 
-public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener{
+public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener, WeatherDataProvider.WeatherDataReceivedListener{
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
+    /* Constant of the type string defining the key for the intent extras. */
     private static final String KEY_FOR_INTENT_EXTRA = "query";
 
+    /* Constant of the type string defining the web resource from which the JSON array will be downloaded from.
+    * This is provided by the API of www.openweathermap.org . Here, one can get information on the current weather in Regensburg
+    * for free. */
+    private static final String WEB_ADDRESS_TO_RETRIEVE_WEATHER_DATA = "http://api.openweathermap.org/data/2.5/weather?q=Regensburg,germany&lang=de&units=metric";
+
+
+
+    private TextView degrees;
+    private TextView weatherDescription;
+    private ImageView weatherIcon;
     private TextView appName;
     private Button buttonClosestLake;
     private Button buttonGoToList;
+    private WeatherDataProvider weatherDataProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +56,15 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         setContentView(R.layout.activity_home_screen);
         initializeUIElements();
         initializeActionBar();
+        initializeDownLoadOfWeatherData();
         registerOnClickListeners();
-        //initializeSearchForCivicPools();
 
+    }
 
+    private void initializeDownLoadOfWeatherData() {
+        weatherDataProvider = new WeatherDataProvider();
+        weatherDataProvider.setOnWeatherDataReceivedListener(this);
+        weatherDataProvider.execute(WEB_ADDRESS_TO_RETRIEVE_WEATHER_DATA);
     }
 
     private void registerOnClickListeners() {
@@ -53,33 +73,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
 
-    /*
-    /* This method was written using the tutorial "Creating a Search Interface", which is available at
-     * http://developer.android.com/guide/topics/search/search-dialog.html .
-    private void initializeSearchForCivicPools() {
-        searchForCivicPools.setSubmitButtonEnabled(true);
-        searchForCivicPools.setIconifiedByDefault(true);
-        searchForCivicPools.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                changeToSearchCivicPoolsActivity(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-    }
-*/
-
-
-    private void changeToSearchCivicPoolsActivity(String query) {
-        Intent changeToSearchCivicPoolsActivity = new Intent(HomeScreenActivity.this, SearchCivicPoolsActivity.class);
-        changeToSearchCivicPoolsActivity.putExtra(KEY_FOR_INTENT_EXTRA, query);
-        startActivity(changeToSearchCivicPoolsActivity);
-    }
 
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
@@ -98,6 +91,9 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
 
     private void initializeUIElements() {
+        degrees = (TextView)findViewById(R.id.text_view_weather_degrees);
+        weatherDescription = (TextView)findViewById(R.id.text_view_weather_description);
+        weatherIcon = (ImageView)findViewById(R.id.image_view_weather_icon);
         appName = (TextView)findViewById(R.id.text_view_app_name);
         setFontOfAppName();
         buttonClosestLake = (Button)findViewById(R.id.button_closest_lake);
@@ -134,16 +130,33 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     /* http://developer.android.com/guide/topics/search/search-dialog.html .*/
     /* http://developer.android.com/guide/topics/ui/actionbar.html#ActionView */
     private void addTheSearchView(Menu menu) {
-        //SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = menu.findItem(R.id.action_button_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
         searchView.setSubmitButtonEnabled(true);
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                changeToSearchCivicPoolsActivity(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
-    /* http://developer.android.com/guide/topics/search/search-dialog.html .*/
+
+
+    private void changeToSearchCivicPoolsActivity(String query) {
+        Intent changeToSearchCivicPoolsActivity = new Intent(HomeScreenActivity.this, SearchCivicPoolsActivity.class);
+        changeToSearchCivicPoolsActivity.putExtra(KEY_FOR_INTENT_EXTRA, query);
+        startActivity(changeToSearchCivicPoolsActivity);
+    }
+
 
 
     @Override
@@ -157,6 +170,9 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         if (id == R.id.action_myAccount) {
             return true;
         }else if (id == R.id.action_logout){
+            // from https://parse.com/docs/android/guide#users
+            ParseUser.logOut();
+            finish();
             return true;
         }
 
@@ -165,6 +181,31 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        // buttons zu activities
+        switch(v.getId()) {
+            case R.id.button_closest_lake:
+                changeToClosestCivicPoolActivity();
+                break;
+            case R.id.button_goToList:
+                changeToAllCivicPoolsActivity();
+                break;
+        }
+    }
+
+    private void changeToAllCivicPoolsActivity() {
+        Intent changeToAllCivicPoolsActivity = new Intent (HomeScreenActivity.this, AllCivicPoolsActivity.class);
+        startActivity(changeToAllCivicPoolsActivity);
+    }
+
+    private void changeToClosestCivicPoolActivity() {
+        Intent changeToClosestCivicPoolActivity = new Intent (HomeScreenActivity.this, ClosestCivicPoolActivity.class);
+        startActivity(changeToClosestCivicPoolActivity);
+    }
+
+    @Override
+    public void onDataWeatherDataReceived(Weather weather) {
+        Log.d("Communication", "worked");
+        degrees.setText(weather.getDegrees() + "°C");
+        weatherDescription.setText(weather.getWeatherDescription());
+        // hier dann noch die Methode für die Icons!!
     }
 }
