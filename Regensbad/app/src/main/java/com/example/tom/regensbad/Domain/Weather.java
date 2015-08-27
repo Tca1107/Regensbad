@@ -23,7 +23,7 @@ public class Weather {
         return weatherDescription;
     }
 
-    public String weatherIcon () {
+    public String getweatherIcon () {
         return weatherIcon;
     }
 

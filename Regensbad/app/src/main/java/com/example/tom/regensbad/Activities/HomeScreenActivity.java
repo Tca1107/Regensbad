@@ -39,6 +39,17 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
     private static final String CELSIUS= "°C";
 
+    private static final int WEATHER_DIVISION_CONSTANT = 100;
+    private static final int WEATHER_ID_THUNDERSTORM = 2;
+    private static final int WEATHER_ID_LIGHT_RAIN = 3;
+    private static final int WEATHER_ID_A_LOT_OF_RAIN = 5;
+    private static final int WEATHER_ID_SNOW = 6;
+    private static final int WEATHER_ID_FOG = 7;
+    private static final int WEATHER_ID_SUNNY_AND_CLOUDY = 8;
+    private static final int WEATHER_EXTENDED_ID_SUNNY = 800;
+    private static final int WEATHER_EXTENDED_ID_SUNNY_WITH_VERY_FEW_CLOUDS = 801;
+
+
     /* Constant of the type string defining the web resource from which the JSON array will be downloaded from.
     * This is provided by the API of www.openweathermap.org . Here, one can get information on the current weather in Regensburg
     * for free. */
@@ -77,8 +88,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
 
-
-
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
     with Android", which is available at:
      http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
@@ -114,6 +123,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         Window window = HomeScreenActivity.this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // hier mit Samsung Galaxy S2 testen
         window.setStatusBarColor(HomeScreenActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
     }
 
@@ -224,8 +234,53 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         if (weather != null) {
             degrees.setText(weather.getDegrees() + CELSIUS);
             weatherDescription.setText(weather.getWeatherDescription());
+            assignWeatherIcon(weather.getweatherIcon());
+
             // hier dann noch die Methode für die Icons!!
         } else {
+
+        }
+    }
+
+
+    /* This method/algorithm was written using the tutorial being accessible at the following website:
+    * http://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587 .
+    * The API sends a three-digit value, the first digit of which decides whether it is sunny, cloudy, etc.
+    * Values between 200 and 299 represent thunderstorms, for instance (for more examples, look at the constants defined above).
+    * The following two digits define the weather in a more detailed manner. However, since in this application
+    * only a limited amount of weather icons is used and needed, only the first digit is of interest, which is why
+    * the weatherIconID is divided by 100. On the basis of the resulting one-digit value, a fitting icon is assigned to the
+    * user interface.
+    * However, there is also a value, namely 800, standing for a blue wky without any clouds, which needs to be checked explicitly.
+    * This is done at the very beginning of the method.*/
+    private void assignWeatherIcon(String weatherIconID) {
+        int weatherID = Integer.valueOf(weatherIconID);
+        int reducedweatherIconID = (weatherID / WEATHER_DIVISION_CONSTANT);
+        if (weatherID == WEATHER_EXTENDED_ID_SUNNY) {
+            weatherIcon.setImageResource(R.drawable.ic_weather_sun_no_clouds);
+        } else if (weatherID == WEATHER_EXTENDED_ID_SUNNY_WITH_VERY_FEW_CLOUDS){
+            weatherIcon.setImageResource(R.drawable.ic_weather_sunny_very_few_clouds);
+        }
+        else {
+            switch (reducedweatherIconID) {
+                case WEATHER_ID_THUNDERSTORM:
+                    weatherIcon.setImageResource(R.drawable.ic_weather_thunderstorm);
+                    break;
+                case WEATHER_ID_FOG:
+                    weatherIcon.setImageResource(R.drawable.ic_weather_many_clouds);
+                    break;
+                case WEATHER_ID_SNOW:
+                    weatherIcon.setImageResource(R.drawable.ic_weather_snow);
+                    break;
+                case WEATHER_ID_LIGHT_RAIN:
+                    weatherIcon.setImageResource(R.drawable.ic_weather_rain);
+                    break;
+                case WEATHER_ID_A_LOT_OF_RAIN:
+                    weatherIcon.setImageResource(R.drawable.ic_waether_a_lot_of_rain);
+                    break;
+                case WEATHER_ID_SUNNY_AND_CLOUDY:
+                    weatherIcon.setImageResource(R.drawable.ic_weather_sun_with_clouds);
+           }
 
         }
     }
