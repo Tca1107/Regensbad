@@ -108,9 +108,7 @@ public class CreateAccountActivity extends ActionBarActivity {
         String mailAddress = this.mailAddress.getText().toString();
         String username = this.username.getText().toString();
         String password = this.password.getText().toString();
-        if (mailAddress.length() == 0 || username.length() == 0 || password.length() == 0) {
-            showWhatIsMissing(mailAddress, username, password);
-        }
+        // hier noch toaten was genau fehlt, falls was leer is
         ParseUser user = new ParseUser();
         user.setEmail(mailAddress);
         user.setUsername(username);
@@ -142,14 +140,18 @@ public class CreateAccountActivity extends ActionBarActivity {
     /* This method as well the corresponding layout resource was written using Google Android's developer guide for
     * dialogs as a guideline (http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog).
     * It shows a dialog that lets the user know that his or her registration failed or succeeded.*/
-    private void showDialog(int layoutResource, int messageOnButton){
+    private void showDialog(final int layoutResource, int messageOnButton){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         dialogBuilder.setView(inflater.inflate(layoutResource, null));
         dialogBuilder.setPositiveButton(messageOnButton, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switchToHomeScreenActivityWithALoggedInUser();
+                if (layoutResource == R.layout.dialog_sign_in_succeeded) {
+                    switchToHomeScreenActivityWithALoggedInUser();
+                } else {
+                    // nothing, since the dialog only closes
+                }
             }
         });
         AlertDialog dialog = dialogBuilder.create();
