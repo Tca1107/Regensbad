@@ -1,21 +1,60 @@
 package com.example.tom.regensbad.Activities;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.example.tom.regensbad.R;
+
+import org.w3c.dom.Text;
 
 
 public class CivicPoolDetailActivity extends ActionBarActivity {
 
+    private String name;
+    private String type;
+    private double lati;
+    private double longi;
+    private String phoneNumber;
+    private String website;
+    private double openTime;
+    private double closeTime;
+    private String picPath;
+
+    TextView textName;
+    TextView textOpenTime;
+    TextView textPhoneNumber;
+    TextView textWebsite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getExtras();
         initializeUIElements();
+
+
+    }
+
+    private void getExtras() {
+        Intent i = getIntent();
+        Bundle extras = i.getExtras();
+        name = extras.getString("name");
+        type = extras.getString("type");
+        lati = extras.getDouble("lati");
+        longi = extras.getDouble("longi");
+        phoneNumber = extras.getString("number");
+        website = extras.getString("website");
+        openTime = extras.getDouble("openTime");
+        closeTime = extras.getDouble("closeTime");
+        picPath = extras.getString("imgPath");
+
     }
 
     private void initializeUIElements() {
@@ -23,10 +62,34 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
         if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
             setStatusBarColor();
         }
-        setContentView(R.layout.activity_civic_pool_detail);
+        setContentView(R.layout.activity_detail_view);
+
+        textName = (TextView) findViewById(R.id.textView_bathName);
+        textOpenTime = (TextView) findViewById(R.id.textview_openTime);
+        textPhoneNumber = (TextView) findViewById(R.id.text_phoneNumber);
+        textWebsite = (TextView) findViewById(R.id.text_website);
+
+        textName.setText(name);
+        System.out.println("" + name);
+        textPhoneNumber.setText(phoneNumber);
+        textWebsite.setText(website);
+
+        createTimeView();
 
     }
 
+    private void createTimeView() {
+        String openTimeString = String.valueOf(openTime);
+        String closedTimeString = String.valueOf(closeTime);
+
+        System.out.println(openTimeString+"");
+        System.out.println(closedTimeString+"");
+
+        String timeString = openTimeString.substring(0,2) + ":" + openTimeString.substring(2) + " - " + closedTimeString.substring(0,2) + ":" + closedTimeString.substring(2);
+        textOpenTime.setText(timeString);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {
         //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
         Window window = CivicPoolDetailActivity.this.getWindow();

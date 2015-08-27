@@ -1,6 +1,8 @@
 package com.example.tom.regensbad.Activities;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -77,6 +79,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity {
     private void initDB() {
         db = new Database(this);
         db.open();
+        db.saveCivicPoolsintoDB();
     }
 
     private void initializeUIElements() {
@@ -95,6 +98,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity {
     }
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {
         //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
         Window window = AllCivicPoolsActivity.this.getWindow();

@@ -1,8 +1,10 @@
 package com.example.tom.regensbad.Activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -79,7 +81,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             setStatusBarColor();
         }
 
-        appIcon = (ImageView)findViewById(R.id.image_view_app_icon);
+        appIcon = (ImageView)findViewById(R.id.ic_regensbad_logo);
         setIconOfImageView();
         appName = (TextView)findViewById(R.id.text_view_app_name);
         setFontOfAppName();
@@ -88,6 +90,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         skip = (Button)findViewById(R.id.button_skip);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {
         //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
         Window window = LoginActivity.this.getWindow();
@@ -110,7 +113,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     /* Provides the image view with the application's icon*/
     private void setIconOfImageView() {
-        //appIcon.setImageResource(R.drawable.placeholder_icon_for_login_activity);
+        appIcon.setImageResource(R.drawable.ic_regensbad_logo);
     }
 
 

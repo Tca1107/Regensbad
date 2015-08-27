@@ -48,8 +48,8 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
             poolName.setText(pool.getName());
             poolType.setText(pool.getType());
             //Rating über parse.com
-            distance.setText(getDistance());
-            openStatus.setText(getOpenStatus());
+            //distance.setText(getDistance());
+            //openStatus.setText(getOpenStatus());
         }
         return v;
     }
