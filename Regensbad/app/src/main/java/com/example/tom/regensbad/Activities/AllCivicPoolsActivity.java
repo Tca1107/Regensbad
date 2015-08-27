@@ -26,7 +26,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity {
 
     private ListView list;
     private ListAdapter adapter;
-    private ArrayList<CivicPool> pools = new ArrayList<>();
+    private ArrayList<CivicPool> pools = new ArrayList<CivicPool>();
 
     private Database db;
 

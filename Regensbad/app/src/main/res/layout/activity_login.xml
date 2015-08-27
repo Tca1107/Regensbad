@@ -9,7 +9,7 @@
     android:background="@drawable/background_for_activities">
     
     <ImageView
-        android:id="@+id/ic_regensbad_logo"
+        android:id="@+id/ic_regensbad_logo_login"
         android:layout_width="match_parent"
         android:layout_weight="1.4"
         android:layout_height="0dp"
