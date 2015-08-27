@@ -1,22 +1,82 @@
 package com.example.tom.regensbad.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import com.example.tom.regensbad.Adapters.ListAdapter;
+import com.example.tom.regensbad.Domain.CivicPool;
+import com.example.tom.regensbad.Persistence.Database;
 import com.example.tom.regensbad.R;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 public class AllCivicPoolsActivity extends ActionBarActivity {
 
+    private ListView list;
+    private ListAdapter adapter;
+    private ArrayList<CivicPool> pools = new ArrayList<>();
+
+    private Database db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initDB();
         initializeUIElements();
+        initPoolList();
+        handleClick();
+    }
 
+    private void handleClick() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                CivicPool pool = (CivicPool) adapterView.getItemAtPosition(i);
+
+                Intent showDetailView = new Intent(AllCivicPoolsActivity.this, CivicPoolDetailActivity.class);
+                showDetailView.putExtra("name", pool.getName());
+                showDetailView.putExtra("type", pool.getType());
+                showDetailView.putExtra("lati", pool.getLati());
+                showDetailView.putExtra("longi", pool.getLongi());
+                showDetailView.putExtra("number", pool.getPhoneNumber());
+                showDetailView.putExtra("website", pool.getWebsite());
+                showDetailView.putExtra("openTime", pool.getOpenTime());
+                showDetailView.putExtra("closeTime", pool.getCloseTime());
+                showDetailView.putExtra("imgPath", pool.getPicPath());
+
+                startActivity(showDetailView);
+            }
+        });
+    }
+
+    private void initPoolList() {
+        updateList();
+    }
+
+    private void updateList() {
+        pools.clear();
+        pools.addAll(db.getAllPoolItems());
+        adapter.notifyDataSetChanged();
+    }
+
+    protected void onDestroy(){
+        db.close();
+        super.onDestroy();
+    }
+
+    private void initDB() {
+        db = new Database(this);
+        db.open();
     }
 
     private void initializeUIElements() {
@@ -24,8 +84,16 @@ public class AllCivicPoolsActivity extends ActionBarActivity {
         if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
             setStatusBarColor();
         }
-        setContentView(R.layout.activity_all_civic_pools);
+        setContentView(R.layout.activity_list_view);
+        list = (ListView) findViewById(R.id.listview_lake_list);
+        initAdapter();
     }
+
+    private void initAdapter() {
+        adapter = new ListAdapter(this, pools);
+        list.setAdapter(adapter);
+    }
+
 
     private void setStatusBarColor() {
         //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android

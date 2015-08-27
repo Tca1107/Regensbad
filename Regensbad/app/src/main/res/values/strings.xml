@@ -61,7 +61,7 @@
 
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>
-    <string name="button_all_lakes">Alle Seen anzeigen</string>
+    <string name="button_all_lakes">Alle Badeorte anzeigen</string>
 
     <!--Single List Item-->
     <string name="string_km">km</string>
@@ -89,7 +89,7 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="title_activity_weather_detail">WeatherDetailActivity</string>
-    <string name="title_activity_all_civic_pools">AllCivicPoolsActivity</string>
+    <string name="title_activity_all_civic_pools">Alle Badeorte</string>
     <string name="title_activity_closest_civic_pool">ClosestCivicPoolActivity</string>
     <string name="title_activity_all_civic_pools_on_map">AllCivicPoolsOnMapActivity</string>
     <string name="title_activity_civic_pool_detail">CivicPoolDetailActivity</string>
