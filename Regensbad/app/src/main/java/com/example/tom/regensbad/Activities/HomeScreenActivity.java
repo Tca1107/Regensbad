@@ -224,7 +224,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
     private void changeToClosestCivicPoolActivity() {
-        Intent changeToClosestCivicPoolActivity = new Intent (HomeScreenActivity.this, ClosestCivicPoolActivity.class);
+        Intent changeToClosestCivicPoolActivity = new Intent (HomeScreenActivity.this, MapsActivity.class);
         startActivity(changeToClosestCivicPoolActivity);
     }
 
