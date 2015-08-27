@@ -37,6 +37,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     /* Constant of the type string defining the key for the intent extras. */
     private static final String KEY_FOR_INTENT_EXTRA = "query";
 
+    private static final String CELSIUS= "°C";
+
     /* Constant of the type string defining the web resource from which the JSON array will be downloaded from.
     * This is provided by the API of www.openweathermap.org . Here, one can get information on the current weather in Regensburg
     * for free. */
@@ -220,11 +222,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     public void onDataWeatherDataReceived(Weather weather) {
         Log.d("Communication", "worked");
         if (weather != null) {
-            degrees.setText(weather.getDegrees() + "°C");
+            degrees.setText(weather.getDegrees() + CELSIUS);
             weatherDescription.setText(weather.getWeatherDescription());
             // hier dann noch die Methode für die Icons!!
         } else {
-            
+
         }
     }
 }
