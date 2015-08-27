@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="Encoding">
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
+=======
+<<<<<<< Updated upstream
+  <component name="Encoding">
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
+=======
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+</project>
+
+>>>>>>> Stashed changes
+>>>>>>> 879d1e28d2d8a7cdd6cd86af52905a52df64e6f6

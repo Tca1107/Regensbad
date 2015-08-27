@@ -3,10 +3,17 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+<<<<<<< HEAD
         <option name="gradleHome" value="C:\Program Files\Android\Android Studio\gradle\gradle-2.4" />
+=======
+<<<<<<< Updated upstream
+        <option name="gradleHome" value="K:\Program Files\Android\Android Studio\gradle\gradle-2.2.1" />
+>>>>>>> 879d1e28d2d8a7cdd6cd86af52905a52df64e6f6
         <option name="gradleJvm" value="1.7" />
+=======
+>>>>>>> Stashed changes
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -17,3 +24,4 @@
     </option>
   </component>
 </project>
+
