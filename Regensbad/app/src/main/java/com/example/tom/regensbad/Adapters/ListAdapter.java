@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.tom.regensbad.Activities.AllCivicPoolsActivity;
 import com.example.tom.regensbad.Domain.CivicPool;
+import com.example.tom.regensbad.LocationService.DistanceCalculator;
 import com.example.tom.regensbad.R;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
     private Context context;
     private CivicPool pool;
 
+    private TextView distance;
     private TextView openStatus;
 
     private String green = "#4CAF50";
@@ -51,13 +54,13 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
             TextView poolName = (TextView) v.findViewById(R.id.textview_lakeName);
             TextView poolType = (TextView) v.findViewById(R.id.textview_bathType);
             RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingbar_averageRatingPreview);
-            TextView distance = (TextView) v.findViewById(R.id.textview_distance);
+            distance = (TextView) v.findViewById(R.id.textview_distance);
             openStatus = (TextView) v.findViewById(R.id.textview_openStatus);
 
             poolName.setText(pool.getName());
             poolType.setText(pool.getType());
             //Rating über parse.com
-            //distance.setText(getDistance());
+            getDistance();
             getOpenStatus();
         }
         return v;
@@ -86,8 +89,10 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
 
     }
 
-    private int getDistance() {
-        return 0;
+    private void getDistance() {
+        DistanceCalculator calculator = new DistanceCalculator(context);
+        System.out.println("Adapter: "+pool.getID());
+        distance.setText(String.valueOf(calculator.calculateDistanceToPool(pool.getID())));
     }
 
 }

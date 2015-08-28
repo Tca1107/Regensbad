@@ -82,13 +82,6 @@ import android.util.Log;
             return latLongString;
         }
 
-        public double getUserLatitude(){
-            return location.getLatitude();
-        }
-
-        public double getUserLongitude(){
-            return location.getLongitude();
-        }
 
         @Override
         public void onLocationChanged(Location location) {

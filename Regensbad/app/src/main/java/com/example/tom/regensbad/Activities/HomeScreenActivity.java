@@ -29,7 +29,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.Weather;
-import com.example.tom.regensbad.LocationService.LocationManager;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.WeatherDataProvider;
 import com.example.tom.regensbad.Persistence.WeatherLastUpdateDataProvider;
@@ -96,11 +95,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
     }
 
-    private void initializeLocationService() {
-        LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
-        locationUpdater.setLocationUpdateListener(this);
-        locationUpdater.requestLocationUpdates();
-    }
 
     private void initializeWeatherLastUpdateDataProvider() {
         weatherLastUpdateDataProvider = new WeatherLastUpdateDataProvider(this);
@@ -276,7 +270,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button_closest_lake:
-                initializeLocationService();
                 //changeToClosestCivicPoolActivity();
                 break;
             case R.id.button_goToList:
