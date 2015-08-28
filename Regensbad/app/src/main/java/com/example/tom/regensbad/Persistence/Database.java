@@ -183,7 +183,7 @@ public class Database {
         }
 
     private void setUpPools() {
-        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "0941 111111", "www.regensburg.de", "0800", "1900", "path", 11);
+        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "09414009615", "http://www.landkreis-regensburg.de/Freizeit-Tourismus/Freizeitangebote/Baden/GuggenbergerSee(EU).aspx", "0800", "1900", "path", 11);
 
         addCivicPoolItem(test);
     }

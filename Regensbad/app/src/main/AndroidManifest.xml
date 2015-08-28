@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="ANDROID.PERMISSION.INTERNET"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <!--From: http://stackoverflow.com/questions/17667935/failed-to-load-map-error-contacting-google-servers-this-is-probably-an-authent-->
     <uses-feature

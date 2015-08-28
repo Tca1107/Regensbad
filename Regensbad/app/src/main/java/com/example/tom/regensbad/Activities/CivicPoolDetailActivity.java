@@ -2,6 +2,7 @@ package com.example.tom.regensbad.Activities;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -65,6 +66,24 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
                 startActivity(goToMap);
             }
         });
+
+        textWebsite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
+                Intent startBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(pool.getWebsite()));
+                startActivity(startBrowser);
+            }
+        });
+
+        textPhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent makeCall = new Intent(Intent.ACTION_CALL);
+                makeCall.setData(Uri.parse("tel:"+pool.getPhoneNumber()));
+                startActivity(makeCall);
+            }
+        });
     }
 
     private void getExtras() {
@@ -89,7 +108,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
 
         textName.setText(pool.getName());
         textPhoneNumber.setText(pool.getPhoneNumber());
-        textWebsite.setText(pool.getWebsite());
 
         createTimeView();
 
