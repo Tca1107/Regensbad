@@ -68,8 +68,6 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
         Calendar c = Calendar.getInstance();
         int hours = c.get(Calendar.HOUR_OF_DAY);
 
-        System.out.println("Vergangene Stunden: "+hours);
-
         int openHours;
         if(pool.getOpenTime().substring(0).equals("0")){
             openHours = Integer.parseInt(pool.getOpenTime().substring(1, 2));
@@ -78,8 +76,6 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
 
         }
 
-        System.out.println("openHours: "+openHours);
-
         if(openHours <= hours && Integer.parseInt(pool.getCloseTime().substring(0, 2)) >= hours){
             openStatus.setText(R.string.string_open);
             openStatus.setTextColor(Color.parseColor(green)); //Found no other solution, getResourses doesn´t work in adapter classes
@@ -87,8 +83,6 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
             openStatus.setText(R.string.string_closed);
             openStatus.setTextColor(Color.parseColor(red));
         }
-
-        System.out.println("OpenStatus: "+openStatus.getText().toString());
 
     }
 

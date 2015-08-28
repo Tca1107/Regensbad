@@ -1,12 +1,15 @@
 package com.example.tom.regensbad.Activities;
 
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -26,6 +29,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.Weather;
+import com.example.tom.regensbad.LocationService.LocationManager;
+import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.WeatherDataProvider;
 import com.example.tom.regensbad.Persistence.WeatherLastUpdateDataProvider;
 import com.example.tom.regensbad.R;
@@ -34,7 +39,7 @@ import com.parse.ParseUser;
 import org.w3c.dom.Text;
 
 
-public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener, WeatherDataProvider.WeatherDataReceivedListener{
+public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener, WeatherDataProvider.WeatherDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener {
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
@@ -53,6 +58,10 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private static final int WEATHER_ID_SUNNY_AND_CLOUDY = 8;
     private static final int WEATHER_EXTENDED_ID_SUNNY = 800;
     private static final int WEATHER_EXTENDED_ID_SUNNY_WITH_VERY_FEW_CLOUDS = 801;
+
+    // Properties for location updates
+    private static final int FIX_UPDATE_TIME = 500; // milliseconds
+    private static final int FIX_UPDATE_DISTANCE = 5; // meters
 
 
     /* Constant of the type string defining the web resource from which the JSON array will be downloaded from.
@@ -74,6 +83,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private WeatherDataProvider weatherDataProvider;
     private WeatherLastUpdateDataProvider weatherLastUpdateDataProvider;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +94,12 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         initializeDownLoadOfWeatherData();
         registerOnClickListeners();
 
+    }
+
+    private void initializeLocationService() {
+        LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
+        locationUpdater.setLocationUpdateListener(this);
+        locationUpdater.requestLocationUpdates();
     }
 
     private void initializeWeatherLastUpdateDataProvider() {
@@ -167,6 +183,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         buttonGoToList = (Button)findViewById(R.id.button_goToList);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {
         //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
         Window window = HomeScreenActivity.this.getWindow();
@@ -259,12 +276,20 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button_closest_lake:
-                changeToClosestCivicPoolActivity();
+                initializeLocationService();
+                //changeToClosestCivicPoolActivity();
                 break;
             case R.id.button_goToList:
                 changeToAllCivicPoolsActivity();
                 break;
         }
+    }
+
+    private void calculateDistances() {
+      //  double userLatitude = location.getLatitude();
+        //double userLongitude = location.getLongitude();
+       // System.out.println("Lati: "+userLatitude);
+        //System.out.println("Longi: "+userLongitude);
     }
 
     private void changeToAllCivicPoolsActivity() {
@@ -355,5 +380,10 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     protected void onDestroy () {
         super.onDestroy();
         weatherLastUpdateDataProvider.close();
+    }
+
+    @Override
+    public void onFormattedLocationReceived(String formattedLocation) {
+        System.out.println(formattedLocation);
     }
 }

@@ -26,6 +26,8 @@ import android.util.Log;
         private static final String NO_LOCATION_FOUND = "No location found...";
         private static final String NEW_LINE_CHAR = "\n";
 
+        private Location location;
+
         private OnLocationUpdateReceivedListener onLocationUpdateReceivedListener;
 
         public LocationUpdater(String locService, int time, int distance, Context context) {
@@ -44,7 +46,7 @@ import android.util.Log;
 
             android.location.LocationManager locationManager = (android.location.LocationManager)context.getSystemService(locService);
 
-            Location location = locationManager.getLastKnownLocation(provider);
+            location = locationManager.getLastKnownLocation(provider);
             // update location now with last known position from GPS provider
             String formattedLocation = createFormattedLocation(location);
             publishLocationUpdate(formattedLocation);
@@ -72,15 +74,20 @@ import android.util.Log;
             if (location != null) {
                 double lat = location.getLatitude();
                 double lng = location.getLongitude();
-                double alt = location.getAltitude();
-                double speed = location.getSpeed() * 3.6;
 
-                latLongString = LONGITUDE + ": " + lat + NEW_LINE_CHAR + LATITUDE + lng + NEW_LINE_CHAR
-                        + ALTITUDE + alt + "m" + NEW_LINE_CHAR + GROUND_SPEED + ": " + speed + "km/h";
+                latLongString = lat + "," + lng;
             } else {
                 latLongString = NO_LOCATION_FOUND;
             }
             return latLongString;
+        }
+
+        public double getUserLatitude(){
+            return location.getLatitude();
+        }
+
+        public double getUserLongitude(){
+            return location.getLongitude();
         }
 
         @Override
