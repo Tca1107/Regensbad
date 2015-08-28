@@ -1,6 +1,8 @@
 package com.example.tom.regensbad.Adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,9 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
     private CivicPool pool;
 
     private TextView openStatus;
+
+    private String green = "#4CAF50";
+    private String red = "#F44336";
 
     public ListAdapter (Context context, ArrayList<CivicPool> listItems){
         super(context, R.layout.single_lake_list_item, listItems);
@@ -63,6 +68,8 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
         Calendar c = Calendar.getInstance();
         int hours = c.get(Calendar.HOUR_OF_DAY);
 
+        System.out.println("Vergangene Stunden: "+hours);
+
         int openHours;
         if(pool.getOpenTime().substring(0).equals("0")){
             openHours = Integer.parseInt(pool.getOpenTime().substring(1, 2));
@@ -70,10 +77,18 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
             openHours = Integer.parseInt(pool.getOpenTime().substring(0, 2));
 
         }
+
+        System.out.println("openHours: "+openHours);
+
         if(openHours <= hours && Integer.parseInt(pool.getCloseTime().substring(0, 2)) >= hours){
             openStatus.setText(R.string.string_open);
-            //openStatus.setTextColor(R.color.green);
+            openStatus.setTextColor(Color.parseColor(green)); //Found no other solution, getResourses doesn´t work in adapter classes
+        }else{
+            openStatus.setText(R.string.string_closed);
+            openStatus.setTextColor(Color.parseColor(red));
         }
+
+        System.out.println("OpenStatus: "+openStatus.getText().toString());
 
     }
 
