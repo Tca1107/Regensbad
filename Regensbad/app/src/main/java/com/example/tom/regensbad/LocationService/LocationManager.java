@@ -1,11 +1,11 @@
-package com.example.tom.regensbad.Activities;
+package com.example.tom.regensbad.LocationService;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.tom.regensbad.R;
+import com.example.tom.regensbad.LocationService.LocationUpdater;
 
 /**
  * Created by Tobi on 28.08.15.

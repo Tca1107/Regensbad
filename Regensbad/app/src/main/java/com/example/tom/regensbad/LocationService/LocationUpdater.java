@@ -1,4 +1,4 @@
-package com.example.tom.regensbad.Activities;
+package com.example.tom.regensbad.LocationService;
 
 import android.content.Context;
 import android.location.*;
