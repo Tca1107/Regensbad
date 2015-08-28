@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.example.tom.regensbad.R;
 
-import org.w3c.dom.Text;
-
 
 public class CivicPoolDetailActivity extends ActionBarActivity {
 
@@ -26,8 +24,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
     private double longi;
     private String phoneNumber;
     private String website;
-    private int openTime;
-    private int closeTime;
+    private String openTime;
+    private String closeTime;
     private String picPath;
 
     TextView textName;
@@ -35,7 +33,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
     TextView textPhoneNumber;
     TextView textWebsite;
 
-    Button showMapbutton;
+    Button showMapButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +45,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
     }
 
     private void handleInput() {
-        showMapbutton.setOnClickListener(new View.OnClickListener() {
+        showMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent goToMap = new Intent(CivicPoolDetailActivity.this, MapsActivity.class);
@@ -69,8 +67,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
         longi = extras.getDouble("longi");
         phoneNumber = extras.getString("number");
         website = extras.getString("website");
-        openTime = extras.getInt("openTime");
-        closeTime = extras.getInt("closeTime");
+        openTime = extras.getString("openTime");
+        closeTime = extras.getString("closeTime");
         picPath = extras.getString("imgPath");
 
     }
@@ -94,17 +92,11 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
 
         createTimeView();
 
-        showMapbutton = (Button) findViewById(R.id.button_showOnMap);
+        showMapButton = (Button) findViewById(R.id.button_showOnMap);
     }
 
     private void createTimeView() {
-        String openTimeString = String.valueOf(openTime);
-        String closedTimeString = String.valueOf(closeTime);
-
-        System.out.println(openTimeString+"");
-        System.out.println(closedTimeString+"");
-
-        String timeString = " " + openTimeString.substring(0,2) + ":" + openTimeString.substring(2) + " - " + closedTimeString.substring(0,2) + ":" + closedTimeString.substring(2);
+        String timeString = " " + openTime.substring(0,2) + ":" + openTime.substring(2) + " - " + closeTime.substring(0,2) + ":" + closeTime.substring(2);
         textOpenTime.setText(timeString);
     }
 

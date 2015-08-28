@@ -101,7 +101,7 @@ public class Database {
                 String openTime = cursor.getString(COLUMN_OPENTIME_INDEX);
                 String closeTime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                 String picPath = cursor.getString(COLUMN_PICPATH_INDEX);
-                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, Integer.parseInt(openTime), Integer.parseInt(closeTime), picPath);
+                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, openTime, closeTime, picPath);
                 return result;
             } else {
                 return null;
@@ -150,7 +150,7 @@ public class Database {
                     String opentime = cursor.getString(COLUMN_OPENTIME_INDEX);
                     String closetime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                     String picpath = cursor.getString(COLUMN_PICPATH_INDEX);
-                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, Integer.parseInt(opentime), Integer.parseInt(closetime), picpath));
+                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, opentime, closetime, picpath));
 
                 } while (cursor.moveToNext());
             }
@@ -179,7 +179,7 @@ public class Database {
         }
 
     private void setUpPools() {
-        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "0941 111111", "www.regensburg.de", 1000, 1900, "path");
+        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "0941 111111", "www.regensburg.de", "0800", "1900", "path");
 
         addCivicPoolItem(test);
     }

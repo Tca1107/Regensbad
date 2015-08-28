@@ -14,11 +14,11 @@ public class CivicPool {
     private double longi;
     private String phoneNumber;
     private String website;
-    private int openTime;
-    private int closeTime;
+    private String openTime;
+    private String closeTime;
     private String picPath;
 
-    public CivicPool (String name ,String type, double lati, double longi, String phoneNumber, String website, int openTime, int closeTime, String picPath){
+    public CivicPool (String name ,String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime, String picPath){
         this.name = name;
         this.type = type;
         this.lati = lati;
@@ -64,11 +64,11 @@ public class CivicPool {
         return webstieString;
     }
 
-    public int getOpenTime(){
+    public String getOpenTime(){
         return openTime;
     }
 
-    public int getCloseTime(){
+    public String getCloseTime(){
         return closeTime;
     }
 
