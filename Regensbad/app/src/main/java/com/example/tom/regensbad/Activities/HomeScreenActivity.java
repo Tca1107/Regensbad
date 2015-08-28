@@ -327,8 +327,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         maxDegrees.setText(weatherMaxDegreesInt + CELSIUS);
         minDegrees.setText(weatherMinDegreesInt + CELSIUS);
         weatherDescription.setText(weather.getWeatherDescription());
-        String latestTime = weatherLastUpdateDataProvider.getLatestUpdateTime();
-        lastUpdated.setText(getResources().getString(R.string.last_updated) + " " + latestTime);
+//        String latestTime = weatherLastUpdateDataProvider.getLatestUpdateTime();
+  //      lastUpdated.setText(getResources().getString(R.string.last_updated) + " " + latestTime);
         assignWeatherIcon(weather.getweatherIcon(), weather.getSunrise(), weather.getSunset());
     }
 

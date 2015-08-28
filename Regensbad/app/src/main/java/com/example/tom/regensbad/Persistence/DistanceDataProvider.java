@@ -3,6 +3,10 @@ package com.example.tom.regensbad.Persistence;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,6 +64,20 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
 
     private void getDistanceInfo(String result) {
         Log.d("langes JSON", result);
+        try{
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray routes = jsonObject.getJSONArray("routes");
+            JSONObject routesTwo = routes.getJSONObject(0);
+            JSONArray legs = routesTwo.getJSONArray("legs");
+            JSONObject steps = legs.getJSONObject(0);
+            JSONObject distance = steps.getJSONObject("distance");
+            Log.d("Distance", String.valueOf(distance));
+            double dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]",""));
+            Log.d("DistanceZahl", String.valueOf(dist));
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
     }
 
 
