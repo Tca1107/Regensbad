@@ -17,8 +17,9 @@ public class CivicPool {
     private String openTime;
     private String closeTime;
     private String picPath;
+    private int civicID;
 
-    public CivicPool (String name ,String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime, String picPath){
+    public CivicPool (String name ,String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime, String picPath, int civicID){
         this.name = name;
         this.type = type;
         this.lati = lati;
@@ -28,6 +29,7 @@ public class CivicPool {
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.picPath = picPath;
+        this.civicID = civicID;
     }
 
     public String getName(){
@@ -76,5 +78,7 @@ public class CivicPool {
         return picPath;
     }
 
-
+    public int getID(){
+        return civicID;
+    }
 }

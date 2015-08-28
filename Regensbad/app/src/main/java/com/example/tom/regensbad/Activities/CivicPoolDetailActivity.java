@@ -13,35 +13,46 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.tom.regensbad.Domain.CivicPool;
+import com.example.tom.regensbad.Persistence.Database;
 import com.example.tom.regensbad.R;
 
 
 public class CivicPoolDetailActivity extends ActionBarActivity {
 
-    private String name;
-    private String type;
-    private double lati;
-    private double longi;
-    private String phoneNumber;
-    private String website;
-    private String openTime;
-    private String closeTime;
-    private String picPath;
+    private int ID;
 
-    TextView textName;
-    TextView textOpenTime;
-    TextView textPhoneNumber;
-    TextView textWebsite;
+    private TextView textName;
+    private TextView textOpenTime;
+    private TextView textPhoneNumber;
+    private TextView textWebsite;
 
-    Button showMapButton;
+    private Button showMapButton;
+
+    private Database db;
+
+    private CivicPool pool;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initDatabase();
         getExtras();
         initializeUIElements();
         handleInput();
 
+    }
+
+    protected void onDestroy(){
+        db.close();
+        super.onDestroy();
+    }
+
+    private void initDatabase() {
+        db = new Database(this);
+        db.open();
     }
 
     private void handleInput() {
@@ -49,9 +60,9 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Intent goToMap = new Intent(CivicPoolDetailActivity.this, MapsActivity.class);
-                goToMap.putExtra("name", name);
-                goToMap.putExtra("lati", lati);
-                goToMap.putExtra("longi", longi);
+                goToMap.putExtra("name", pool.getName());
+                goToMap.putExtra("lati", pool.getLati());
+                goToMap.putExtra("longi", pool.getLongi());
                 goToMap.putExtra("origin", "detail");
                 startActivity(goToMap);
             }
@@ -61,15 +72,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
     private void getExtras() {
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        name = extras.getString("name");
-        type = extras.getString("type");
-        lati = extras.getDouble("lati");
-        longi = extras.getDouble("longi");
-        phoneNumber = extras.getString("number");
-        website = extras.getString("website");
-        openTime = extras.getString("openTime");
-        closeTime = extras.getString("closeTime");
-        picPath = extras.getString("imgPath");
+        ID = extras.getInt("ID");
+        pool = db.getPoolItem(ID);
 
     }
 
@@ -85,10 +89,9 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
         textPhoneNumber = (TextView) findViewById(R.id.text_phoneNumber);
         textWebsite = (TextView) findViewById(R.id.text_website);
 
-        textName.setText(name);
-        System.out.println("" + name);
-        textPhoneNumber.setText(phoneNumber);
-        textWebsite.setText(website);
+        textName.setText(pool.getName());
+        textPhoneNumber.setText(pool.getPhoneNumber());
+        textWebsite.setText(pool.getWebsite());
 
         createTimeView();
 
@@ -96,7 +99,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
     }
 
     private void createTimeView() {
-        String timeString = " " + openTime.substring(0,2) + ":" + openTime.substring(2) + " - " + closeTime.substring(0,2) + ":" + closeTime.substring(2);
+        String timeString = " " + pool.getOpenTime().substring(0,2) + ":" + pool.getOpenTime().substring(2) + " - " + pool.getCloseTime().substring(0, 2) + ":" + pool.getCloseTime().substring(2);
         textOpenTime.setText(timeString);
     }
 
