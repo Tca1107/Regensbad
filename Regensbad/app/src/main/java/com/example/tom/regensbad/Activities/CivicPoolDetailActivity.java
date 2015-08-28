@@ -60,6 +60,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Intent goToMap = new Intent(CivicPoolDetailActivity.this, MapsActivity.class);
+                goToMap.putExtra("ID", pool.getID());
                 goToMap.putExtra("name", pool.getName());
                 goToMap.putExtra("lati", pool.getLati());
                 goToMap.putExtra("longi", pool.getLongi());
