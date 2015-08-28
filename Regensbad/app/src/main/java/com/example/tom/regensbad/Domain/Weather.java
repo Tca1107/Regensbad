@@ -17,6 +17,7 @@ public class Weather {
 
 
 
+
     public Weather (String degrees, String maxDegrees, String minDegrees, String humidity, long sunrise, long sunset,
                     String windSpeed, String weatherDescription, String weatherIcon) {
         this.degrees = degrees;

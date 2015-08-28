@@ -37,6 +37,10 @@ import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 
 public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener, WeatherDataProvider.WeatherDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener {
 
@@ -57,6 +61,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private static final int WEATHER_ID_SUNNY_AND_CLOUDY = 8;
     private static final int WEATHER_EXTENDED_ID_SUNNY = 800;
     private static final int WEATHER_EXTENDED_ID_SUNNY_WITH_VERY_FEW_CLOUDS = 801;
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
+    private static final String TIME_ZONE = "CET"; // Central European Time
 
     // Properties for location updates
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
@@ -67,6 +73,13 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     * This is provided by the API of www.openweathermap.org . Here, one can get information on the current weather in Regensburg
     * for free. */
     private static final String WEB_ADDRESS_TO_RETRIEVE_WEATHER_DATA = "http://api.openweathermap.org/data/2.5/weather?q=Regensburg,germany&lang=de&units=metric";
+
+
+    private static final int SUBSTRING_START_HOURS = 11;
+    private static final int SUBSTRING_END_HOURS = 13;
+    private static final int SUBSTRING_START_MINUTES = 14;
+    private static final int SUBSTRING_END_MINUTES = 16;
+    private static final int TIME_FACTOR = 1000;
 
 
     private TextView cityName;
@@ -314,7 +327,9 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         maxDegrees.setText(weatherMaxDegreesInt + CELSIUS);
         minDegrees.setText(weatherMinDegreesInt + CELSIUS);
         weatherDescription.setText(weather.getWeatherDescription());
-        assignWeatherIcon(weather.getweatherIcon());
+        String latestTime = weatherLastUpdateDataProvider.getLatestUpdateTime();
+        lastUpdated.setText(getResources().getString(R.string.last_updated) + " " + latestTime);
+        assignWeatherIcon(weather.getweatherIcon(), weather.getSunrise(), weather.getSunset());
     }
 
     private void insertWeatherDataInLastUpdateProvider(Weather weather) {
@@ -337,7 +352,56 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     * user interface.
     * However, there is also a value, namely 800, standing for a blue wky without any clouds, which needs to be checked explicitly.
     * This is done at the very beginning of the method.*/
-    private void assignWeatherIcon(String weatherIconID) {
+    private void assignWeatherIcon(String weatherIconID, long sunrise, long sunset) {
+        boolean itIsDay = checkIfItIsDayOrNight(sunrise, sunset);
+        if (itIsDay == true) {
+            assignDayLightWeatherIcons(weatherIconID);
+        } else {
+            assignNightWeatherIcons(weatherIconID);
+        }
+
+    }
+
+
+    /* This method/algorithm was written using the tutorial being accessible at the following website:
+    * http://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587 .*/
+    private void assignNightWeatherIcons(String weatherIconID) {
+        int weatherID = Integer.valueOf(weatherIconID);
+        int reducedWeatherIconID = (weatherID / WEATHER_DIVISION_CONSTANT);
+        if (weatherID == WEATHER_EXTENDED_ID_SUNNY) {
+            weatherIcon.setImageResource(R.drawable.ic_weather_night_clear_night);
+        } else if (weatherID == WEATHER_EXTENDED_ID_SUNNY_WITH_VERY_FEW_CLOUDS){
+            weatherIcon.setImageResource(R.drawable.ic_weather_night_very_few_clouds);
+        }
+            else {
+                switch (reducedWeatherIconID) {
+                    case WEATHER_ID_THUNDERSTORM:
+                        weatherIcon.setImageResource(R.drawable.ic_weather_night_storm);
+                        break;
+                    case WEATHER_ID_FOG:
+                        weatherIcon.setImageResource(R.drawable.ic_weather_night_many_clouds);
+                        break;
+                    case WEATHER_ID_SNOW:
+                        weatherIcon.setImageResource(R.drawable.ic_weather_night_snow);
+                        break;
+                    case WEATHER_ID_LIGHT_RAIN:
+                        weatherIcon.setImageResource(R.drawable.ic_weather_night_a_little_rain);
+                        break;
+                    case WEATHER_ID_A_LOT_OF_RAIN:
+                        weatherIcon.setImageResource(R.drawable.ic_weather_night_a_lot_of_rain);
+                        break;
+                    case WEATHER_ID_SUNNY_AND_CLOUDY:
+                        weatherIcon.setImageResource(R.drawable.ic_weather_night_many_clouds);
+                }
+
+            }
+    }
+
+
+
+    /* This method/algorithm was written using the tutorial being accessible at the following website:
+    * http://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587 .*/
+    private void assignDayLightWeatherIcons(String weatherIconID) {
         int weatherID = Integer.valueOf(weatherIconID);
         int reducedWeatherIconID = (weatherID / WEATHER_DIVISION_CONSTANT);
         if (weatherID == WEATHER_EXTENDED_ID_SUNNY) {
@@ -364,9 +428,42 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
                     break;
                 case WEATHER_ID_SUNNY_AND_CLOUDY:
                     weatherIcon.setImageResource(R.drawable.ic_weather_sun_with_clouds);
-           }
+            }
 
         }
+    }
+
+    /* The idea to multiply sunrise and sunset with TIME_FACTOR = 1000 was taken from
+    http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .*/
+    private boolean checkIfItIsDayOrNight(long sunrise, long sunset) {
+        String sunriseString = formatTimeString(sunrise * TIME_FACTOR);
+        String sunsetString = formatTimeString(sunset * TIME_FACTOR);
+        long currentTime = System.currentTimeMillis();
+        String currentTimeString = formatTimeString(currentTime);
+        int sunriseInNumbers = convertToNumbersOnly(sunriseString);
+        int sunsetInNumbers = convertToNumbersOnly(sunsetString);
+        int currentTimeInNumbers = convertToNumbersOnly(currentTimeString);
+        if (sunriseInNumbers <= currentTimeInNumbers && currentTimeInNumbers <= sunsetInNumbers) {
+            return true;
+        }
+            else {
+            return false;
+        }
+    }
+
+    private int convertToNumbersOnly(String timeString) {
+        return Integer.valueOf(timeString.substring(SUBSTRING_START_HOURS,SUBSTRING_END_HOURS)
+                + timeString.substring(SUBSTRING_START_MINUTES, SUBSTRING_END_MINUTES));
+    }
+
+    /* This method was written using the resource http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
+    * as a guideline. It formats the unix time string into a human-readable format. */
+    private String formatTimeString(long time) {
+        Date todayDate = new Date (time);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+        String dateInFormat = simpleDateFormat.format(todayDate);
+        return dateInFormat;
     }
 
     @Override
