@@ -36,7 +36,7 @@ public class Database {
         public static final String KEY_OPENTIME = "openTime";
         public static final String KEY_CLOSETIME = "closeTime";
         public static final String KEY_PICPATH = "picPath";
-
+        public static final String KEY_CIVICID = "civicID";
 
         //public static final int COLUMN_ID_INDEX = 0;
         public static final int COLUMN_NAME_INDEX = 1;
@@ -48,6 +48,7 @@ public class Database {
         public static final int COLUMN_OPENTIME_INDEX = 7;
         public static final int COLUMN_CLOSETIME_INDEX = 8;
         public static final int COLUMN_PICPATH_INDEX = 9;
+        public static final int COLUMN_CIVICID_INDEX = 10;
 
 
         private PoolDBOpenHelper dbHelper;
@@ -82,13 +83,14 @@ public class Database {
             newPoolValues.put(KEY_OPENTIME, civicPool.getOpenTime());
             newPoolValues.put(KEY_CLOSETIME, civicPool.getCloseTime());
             newPoolValues.put(KEY_PICPATH, civicPool.getPicPath());
+            newPoolValues.put(KEY_CIVICID, civicPool.getID());
 
 
             return db.insert(DATABASE_TABLE, null, newPoolValues);
         }
 
-        public CivicPool getPoolItem(String poolItemID) {
-            Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH}, KEY_NAME + "=" + poolItemID, null, null, null, null, null);
+        public CivicPool getPoolItem(int poolItemID) {
+            Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH, KEY_CIVICID}, KEY_CIVICID + "=" + poolItemID, null, null, null, null, null);
 
             CivicPool result;
             if (cursor.moveToFirst()) {
@@ -101,7 +103,8 @@ public class Database {
                 String openTime = cursor.getString(COLUMN_OPENTIME_INDEX);
                 String closeTime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                 String picPath = cursor.getString(COLUMN_PICPATH_INDEX);
-                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, Integer.parseInt(openTime), Integer.parseInt(closeTime), picPath);
+                String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
+                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, openTime, closeTime, picPath, Integer.parseInt(civicID));
                 return result;
             } else {
                 return null;
@@ -150,7 +153,8 @@ public class Database {
                     String opentime = cursor.getString(COLUMN_OPENTIME_INDEX);
                     String closetime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                     String picpath = cursor.getString(COLUMN_PICPATH_INDEX);
-                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, Integer.parseInt(opentime), Integer.parseInt(closetime), picpath));
+                    String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
+                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, opentime, closetime, picpath, Integer.parseInt(civicID)));
 
                 } while (cursor.moveToNext());
             }
@@ -179,7 +183,7 @@ public class Database {
         }
 
     private void setUpPools() {
-        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "0941 111111", "www.regensburg.de", 1000, 1900, "path");
+        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "09414009615", "http://www.landkreis-regensburg.de/Freizeit-Tourismus/Freizeitangebote/Baden/GuggenbergerSee(EU).aspx", "0800", "1900", "path", 11);
 
         addCivicPoolItem(test);
     }
@@ -196,7 +200,8 @@ public class Database {
                     + KEY_WEBSITE + " text, "
                     + KEY_OPENTIME + " text, "
                     + KEY_CLOSETIME + " text, "
-                    + KEY_PICPATH + " text not null);";
+                    + KEY_PICPATH + " text not null, "
+                    + KEY_CIVICID + " integer);";
 
             public PoolDBOpenHelper(Context c, String dbname, SQLiteDatabase.CursorFactory factory, int version) {
                 super(c, dbname, factory, version);

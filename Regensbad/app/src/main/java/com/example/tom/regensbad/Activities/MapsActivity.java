@@ -9,6 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.example.tom.regensbad.Domain.CivicPool;
+import com.example.tom.regensbad.Persistence.Database;
 import com.example.tom.regensbad.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,25 +24,36 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    private Marker guggiMarker;
     private Marker singleMarker;
 
     private String origin;
-    private String title;
+    private int ID;
 
-    private double singleLat;
-    private double singleLong;
+    private CivicPool singlePool;
+
+    private Database db;
 
     private static final double START_LAT = 49.012985;
     private static final double START_LANG = 12.092370;
-    private static final float START_ZOOM = 10;
+    private static final float START_ZOOM = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initDB();
         getExtras();
         initializeUIElements();
         setUpMapIfNeeded();
+    }
+
+    protected void onDestroy(){
+        db.close();
+        super.onDestroy();
+    }
+
+    private void initDB() {
+        db = new Database(this);
+        db.open();
     }
 
     private void getExtras() {
@@ -48,16 +61,14 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         Bundle extras = i.getExtras();
         origin = extras.getString("origin");
         if (origin.equals("detail")){
-            title = extras.getString("name");
-            singleLat = extras.getDouble("lati");
-            singleLong = extras.getDouble("longi");
-
+            ID = extras.getInt("ID");
+            singlePool = db.getPoolItem(ID);
         }
     }
 
     private void setSingleStartPosition() {
         /*From: http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in*/
-        CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(singleLat, singleLong));
+        CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(singlePool.getLati(), singlePool.getLongi()));
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(START_ZOOM);
 
         mMap.moveCamera(start);
@@ -126,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         handleClick();
         if(origin.equals("detail")){
             setSingleStartPosition();
-            singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(singleLat, singleLong)).title(title).snippet("Details"));
+            singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(singlePool.getLati(), singlePool.getLongi())).title(singlePool.getName()).snippet("Details"));
         }
   }
 
@@ -141,6 +152,9 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     public void onInfoWindowClick(Marker marker) {
         if (marker.equals(singleMarker)){
             Toast.makeText(MapsActivity.this, "Es hat funktioniert!", Toast.LENGTH_SHORT).show();
+            Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
+            showDetailView.putExtra("ID", singlePool.getID());
+            startActivity(showDetailView);
         }
     }
 

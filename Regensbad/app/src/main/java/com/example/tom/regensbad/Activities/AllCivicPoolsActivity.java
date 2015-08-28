@@ -46,18 +46,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity {
                 CivicPool pool = (CivicPool) adapterView.getItemAtPosition(i);
 
                 Intent showDetailView = new Intent(AllCivicPoolsActivity.this, CivicPoolDetailActivity.class);
-                showDetailView.putExtra("name", pool.getName());
-                showDetailView.putExtra("type", pool.getType());
-                showDetailView.putExtra("lati", pool.getLati());
-                showDetailView.putExtra("longi", pool.getLongi());
-                showDetailView.putExtra("number", pool.getPhoneNumber());
-                showDetailView.putExtra("website", pool.getWebsite());
-                showDetailView.putExtra("openTime", pool.getOpenTime());
-                showDetailView.putExtra("closeTime", pool.getCloseTime());
-                showDetailView.putExtra("imgPath", pool.getPicPath());
-
-                System.out.println(pool.getOpenTime() + "");
-                System.out.println(pool.getCloseTime() + "");
+                showDetailView.putExtra("ID", pool.getID());
 
                 startActivity(showDetailView);
             }

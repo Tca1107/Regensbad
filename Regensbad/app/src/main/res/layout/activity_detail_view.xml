@@ -172,6 +172,7 @@
             android:id="@+id/text_website"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/string_website"
             android:textSize="20sp"
             android:gravity="center"
             android:layout_gravity="center"
