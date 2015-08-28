@@ -30,16 +30,16 @@ public class WeatherLastUpdateDataProvider {
     private static final String KEY_WEATHER_DESCRIPTION = "waetherDescription";
     private static final String KEY_WEATHER_ICON = "waetherIcon";
 
-    private static final int ID_COLUMN = 0;
-    private static final int DEGREES_COLUMN = 1;
-    private static final int MAX_DEGREES_COLUMN = 2;
-    private static final int MIN_DEGREES_COLUMN = 3;
-    private static final int HUMIDITY_COLUMN = 4;
-    private static final int SUNRISE_COLUMN = 5;
-    private static final int SUNSET_COLUMN = 6;
-    private static final int WINDSPEED_COLUMN = 7;
-    private static final int WEATHER_DESCRIPTION_COLUMN = 8;
-    private static final int WEATHER_ICON_COLUMN = 9;
+    //private static final int ID_COLUMN = 0;
+    private static final int DEGREES_COLUMN = 0;
+    private static final int MAX_DEGREES_COLUMN = 1;
+    private static final int MIN_DEGREES_COLUMN = 2;
+    private static final int HUMIDITY_COLUMN = 3;
+    private static final int SUNRISE_COLUMN = 4;
+    private static final int SUNSET_COLUMN = 5;
+    private static final int WINDSPEED_COLUMN = 6;
+    private static final int WEATHER_DESCRIPTION_COLUMN = 7;
+    private static final int WEATHER_ICON_COLUMN = 8;
 
     private static final String KEY_ID = "_id";
     private static final int LATEST_UPDATE_ID = 0;

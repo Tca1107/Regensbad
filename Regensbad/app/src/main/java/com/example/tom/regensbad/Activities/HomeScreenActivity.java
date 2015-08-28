@@ -80,8 +80,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         setContentView(R.layout.activity_home_screen);
         initializeUIElements();
         initializeActionBar();
-        initializeDownLoadOfWeatherData();
         initializeWeatherLastUpdateDataProvider();
+        initializeDownLoadOfWeatherData();
         registerOnClickListeners();
 
     }

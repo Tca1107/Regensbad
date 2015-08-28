@@ -79,6 +79,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
         textPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically
                 Intent makeCall = new Intent(Intent.ACTION_CALL);
                 makeCall.setData(Uri.parse("tel:"+pool.getPhoneNumber()));
                 startActivity(makeCall);
