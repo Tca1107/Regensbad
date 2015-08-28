@@ -58,7 +58,7 @@
     <string name="my_account">Mein Account</string>
     <string name="search_title_description">Suche</string>
     <string name="weather_image_view_description">Wetter Icon</string>
-    <string name="last_updated">zuletzt aktualisiert: </string>
+    <string name="last_updated">letztes Update: </string>
 
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>

@@ -17,8 +17,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="ANDROID.PERMISSION.INTERNET"/>
+    <!-- http://stackoverflow.com/questions/5474089/how-to-check-currently-internet-connection-is-available-or-not-in-android -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <!--From: http://stackoverflow.com/questions/17667935/failed-to-load-map-error-contacting-google-servers-this-is-probably-an-authent-->
+    <!--From: http://stackoverflow.com/questions/17667935/failed-to-load-map-error-contacting-google-servers-this-is-probably-an-authent -->
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" >

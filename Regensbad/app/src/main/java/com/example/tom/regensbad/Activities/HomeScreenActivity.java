@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.Weather;
 import com.example.tom.regensbad.Persistence.WeatherDataProvider;
+import com.example.tom.regensbad.Persistence.WeatherLastUpdateDataProvider;
 import com.example.tom.regensbad.R;
 import com.parse.ParseUser;
 
@@ -69,6 +72,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private Button buttonClosestLake;
     private Button buttonGoToList;
     private WeatherDataProvider weatherDataProvider;
+    private WeatherLastUpdateDataProvider weatherLastUpdateDataProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +81,51 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         initializeUIElements();
         initializeActionBar();
         initializeDownLoadOfWeatherData();
+        initializeWeatherLastUpdateDataProvider();
         registerOnClickListeners();
 
     }
 
+    private void initializeWeatherLastUpdateDataProvider() {
+        weatherLastUpdateDataProvider = new WeatherLastUpdateDataProvider(this);
+        weatherLastUpdateDataProvider.open();
+    }
+
     private void initializeDownLoadOfWeatherData() {
-        weatherDataProvider = new WeatherDataProvider();
-        weatherDataProvider.setOnWeatherDataReceivedListener(this);
-        weatherDataProvider.execute(WEB_ADDRESS_TO_RETRIEVE_WEATHER_DATA);
+        if (checkIfConnectedToInternet () == true) {
+            weatherDataProvider = new WeatherDataProvider();
+            weatherDataProvider.setOnWeatherDataReceivedListener(this);
+            weatherDataProvider.execute(WEB_ADDRESS_TO_RETRIEVE_WEATHER_DATA);
+        } else {
+            fetchLatestUpdateFromLatestUpdateDataProvider();
+        }
+    }
+
+
+    /* This method checks whether the system has access to the internet.
+    * It was created taking the resource which can be found at the following link, as a guideline:
+    * http://stackoverflow.com/questions/5474089/how-to-check-currently-internet-connection-is-available-or-not-in-android*/
+    private boolean checkIfConnectedToInternet () {
+
+        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            Log.d("INTERNET", "CONNECTED!");
+            return true;
+        } else {
+            Log.d("INTERNET", "NOOOOOT CONNECTED!");
+            return false;
+        }
+    }
+
+
+    private void fetchLatestUpdateFromLatestUpdateDataProvider() {
+        Weather weather = weatherLastUpdateDataProvider.getLatestUpdate();
+        if (weather != null) {
+        setWeatherDataForHomeScreen(weather);
+        } else {
+            // create new dialog with weather could not be downloaded or something!
+        }
     }
 
     private void registerOnClickListeners() {
@@ -240,17 +281,27 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     public void onDataWeatherDataReceived(Weather weather) {
         Log.d("Communication", "worked");
         if (weather != null) {
-            int weatherDegreesInt = calculateWeatherInt(Double.valueOf(weather.getDegrees()));
-            int weatherMaxDegreesInt = calculateWeatherInt(Double.valueOf(weather.getMaxDegrees()));
-            int weatherMinDegreesInt = calculateWeatherInt(Double.valueOf(weather.getMinDegrees()));
-            degrees.setText(weatherDegreesInt + CELSIUS);
-            maxDegrees.setText(weatherMaxDegreesInt + CELSIUS);
-            minDegrees.setText(weatherMinDegreesInt + CELSIUS);
-            weatherDescription.setText(weather.getWeatherDescription());
-            assignWeatherIcon(weather.getweatherIcon());
+            insertWeatherDataInLastUpdateProvider(weather);
+            setWeatherDataForHomeScreen(weather);
         } else {
-            // show last updated Object!
+            // show last updated Object! --> NO! Do not do that here!
         }
+    }
+
+    private void setWeatherDataForHomeScreen(Weather weather) {
+        int weatherDegreesInt = calculateWeatherInt(Double.valueOf(weather.getDegrees()));
+        int weatherMaxDegreesInt = calculateWeatherInt(Double.valueOf(weather.getMaxDegrees()));
+        int weatherMinDegreesInt = calculateWeatherInt(Double.valueOf(weather.getMinDegrees()));
+        degrees.setText(weatherDegreesInt + CELSIUS);
+        maxDegrees.setText(weatherMaxDegreesInt + CELSIUS);
+        minDegrees.setText(weatherMinDegreesInt + CELSIUS);
+        weatherDescription.setText(weather.getWeatherDescription());
+        assignWeatherIcon(weather.getweatherIcon());
+    }
+
+    private void insertWeatherDataInLastUpdateProvider(Weather weather) {
+        weatherLastUpdateDataProvider.deleteLatestUpdate();
+        weatherLastUpdateDataProvider.addLatestUpdate(weather);
     }
 
     private int calculateWeatherInt(double degreeDouble) {
@@ -270,14 +321,14 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     * This is done at the very beginning of the method.*/
     private void assignWeatherIcon(String weatherIconID) {
         int weatherID = Integer.valueOf(weatherIconID);
-        int reducedweatherIconID = (weatherID / WEATHER_DIVISION_CONSTANT);
+        int reducedWeatherIconID = (weatherID / WEATHER_DIVISION_CONSTANT);
         if (weatherID == WEATHER_EXTENDED_ID_SUNNY) {
             weatherIcon.setImageResource(R.drawable.ic_weather_sun_no_clouds);
         } else if (weatherID == WEATHER_EXTENDED_ID_SUNNY_WITH_VERY_FEW_CLOUDS){
             weatherIcon.setImageResource(R.drawable.ic_weather_sunny_very_few_clouds);
         }
         else {
-            switch (reducedweatherIconID) {
+            switch (reducedWeatherIconID) {
                 case WEATHER_ID_THUNDERSTORM:
                     weatherIcon.setImageResource(R.drawable.ic_weather_thunderstorm);
                     break;
@@ -298,5 +349,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
            }
 
         }
+    }
+
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        weatherLastUpdateDataProvider.close();
     }
 }
