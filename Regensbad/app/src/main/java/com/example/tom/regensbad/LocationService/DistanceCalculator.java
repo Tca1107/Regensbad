@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 
 import com.example.tom.regensbad.Domain.CivicPool;
 import com.example.tom.regensbad.Persistence.Database;
+import com.example.tom.regensbad.Persistence.DistanceDataProvider;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,7 +24,7 @@ import java.io.InputStream;
 /**
  * Created by Sebastian on 28.08.2015.
  */
-public class DistanceCalculator implements LocationUpdater.OnLocationUpdateReceivedListener {
+public class DistanceCalculator implements LocationUpdater.OnLocationUpdateReceivedListener, DistanceDataProvider.DistanceDataReceivedListener {
 
     // Properties for location updates
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
@@ -37,6 +38,10 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
     private Database db;
 
     private Context context;
+
+    private DistanceDataProvider distanceDataProvider;
+
+
 
     public DistanceCalculator(Context context){
         this.context = context;
@@ -79,7 +84,14 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
 
     //From: http://stackoverflow.com/questions/14618016/distancebetween-returns-inaccurate-result
     private double getDistanceInfo(double lat1, double lng1, String destinationAddress) {
-        StringBuilder stringBuilder = new StringBuilder();
+        distanceDataProvider = new DistanceDataProvider();
+        distanceDataProvider.setOnDistanceDataReceivedListener(this);
+        distanceDataProvider.execute("http://maps.googleapis.com/maps/api/directions/json?origin=49.0312,12.1022&destination=GuggenbergerSee&mode=driving&sensor=false");
+
+
+
+
+        /*StringBuilder stringBuilder = new StringBuilder();
         Double dist = 0.0;
         try {
 
@@ -125,8 +137,8 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-        return dist;
+*/
+        return 77;
     }
 
     @Override
@@ -136,5 +148,10 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
 
         userLat = Double.parseDouble(latString);
         userLong = Double.parseDouble(longString);
+    }
+
+    @Override
+    public void onDataDistanceDataReceived() {
+
     }
 }
