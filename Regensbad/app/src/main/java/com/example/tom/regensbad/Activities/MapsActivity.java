@@ -24,15 +24,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    private Marker guggiMarker;
     private Marker singleMarker;
 
     private String origin;
-    private String title;
     private int ID;
-
-    private double singleLat;
-    private double singleLong;
 
     private CivicPool singlePool;
 
@@ -68,10 +63,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         if (origin.equals("detail")){
             ID = extras.getInt("ID");
             singlePool = db.getPoolItem(ID);
-            /*title = extras.getString("name");
-            singleLat = extras.getDouble("lati");
-            singleLong = extras.getDouble("longi");*/
-
         }
     }
 
