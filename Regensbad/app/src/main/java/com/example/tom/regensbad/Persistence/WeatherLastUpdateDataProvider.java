@@ -6,8 +6,13 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.tom.regensbad.Domain.Weather;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Tom on 27.08.2015.
@@ -29,6 +34,7 @@ public class WeatherLastUpdateDataProvider {
     private static final String KEY_WINDSPEED = "windspeed";
     private static final String KEY_WEATHER_DESCRIPTION = "waetherDescription";
     private static final String KEY_WEATHER_ICON = "waetherIcon";
+    private static final String KEY_LATEST_UPDATE_TIME = "latestUpdate";
 
     //private static final int ID_COLUMN = 0;
     private static final int DEGREES_COLUMN = 0;
@@ -40,9 +46,16 @@ public class WeatherLastUpdateDataProvider {
     private static final int WINDSPEED_COLUMN = 6;
     private static final int WEATHER_DESCRIPTION_COLUMN = 7;
     private static final int WEATHER_ICON_COLUMN = 8;
+    private static final int LATEST_UPDATE_TIME_COLUMN = 0;
 
     private static final String KEY_ID = "_id";
-    private static final int LATEST_UPDATE_ID = 0;
+    private static final int LATEST_UPDATE_ID = 1;
+    private static final int TIME_DIVISION_FACTOR = 1000;
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
+    private static final String TIME_ZONE = "CET"; // Central European Time
+    private static final int SUBSTRING_START = 11;
+    private static final int SUBSTRING_END = 16;
+    private static final String REMOVE_ALL_ROWS = "1";
 
 
     private SQLiteDatabase database;
@@ -63,6 +76,16 @@ public class WeatherLastUpdateDataProvider {
 
     public void close() {
         database.close();
+    }
+
+    public String getLatestUpdateTime() {
+        Cursor cursor = database.query(DATABASE_TABLE, new String [] {KEY_LATEST_UPDATE_TIME}, null, null, null, null, null);
+        if (cursor.moveToFirst()){
+            String latestUpdateTime = cursor.getString(LATEST_UPDATE_TIME_COLUMN);
+            return latestUpdateTime;
+        } else {
+            return "";
+        }
     }
 
 
@@ -98,12 +121,35 @@ public class WeatherLastUpdateDataProvider {
         lastUpdateValues.put(KEY_WINDSPEED, weather.getWindSpeed());
         lastUpdateValues.put(KEY_WEATHER_DESCRIPTION, weather.getWeatherDescription());
         lastUpdateValues.put(KEY_WEATHER_ICON, weather.getweatherIcon());
+        String currentTime = fetchCurrentTime();
+        lastUpdateValues.put(KEY_LATEST_UPDATE_TIME, currentTime);
         return database.insert(DATABASE_TABLE, null, lastUpdateValues);
     }
 
+    /* This method was written using the resource http://stackoverflow.com/questions/8077530/android-get-current-timestamp
+    * as a guideline. It gets the current time of the system. */
+    private String fetchCurrentTime () {
+        long time = System.currentTimeMillis();
+        String formattedTime = formatTimeString(time);
+        String formattedTimeOnlyHoursAndMinutes = formattedTime.substring(SUBSTRING_START, SUBSTRING_END);
+        Log.d("aktuelle Zeit", formattedTimeOnlyHoursAndMinutes);
+        return formattedTimeOnlyHoursAndMinutes;
+    }
+
+
+    /* This method was written using the resource http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
+    * as a guideline. It formats the unix time string into a human-readable format. */
+    private String formatTimeString(long time) {
+        Date todayDate = new Date (time);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+        String dateInFormat = simpleDateFormat.format(todayDate);
+        return dateInFormat;
+    }
+
     public long deleteLatestUpdate () {
-        String whereClause = KEY_ID + " = '" + LATEST_UPDATE_ID + "'";
-        return database.delete(DATABASE_TABLE, whereClause, null);
+       // String whereClause = KEY_ID + " = '" + LATEST_UPDATE_ID + "'";
+        return database.delete(DATABASE_TABLE, REMOVE_ALL_ROWS, null);
     }
 
 
@@ -120,7 +166,8 @@ public class WeatherLastUpdateDataProvider {
                 + KEY_SUNSET + " text not null, "
                 + KEY_WINDSPEED + " text not null, "
                 + KEY_WEATHER_DESCRIPTION + " text not null, "
-                + KEY_WEATHER_ICON + " text not null);";
+                + KEY_WEATHER_ICON + " text not null, "
+                + KEY_LATEST_UPDATE_TIME + " text not null);";
 
         public WeatherLastUpdateDataProviderOpenHelper(Context c, String dbname, SQLiteDatabase.CursorFactory factory, int version) {
             super(c, dbname, factory, version);
