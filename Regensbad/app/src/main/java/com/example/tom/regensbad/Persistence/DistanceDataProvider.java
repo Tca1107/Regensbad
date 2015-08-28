@@ -62,6 +62,7 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
 
     }
 
+    //From: http://stackoverflow.com/questions/14618016/distancebetween-returns-inaccurate-result
     private void getDistanceInfo(String result) {
         Log.d("langes JSON", result);
         try{
