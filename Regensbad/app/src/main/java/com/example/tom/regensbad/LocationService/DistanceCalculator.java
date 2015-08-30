@@ -144,9 +144,16 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
 
     @Override
     public void onFormattedLocationReceived(String formattedLocation) {
-        String latString = formattedLocation.substring(0, 10);
-        String longString = formattedLocation.substring(12);
-
+        int separator = 0;
+        for (int i = 0; i < formattedLocation.length(); i++) {
+            char charToCheck = formattedLocation.charAt(i);
+            if (charToCheck == ','){
+                separator = i;
+            }
+        }
+        String latString = formattedLocation.substring(0, separator);
+        String longString = formattedLocation.substring(separator + 1);
+        Log.d("userLat", latString);
         userLat = Double.parseDouble(latString);
         Log.d("userlat: " , String.valueOf(userLat));
         userLong = Double.parseDouble(longString);
