@@ -3,6 +3,7 @@ package com.example.tom.regensbad.LocationService;
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.tom.regensbad.Domain.CivicPool;
 import com.example.tom.regensbad.Persistence.Database;
@@ -147,6 +148,7 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
         String longString = formattedLocation.substring(12);
 
         userLat = Double.parseDouble(latString);
+        Log.d("userlat: " , String.valueOf(userLat));
         userLong = Double.parseDouble(longString);
     }
 
