@@ -129,14 +129,13 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     * It was created taking the resource which can be found at the following link, as a guideline:
     * http://stackoverflow.com/questions/5474089/how-to-check-currently-internet-connection-is-available-or-not-in-android*/
     private boolean checkIfConnectedToInternet () {
-
         ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if (manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
             Log.d("INTERNET", "CONNECTED!");
             return true;
         } else {
-            Log.d("INTERNET", "NOOOOOT CONNECTED!");
+            Log.d("INTERNET", "NOT CONNECTED!");
             return false;
         }
     }
@@ -200,6 +199,13 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         window.setStatusBarColor(HomeScreenActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
     }
 
+
+
+
+    /* This method was created using the tutorial on including external fonts in Android Studio which can be found
+    * at the following website: http://www.thedevline.com/2014/03/how-to-include-fonts-in-android.html .
+    * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
+    * https://www.google.com/fonts/ .*/
     private void setFontOfAppName() {
         Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
         appName.setTypeface(typeface);
@@ -209,13 +215,15 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
 
     @Override
-    /* Depending on whether a user is signed in, this method loads the respective menu resource file. */
-      /* http://developer.android.com/guide/topics/search/search-dialog.html .*/
+    /* Depending on whether a user is signed in and on whether the system is connected to the internet,*/
+    /* this method loads the respective menu resource file.*/
+    /* This method was created using the following to resources as guidelines:*/
+    /* http://developer.android.com/guide/topics/search/search-dialog.html .*/
     /* http://developer.android.com/guide/topics/ui/actionbar.html#ActionView */
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
+        if (currentUser != null && checkIfConnectedToInternet() == true) {
             getMenuInflater().inflate(R.menu.menu_home_screen, menu);
             addTheSearchView(menu);
             return super.onCreateOptionsMenu(menu);
@@ -227,8 +235,9 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
 
-    /* http://developer.android.com/guide/topics/search/search-dialog.html .*/
-    /* http://developer.android.com/guide/topics/ui/actionbar.html#ActionView */
+    /* This method was created using the following to resources as guidelines:
+    /* http://developer.android.com/guide/topics/search/search-dialog.html */
+    /* http://developer.android.com/guide/topics/ui/actionbar.html#ActionView .*/
     private void addTheSearchView(Menu menu) {
         MenuItem searchItem = menu.findItem(R.id.action_button_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);

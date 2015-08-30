@@ -2,8 +2,14 @@ package com.example.tom.regensbad.Activities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,7 +66,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         try {
             ParseUser currentUser = ParseUser.getCurrentUser();
             Log.d("currentUser", currentUser.toString());
-            if (currentUser != null) {
+            if (currentUser != null && checkIfConnectedToInternet() == true) {
                 Log.d("currentUser", currentUser.toString());
                 switchToHomeScreenActivity();
             }
@@ -68,6 +74,25 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         }
     }
+
+
+
+    /* This method checks whether the system has access to the internet.
+    * It was created taking the resource which can be found at the following link, as a guideline:
+    * http://stackoverflow.com/questions/5474089/how-to-check-currently-internet-connection-is-available-or-not-in-android*/
+    private boolean checkIfConnectedToInternet () {
+        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
 
     private void registerOnClickListeners() {
         login.setOnClickListener(this);
@@ -137,11 +162,32 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 break;
 
             case R.id.button_skip:
-                switchToHomeScreenActivity();
+                showDialog();
                 break;
         }
 
     }
+
+    private void showDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder (this);
+        dialogBuilder.setTitle(getResources().getString(R.string.button_skip));
+        dialogBuilder.setMessage(getResources().getString(R.string.skip_login));
+        dialogBuilder.setPositiveButton((getResources().getString(R.string.continue_anyway)), new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switchToHomeScreenActivity();
+            }
+        });
+        dialogBuilder.setNegativeButton((getResources().getString(R.string.cancel)), new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // nothing since the dialog only closes.
+            }
+        });
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
 
     /* Method that makes the system switch into the HomeScreenActivity. */
     private void switchToHomeScreenActivity() {
