@@ -2,9 +2,12 @@ package com.example.tom.regensbad.Activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,10 +56,32 @@ public class CreateAccountActivity extends ActionBarActivity {
         submitNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(checkIfConnectedToInternet()){
                 processUserInputForAccountCreation();
+                } else {
+                    showDialog(R.layout.dialog_no_internet_connection_create_account, R.string.okay, R.string.no_internet_connection);
+                }
+
             }
         });
     }
+
+
+
+    /* This method checks whether the system has access to the internet.
+    * It was created taking the resource which can be found at the following link, as a guideline:
+    * http://stackoverflow.com/questions/5474089/how-to-check-currently-internet-connection-is-available-or-not-in-android*/
+    private boolean checkIfConnectedToInternet () {
+        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
     with Android", which is available at:
@@ -117,9 +142,9 @@ public class CreateAccountActivity extends ActionBarActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay);
+                    showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay, R.string.submisson_succesful_title);
                 } else {
-                    showDialog(R.layout.dialog_sign_in_failed, R.string.okay);
+                    showDialog(R.layout.dialog_sign_in_failed, R.string.okay, R.string.submisson_failed_title);
                 }
             }
         });
@@ -140,10 +165,11 @@ public class CreateAccountActivity extends ActionBarActivity {
     /* This method as well the corresponding layout resource was written using Google Android's developer guide for
     * dialogs as a guideline (http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog).
     * It shows a dialog that lets the user know that his or her registration failed or succeeded.*/
-    private void showDialog(final int layoutResource, int messageOnButton){
+    private void showDialog(final int layoutResource, int messageOnButton, int title){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         dialogBuilder.setView(inflater.inflate(layoutResource, null));
+        dialogBuilder.setTitle(title);
         dialogBuilder.setPositiveButton(messageOnButton, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

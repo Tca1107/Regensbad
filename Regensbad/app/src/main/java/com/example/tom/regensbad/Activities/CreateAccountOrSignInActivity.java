@@ -2,11 +2,15 @@ package com.example.tom.regensbad.Activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +33,6 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
     /* User interface elements */
-    //private TextView appName;
     private View marginKeeperOne;
     private EditText username;
     private EditText password;
@@ -76,7 +79,6 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
             setStatusBarColor();
         }
-        //appName = (TextView)findViewById(R.id.text_view_app_name_in_create_account_or_sign_in_activity);
         marginKeeperOne = findViewById(R.id.view_to_keep_margin_one);
         username = (EditText)findViewById(R.id.edit_text_username);
         password = (EditText)findViewById(R.id.edit_text_password);
@@ -140,7 +142,11 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
     public void onClick(View v) {
        switch(v.getId()) {
            case R.id.button_sign_in:
-               signInWithUserAccount();
+               if (checkIfConnectedToInternet()) {
+                   signInWithUserAccount();
+               } else {
+                   showDialog(R.layout.dialog_no_internet_connection_sign_in, R.string.okay, R.string.no_internet_connection);
+               }
                break;
            case R.id.text_view_forgot_password:
                changeToResetPasswordActivity();
@@ -150,6 +156,24 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
                break;
        }
        }
+
+
+
+    /* This method checks whether the system has access to the internet.
+    * It was created taking the resource which can be found at the following link, as a guideline:
+    * http://stackoverflow.com/questions/5474089/how-to-check-currently-internet-connection-is-available-or-not-in-android*/
+    private boolean checkIfConnectedToInternet () {
+        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
 
     private void changeToResetPasswordActivity() {
         Intent changeToResetPasswordActivity = new Intent (CreateAccountOrSignInActivity.this, ResetPasswordActivity.class);
@@ -168,7 +192,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
                 if (parseUser != null) {
                     changeToHomeScreenActivity();
                 } else {
-                    showDialog(R.layout.dialog_check_in_failed, R.string.okay);
+                    showDialog(R.layout.dialog_check_in_failed, R.string.okay, R.string.sign_in_succesful_title);
                 }
             }
         });
@@ -178,10 +202,11 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
     /* This method as well the corresponding layout resource was written using Google Android's developer guide for
     * dialogs as a guideline (http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog).
     * It shows a dialog that lets the user know that his or her registration failed.*/
-    private void showDialog(int layoutResource, int messageOnButton){
+    private void showDialog(int layoutResource, int messageOnButton, int title){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         dialogBuilder.setView(inflater.inflate(layoutResource, null));
+        dialogBuilder.setTitle(title);
         dialogBuilder.setPositiveButton(messageOnButton, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
