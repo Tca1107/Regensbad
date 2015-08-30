@@ -139,7 +139,7 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
             e.printStackTrace();
         }
 */
-        return 77;
+        return distance;
     }
 
     @Override
@@ -160,7 +160,8 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
     }
 
     @Override
-    public void onDataDistanceDataReceived() {
-
+    public void onDataDistanceDataReceived(double dist) {
+        distance = dist;
+        Log.d("DistanceCalc, onDataDistanceDataReceived: ", String.valueOf(distance));
     }
 }

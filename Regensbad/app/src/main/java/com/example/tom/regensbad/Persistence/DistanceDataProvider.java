@@ -74,6 +74,7 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
             JSONObject distance = steps.getJSONObject("distance");
             Log.d("Distance", String.valueOf(distance));
             double dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]",""));
+            distanceDataReceivedListener.onDataDistanceDataReceived(dist);
             Log.d("DistanceZahl", String.valueOf(dist));
         }catch(JSONException e){
             e.printStackTrace();
@@ -83,6 +84,6 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
 
 
     public interface DistanceDataReceivedListener {
-        public void onDataDistanceDataReceived();
+        public void onDataDistanceDataReceived(double dist);
     }
 }
