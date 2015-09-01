@@ -104,7 +104,7 @@ public class Database {
 
 
         public CivicPool getPoolItem(int poolItemID) {
-            Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH, KEY_CIVICID}, KEY_CIVICID + "=" + poolItemID, null, null, null, null, null);
+            Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH, KEY_CIVICID, KEY_DISTANCE}, KEY_CIVICID + "=" + poolItemID, null, null, null, null, null);
 
             CivicPool result;
             if (cursor.moveToFirst()) {

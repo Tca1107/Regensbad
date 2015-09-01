@@ -23,7 +23,7 @@
             android:text="@string/string_lakeName"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:background="@color/white"
+            android:background="@layout/round_corners_for_single_lake_list_item"
             android:gravity="center"
             android:layout_gravity="center|bottom"/>
 
@@ -41,7 +41,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
