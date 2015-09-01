@@ -121,6 +121,7 @@
             android:textSize="15sp"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
             />
 
     </LinearLayout>

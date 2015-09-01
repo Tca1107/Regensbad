@@ -1,6 +1,7 @@
 package com.example.tom.regensbad.Activities;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -8,6 +9,7 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Adapters.ListAdapter;
@@ -42,6 +45,7 @@ import java.util.Collections;
 import java.util.List;
 
 
+
 public class AllCivicPoolsActivity extends ActionBarActivity implements
         LocationUpdater.OnLocationUpdateReceivedListener{
 
@@ -51,6 +55,11 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private ArrayList<CivicPool> pools = new ArrayList<CivicPool>();
 
     private Database db;
+
+
+    private ProgressDialog progressBar;
+    private int progressBarStatus = 0;
+    private Handler progressBarHandler = new Handler();
 
     private double userLat;
     private double userLong;
@@ -77,12 +86,13 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private static final int DISTANCE_LOCATION_IN_FLOAT = 0;
     private static final int KILOMETERS_FACTOR = 1000;
     private static final double DOUBLE_CUTTING_FACTOR = 100.0;
+    private static final int NUMBER_OF_POOLS_ON_SCREEN = 4;
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,12 +132,59 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
     private void fetchDataFromParse() {
         if (checkIfConnectedToInternet() == true) {
+            createProgressBar();
             db.deleteAllPoolItems();
             processParseComQuery();
         } else {
             GetLatestUpdateFromDatabase();
         }
 
+    }
+
+    /* This method was written using the tutorial which is available at:
+    http://examples.javacodegeeks.com/android/core/ui/progressbar/android-progress-bar-example/ */
+
+    private void createProgressBar() {
+        progressBar = new ProgressDialog(this);
+        progressBar.setCancelable(true);
+        progressBar.setMessage("Bäder werden heruntergeladen...");
+        progressBar.setProgress(0);
+        progressBar.setMax(100);
+        progressBar.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(progressBarStatus < 100){
+                    progressBarStatus = getProgressBarStatus();
+                    Log.d("PROGRESS", String.valueOf(progressBarStatus));
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    progressBarHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progressBarStatus);
+                        }
+                    });}
+                Log.d("PROGRESS", String.valueOf(progressBarStatus));
+                    if (progressBarStatus >= 99) {
+                       /* try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } */
+                        progressBar.dismiss();
+                    }
+
+                }
+        }).start();
+
+    }
+
+    private int getProgressBarStatus() {
+        return progressBarStatus;
     }
 
     private void GetLatestUpdateFromDatabase() {
@@ -191,9 +248,16 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             CivicPool civicPoolFromParse = new CivicPool(name, type, latitude, longitude, phoneNumber, website, openTime, closeTime, picPath, civicID, currentDistance);
             pools.add(civicPoolFromParse);
             db.addCivicPoolItem(civicPoolFromParse);
+            if (i == NUMBER_OF_POOLS_ON_SCREEN){
+                updateProgressBarStatus(100);
+            }
         }
         // sort the pools by their distance to the current location of the user
         Collections.sort(pools);
+    }
+
+    private void updateProgressBarStatus(int addValue) {
+        progressBarStatus += addValue;
     }
 
 

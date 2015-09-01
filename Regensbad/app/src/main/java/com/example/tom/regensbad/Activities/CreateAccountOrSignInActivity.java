@@ -192,7 +192,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
                 if (parseUser != null) {
                     changeToHomeScreenActivity();
                 } else {
-                    showDialog(R.layout.dialog_check_in_failed, R.string.okay, R.string.sign_in_succesful_title);
+                    showDialog(R.layout.dialog_check_in_failed, R.string.okay, R.string.sign_in_failed_title);
                 }
             }
         });

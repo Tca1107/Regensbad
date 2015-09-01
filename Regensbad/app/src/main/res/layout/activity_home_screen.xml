@@ -143,13 +143,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3.5"
-            android:paddingRight="20dp"
             android:text="@string/button_closest_lake"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
             android:textSize="15sp"
             android:layout_gravity="center"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 
@@ -174,7 +174,7 @@
             android:textSize="15sp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:paddingRight="13dp"/>
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 
