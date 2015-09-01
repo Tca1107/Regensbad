@@ -83,6 +83,22 @@ public class Database {
             return db.delete(DATABASE_TABLE,null, null);
         }
 
+        public String getPicPath (int poolID) {
+            Cursor cursor = db.query(DATABASE_TABLE, new String [] {KEY_CIVICID, KEY_PICPATH}, null, null, null, null, null);
+            int idCheck = 0;
+            if (cursor.moveToFirst()){
+                do {
+                    idCheck = cursor.getInt(0);
+                    String picPath = cursor.getString(1);
+                    if (idCheck == poolID) {
+                        Log.d("Bild", picPath);
+                        return picPath;
+                    }
+                } while (cursor.moveToNext());
+            }
+            return "Kein Bild gefunden!";
+        }
+
 
         public long addCivicPoolItem(CivicPool civicPool) {
             ContentValues newPoolValues = new ContentValues();
