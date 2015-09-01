@@ -61,6 +61,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
 
+
     private double userLat;
     private double userLong;
 
@@ -80,6 +81,11 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private static final String PARSE_CLOSE_TIME = "closeTime";
     private static final String PARSE_PIC_PATH = "picPath";
     private static final String PARSE_CIVIC_ID = "civicID";
+
+    private static final String PROGRESS_BAR_MESSAGE = "Bäder werden heruntergeladen.";
+    private static final int PROGRESS_BAR_MIN = 0;
+    private static final int PROGRESS_BAR_MAX = 100;
+    private static final int PROGRESS_BAR_SLEEP_TIME = 1000;
 
 
     private static final int FLOAT_DISTANCE_LENGTH = 1;
@@ -147,18 +153,18 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private void createProgressBar() {
         progressBar = new ProgressDialog(this);
         progressBar.setCancelable(true);
-        progressBar.setMessage("Bäder werden heruntergeladen...");
-        progressBar.setProgress(0);
-        progressBar.setMax(100);
+        progressBar.setMessage(PROGRESS_BAR_MESSAGE);
+        progressBar.setProgress(PROGRESS_BAR_MIN);
+        progressBar.setMax(PROGRESS_BAR_MAX);
         progressBar.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while(progressBarStatus < 100){
+                while(progressBarStatus < PROGRESS_BAR_MAX){
                     progressBarStatus = getProgressBarStatus();
                     Log.d("PROGRESS", String.valueOf(progressBarStatus));
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(PROGRESS_BAR_SLEEP_TIME);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -169,7 +175,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
                         }
                     });}
                 Log.d("PROGRESS", String.valueOf(progressBarStatus));
-                    if (progressBarStatus >= 99) {
+                    if (progressBarStatus >= PROGRESS_BAR_MAX) {
                        /* try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
@@ -249,7 +255,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             pools.add(civicPoolFromParse);
             db.addCivicPoolItem(civicPoolFromParse);
             if (i == NUMBER_OF_POOLS_ON_SCREEN){
-                updateProgressBarStatus(100);
+                updateProgressBarStatus(PROGRESS_BAR_MAX);
             }
         }
         // sort the pools by their distance to the current location of the user
