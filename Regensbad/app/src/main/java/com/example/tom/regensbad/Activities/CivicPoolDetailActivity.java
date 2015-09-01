@@ -183,7 +183,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         String picPath = db.getPicPath(ID);
         int id = getResources().getIdentifier(picPath, "drawable", getPackageName());
         Drawable drawable = getResources().getDrawable(id);
-        //drawable.setBounds(100,100,100,100);
         poolPicture.setImageDrawable(drawable);
         poolPicture.setScaleType(ImageView.ScaleType.FIT_XY);
 

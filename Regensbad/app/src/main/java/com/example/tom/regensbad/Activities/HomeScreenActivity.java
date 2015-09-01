@@ -45,6 +45,9 @@ import java.util.TimeZone;
 
 public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener, WeatherDataProvider.WeatherDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener {
 
+    /* The weather icons used in this activity are taken from the website: http://www.iconarchive.com/tag/weather
+    * They are free to use (GNU Lesser General Public Licence). */
+
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
