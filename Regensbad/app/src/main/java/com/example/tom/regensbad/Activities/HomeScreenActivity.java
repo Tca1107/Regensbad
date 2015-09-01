@@ -1,6 +1,7 @@
 package com.example.tom.regensbad.Activities;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -147,6 +148,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         setWeatherDataForHomeScreen(weather);
         } else {
             // create new dialog with weather could not be downloaded or something!
+            // Es steht kein letztes Update zur Verfügung
         }
     }
 
@@ -277,8 +279,9 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_myAccount) {
+            changeToMyAccountActivity();
             return true;
-        }else if (id == R.id.action_logout){
+        } else if (id == R.id.action_logout){
             // from https://parse.com/docs/android/guide#users
             ParseUser.logOut();
             finish();
@@ -286,6 +289,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void changeToMyAccountActivity() {
+        Intent changeToMyAccountActivity = new Intent (HomeScreenActivity.this, MyAccountActivity.class);
+        startActivity(changeToMyAccountActivity);
     }
 
     @Override
@@ -479,6 +487,14 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     protected void onDestroy () {
         super.onDestroy();
         weatherLastUpdateDataProvider.close();
+    }
+
+    @Override
+    protected void onResume () {
+        super.onResume();
+        // following line from: http://stackoverflow.com/questions/12561033/how-to-dynamicaly-change-menu-in-oncreateoptionsmenu
+        this.invalidateOptionsMenu();
+
     }
 
     @Override

@@ -24,31 +24,35 @@ public class Database {
         private static final int DATABASE_VERSION = 1;
         private static final String DATABASE_TABLE = "pooltasks";
 
-        public static final String KEY_ID = "_id";
+        private static final String KEY_ID = "_id";
 
         //pooltasks
-        public static final String KEY_NAME = "name";
-        public static final String KEY_TYPE = "type";
-        public static final String KEY_LATI = "lati";
-        public static final String KEY_LONGI = "longi";
-        public static final String KEY_PHONENUMBER = "phoneNumber";
-        public static final String KEY_WEBSITE = "website";
-        public static final String KEY_OPENTIME = "openTime";
-        public static final String KEY_CLOSETIME = "closeTime";
-        public static final String KEY_PICPATH = "picPath";
-        public static final String KEY_CIVICID = "civicID";
+        private static final String KEY_NAME = "name";
+        private static final String KEY_TYPE = "type";
+        private static final String KEY_LATI = "lati";
+        private static final String KEY_LONGI = "longi";
+        private static final String KEY_PHONENUMBER = "phoneNumber";
+        private static final String KEY_WEBSITE = "website";
+        private static final String KEY_OPENTIME = "openTime";
+        private static final String KEY_CLOSETIME = "closeTime";
+        private static final String KEY_PICPATH = "picPath";
+        private static final String KEY_CIVICID = "civicID";
+        private static final String KEY_DISTANCE = "currentDistance";
 
-        //public static final int COLUMN_ID_INDEX = 0;
-        public static final int COLUMN_NAME_INDEX = 1;
-        public static final int COLUMN_TYPE_INDEX = 2;
-        public static final int COLUMN_LATI_INDEX = 3;
-        public static final int COLUMN_LONGI_INDEX = 4;
-        public static final int COLUMN_PHONENUMBER_INDEX = 5;
-        public static final int COLUMN_WEBSITE_INDEX = 6;
-        public static final int COLUMN_OPENTIME_INDEX = 7;
-        public static final int COLUMN_CLOSETIME_INDEX = 8;
-        public static final int COLUMN_PICPATH_INDEX = 9;
-        public static final int COLUMN_CIVICID_INDEX = 10;
+        private static String REMOVE_ALL_ROWS = "1";
+
+        //private static final int COLUMN_ID_INDEX = 0;
+        private static final int COLUMN_NAME_INDEX = 1;
+        private static final int COLUMN_TYPE_INDEX = 2;
+        private static final int COLUMN_LATI_INDEX = 3;
+        private static final int COLUMN_LONGI_INDEX = 4;
+        private static final int COLUMN_PHONENUMBER_INDEX = 5;
+        private static final int COLUMN_WEBSITE_INDEX = 6;
+        private static final int COLUMN_OPENTIME_INDEX = 7;
+        private static final int COLUMN_CLOSETIME_INDEX = 8;
+        private static final int COLUMN_PICPATH_INDEX = 9;
+        private static final int COLUMN_CIVICID_INDEX = 10;
+        private static final int COLUMN_DISTANCE_INDEX = 11;
 
 
         private PoolDBOpenHelper dbHelper;
@@ -71,6 +75,13 @@ public class Database {
         }
 
 
+
+
+        public long deleteAllPoolItems () {
+            return db.delete(DATABASE_TABLE,REMOVE_ALL_ROWS, null);
+        }
+
+
         public long addCivicPoolItem(CivicPool civicPool) {
             ContentValues newPoolValues = new ContentValues();
 
@@ -84,8 +95,7 @@ public class Database {
             newPoolValues.put(KEY_CLOSETIME, civicPool.getCloseTime());
             newPoolValues.put(KEY_PICPATH, civicPool.getPicPath());
             newPoolValues.put(KEY_CIVICID, civicPool.getID());
-
-
+            newPoolValues.put(KEY_DISTANCE, civicPool.getCurrentDistance());
             return db.insert(DATABASE_TABLE, null, newPoolValues);
         }
 
@@ -104,7 +114,12 @@ public class Database {
                 String closeTime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                 String picPath = cursor.getString(COLUMN_PICPATH_INDEX);
                 String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
-                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, openTime, closeTime, picPath, Integer.parseInt(civicID));
+                double currentDistance = cursor.getDouble(COLUMN_DISTANCE_INDEX);
+
+                // TETS
+
+
+                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, openTime, closeTime, picPath, Integer.parseInt(civicID), currentDistance);
                 return result;
             } else {
                 return null;
@@ -154,7 +169,12 @@ public class Database {
                     String closetime = cursor.getString(COLUMN_CLOSETIME_INDEX);
                     String picpath = cursor.getString(COLUMN_PICPATH_INDEX);
                     String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
-                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, opentime, closetime, picpath, Integer.parseInt(civicID)));
+                    float currentDistance = cursor.getFloat(COLUMN_DISTANCE_INDEX);
+
+                    // TEST
+
+
+                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, opentime, closetime, picpath, Integer.parseInt(civicID), currentDistance));
 
                 } while (cursor.moveToNext());
             }
@@ -183,7 +203,8 @@ public class Database {
         }
 
     private void setUpPools() {
-        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "09414009615", "http://www.landkreis-regensburg.de/Freizeit-Tourismus/Freizeitangebote/Baden/GuggenbergerSee(EU).aspx", "0800", "1900", "path", 11);
+        // testpool
+        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "09414009615", "http://www.landkreis-regensburg.de/Freizeit-Tourismus/Freizeitangebote/Baden/GuggenbergerSee(EU).aspx", "0800", "1900", "path", 11, 7.7);
 
         addCivicPoolItem(test);
     }
@@ -201,7 +222,8 @@ public class Database {
                     + KEY_OPENTIME + " text, "
                     + KEY_CLOSETIME + " text, "
                     + KEY_PICPATH + " text not null, "
-                    + KEY_CIVICID + " integer);";
+                    + KEY_CIVICID + " integer, "
+                    + KEY_DISTANCE + "float);";
 
             public PoolDBOpenHelper(Context c, String dbname, SQLiteDatabase.CursorFactory factory, int version) {
                 super(c, dbname, factory, version);

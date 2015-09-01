@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.tom.regensbad.Activities.HomeScreenActivity">
+
+
+    <!-- This file was written using the android developer tutorial which is available at the
+    following link: https://developer.android.com/training/basics/actionbar/adding-buttons.html .-->
+
+
+
+    <item android:id="@+id/action_button_online"
+        android:icon="@android:drawable/presence_online"
+        android:title="@string/user_online_description"
+        app:showAsAction="ifRoom"/>
+
+
+    <item android:id="@+id/action_myAccount" android:title="@string/action_myAccount"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_logout" android:title="@string/action_logout"
+        android:orderInCategory="100" app:showAsAction="never" />
+
+
+
+</menu>

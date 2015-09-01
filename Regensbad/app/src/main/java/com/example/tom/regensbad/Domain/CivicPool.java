@@ -6,7 +6,7 @@ import java.net.URI;
 /**
  * Created by Sebastian on 26.08.2015.
  */
-public class CivicPool {
+public class CivicPool implements Comparable<CivicPool> {
 
     private String name;
     private String type;
@@ -18,8 +18,10 @@ public class CivicPool {
     private String closeTime;
     private String picPath;
     private int civicID;
+    private double currentDistance;
 
-    public CivicPool (String name ,String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime, String picPath, int civicID){
+
+    public CivicPool(String name, String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime, String picPath, int civicID, double currentDistance) {
         this.name = name;
         this.type = type;
         this.lati = lati;
@@ -30,55 +32,69 @@ public class CivicPool {
         this.closeTime = closeTime;
         this.picPath = picPath;
         this.civicID = civicID;
+        this.currentDistance = currentDistance;
+
     }
 
-    public String getName(){
+    @Override
+    public int compareTo (CivicPool civicPool) {
+        Double currentDistanceAsDouble = new Double(currentDistance);
+        return currentDistanceAsDouble.compareTo(civicPool.getCurrentDistance());
+    }
+
+
+    public String getName() {
         return name;
     }
 
-    public String getType(){
+    public String getType() {
         return type;
     }
 
-    public double getLati(){
+    public double getLati() {
         return lati;
     }
 
-    public double getLongi(){
+    public double getLongi() {
         return longi;
     }
 
-    public String getPhoneNumber(){
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public String getPhoneNumberAsString(){
+    public String getPhoneNumberAsString() {
         String numberString = String.valueOf(phoneNumber);
         return numberString;
     }
 
-    public String getWebsite(){
+    public String getWebsite() {
         return website;
     }
 
-    public String getWebsiteAsString(){
+    public String getWebsiteAsString() {
         String webstieString = website.toString();
         return webstieString;
     }
 
-    public String getOpenTime(){
+    public String getOpenTime() {
         return openTime;
     }
 
-    public String getCloseTime(){
+    public String getCloseTime() {
         return closeTime;
     }
 
-    public String getPicPath(){
+    public String getPicPath() {
         return picPath;
     }
 
-    public int getID(){
+    public int getID() {
         return civicID;
     }
+
+    public double getCurrentDistance() {
+        return currentDistance;
+    }
+
 }

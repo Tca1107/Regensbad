@@ -25,7 +25,9 @@ import java.io.InputStream;
 /**
  * Created by Sebastian on 28.08.2015.
  */
-public class DistanceCalculator implements LocationUpdater.OnLocationUpdateReceivedListener, DistanceDataProvider.DistanceDataReceivedListener {
+public class DistanceCalculator{ //implements LocationUpdater.OnLocationUpdateReceivedListener {//DistanceDataProvider.DistanceDataReceivedListener {
+
+    /*
 
     // Properties for location updates
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
@@ -59,6 +61,15 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, context);
         locationUpdater.setLocationUpdateListener(this);
         locationUpdater.requestLocationUpdates();
+    }
+
+
+    public double getLongitude () {
+        return userLong;
+    }
+
+    public double getLatitude () {
+        return userLat;
     }
 
     public double calculateDistanceToPool(int poolID){
@@ -138,7 +149,7 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-*/
+*/  /*
         return distance;
     }
 
@@ -159,9 +170,12 @@ public class DistanceCalculator implements LocationUpdater.OnLocationUpdateRecei
         userLong = Double.parseDouble(longString);
     }
 
+
+    /*
     @Override
     public void onDataDistanceDataReceived(double dist) {
         distance = dist;
-        Log.d("DistanceCalc, onDataDistanceDataReceived: ", String.valueOf(distance));
+        Log.d("DistancDataReceived: ", String.valueOf(distance));
     }
+   */
 }

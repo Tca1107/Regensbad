@@ -12,7 +12,7 @@
 
     <!--Action Menü-->
     <string name="action_myAccount">Mein Account</string>
-    <string name="action_logout">Logout</string>
+    <string name="action_logout">Abmelden</string>
 
     <!--Login Activity-->
     <string name="login_with_user_account">Mit Nutzer-Account anmelden?</string>
@@ -28,6 +28,7 @@
     <string name="title_activity_create_account_or_sign_in">Anmelden</string>
     <string name="sign_in">Anmelden </string>
     <string name="create_an_account">Sie haben noch keinen Account?</string>
+    <string name="you_have_an_account">Sie haben bereits einen Account:</string>
     <string name="username">Nutzername</string>
     <string name="password">Passwort</string>
     <string name="submit_account">Registrieren</string>
@@ -74,6 +75,15 @@
     <string name="weather_image_view_description">Wetter Icon</string>
     <string name="last_updated">letztes Update: </string>
 
+    <!-- MyAccountActivity-->
+    <string name="my_account_in_my_account_activity">Mein Account </string>
+    <string name="user_name">Nutzername: </string>
+    <string name="mail_address_in_my_account_activity">E-Mail Adresse: </string>
+    <string name="change_password">Passwort ändern</string>
+
+
+
+
     <!--Main Activity-->
     <string name="button_closest_lake">Nächsten See finden</string>
     <string name="button_all_lakes">Alle Badeorte anzeigen</string>
@@ -112,6 +122,7 @@
     <string name="title_activity_all_civic_pools_on_map">AllCivicPoolsOnMapActivity</string>
     <string name="title_activity_civic_pool_detail">CivicPoolDetailActivity</string>
     <string name="title_activity_search_civic_pools">SearchCivicPoolsActivity</string>
+    <string name="title_activity_my_account">MyAccountActivity</string>
 
 
 
