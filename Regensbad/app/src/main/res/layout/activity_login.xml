@@ -75,6 +75,7 @@
             android:textColor="@drawable/button_text_color"
             android:drawableRight="@drawable/button_icon_selector_perm_identity"
             android:paddingRight="20dp"
+            android:textAllCaps="false"
             />
 
     </LinearLayout>
@@ -102,6 +103,7 @@
         android:textColor="@drawable/button_text_color"
         android:drawableRight="@drawable/button_icon_selector_label_outline"
         android:paddingRight="13dp"
+        android:textAllCaps="false"
         />
 
     </LinearLayout>

@@ -3,6 +3,10 @@ package com.example.tom.regensbad.Activities;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.CivicPool;
@@ -35,6 +40,9 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private double distance;
     private double userLat;
     private double userLong;
+
+
+    private ImageView poolPicture;
 
     private TextView textName;
     private TextView textOpenTime;
@@ -157,7 +165,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
             setStatusBarColor();
         }
         setContentView(R.layout.activity_detail_view);
-
+        poolPicture = (ImageView)findViewById(R.id.imageView_bathIMG);
         textName = (TextView) findViewById(R.id.textView_bathName);
         textOpenTime = (TextView) findViewById(R.id.textview_openTime);
         textDistance = (TextView) findViewById(R.id.textView_detail_distance);
@@ -168,6 +176,20 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         textDistance.setText(String.valueOf(distance));
         Log.d("INIDISTANCE: ", String.valueOf(distance));
         textPhoneNumber.setText(pool.getPhoneNumber());
+
+
+        /*Following four lines retrieved from: http://stackoverflow.com/questions/13105430/android-setting-image-from-string */
+        String picPath = db.getPicPath(ID);
+        int id = getResources().getIdentifier(picPath, "drawable", getPackageName());
+        Drawable drawable = getResources().getDrawable(id);
+        //drawable.setBounds(100,100,100,100);
+        poolPicture.setImageDrawable(drawable);
+        poolPicture.setScaleType(ImageView.ScaleType.FIT_XY);
+
+
+
+
+
 
         createTimeView();
 

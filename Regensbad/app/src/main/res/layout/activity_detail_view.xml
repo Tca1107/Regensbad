@@ -5,16 +5,22 @@
     android:background="@drawable/background_for_activities"
     android:weightSum="10">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="wrap_content"
         android:layout_weight="3.5"
+=======
+        android:layout_height="0dp"
+        android:layout_weight="5"
+>>>>>>> 682460c0920e4b833f365cb1b997b8f40b88c1a8
         android:layout_marginBottom="25dp">
 
         <ImageView
             android:id="@+id/imageView_bathIMG"
             android:layout_width="match_parent"
-            android:layout_height="0dp" />
+            android:layout_height="match_parent"
+            />
 
         <TextView
             android:id="@+id/textView_bathName"
@@ -25,9 +31,10 @@
             android:textStyle="bold"
             android:background="@layout/round_corners_for_single_lake_list_item"
             android:gravity="center"
-            android:layout_gravity="center|bottom"/>
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="350dp"
