@@ -1,12 +1,14 @@
 package com.example.tom.regensbad.Activities;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,20 +18,34 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.CivicPool;
+import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.Database;
+import com.example.tom.regensbad.Persistence.DistanceDataProvider;
 import com.example.tom.regensbad.R;
 
 
-public class CivicPoolDetailActivity extends ActionBarActivity {
+public class CivicPoolDetailActivity extends ActionBarActivity implements DistanceDataProvider.DistanceDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener {
+
+    // Properties for location updates
+    private static final int FIX_UPDATE_TIME = 500; // milliseconds
+    private static final int FIX_UPDATE_DISTANCE = 5; // meters
 
     private int ID;
 
+    private double distance;
+    private double userLat;
+    private double userLong;
+
     private TextView textName;
     private TextView textOpenTime;
+    private TextView textDistance;
     private TextView textPhoneNumber;
     private TextView textWebsite;
 
     private Button showMapButton;
+    private Button startNavigationButton;
+
+    private DistanceDataProvider distanceDataProvider;
 
     private Database db;
 
@@ -43,8 +59,37 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
         initDatabase();
         getExtras();
         initializeUIElements();
+        getDistance();
         handleInput();
 
+    }
+
+    private void getDistance() {
+        System.out.print("Es geht was!");
+        LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
+        locationUpdater.setLocationUpdateListener(this);
+        locationUpdater.requestLocationUpdates();
+
+
+
+        distanceDataProvider = new DistanceDataProvider();
+        distanceDataProvider.setOnDistanceDataReceivedListener(this);
+        //distanceCalculator = new DistanceCalculator(this);
+        // hier dann ne for - schleife mit allen Pools
+        // double lat = distanceCalculator.getLatitude();
+        // double longi = distanceCalculator.getLongitude();
+        // hier pool Namen aus Parse holen, unten Guggenberger See als Dummy
+
+
+        String destinationAddress = pool.getName().replace(" ", ""); //From: http://stackoverflow.com/questions/6932163/removing-spaces-from-string
+        Log.d("Address: ", destinationAddress);
+        Log.d("UserLat um 19:18", String.valueOf(userLat));
+        String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + destinationAddress + "&mode=driving&sensor=false";
+        distanceDataProvider.execute(downloadString);
+        //distanceDataProvider.execute("http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + "UniRegensburg" + "&mode=driving&sensor=false");
+
+        // wir muessten das hier dann mit ner arraylist loesen, in die alle distances eingefuegt werden, dann wird der adapter informiert
+        // per notifydatasetcahnged.
     }
 
     protected void onDestroy(){
@@ -65,6 +110,16 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
                 goToMap.putExtra("ID", pool.getID());
                 goToMap.putExtra("origin", "detail");
                 startActivity(goToMap);
+            }
+        });
+
+        startNavigationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //From: http://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
+                Intent startNavigationIntent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?daddr=" + pool.getLati() + "," + pool.getLongi()));
+                startActivity(startNavigationIntent);
             }
         });
 
@@ -105,15 +160,19 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
 
         textName = (TextView) findViewById(R.id.textView_bathName);
         textOpenTime = (TextView) findViewById(R.id.textview_openTime);
+        textDistance = (TextView) findViewById(R.id.textView_detail_distance);
         textPhoneNumber = (TextView) findViewById(R.id.text_phoneNumber);
         textWebsite = (TextView) findViewById(R.id.text_website);
 
         textName.setText(pool.getName());
+        textDistance.setText(String.valueOf(distance));
+        Log.d("INIDISTANCE: ", String.valueOf(distance));
         textPhoneNumber.setText(pool.getPhoneNumber());
 
         createTimeView();
 
         showMapButton = (Button) findViewById(R.id.button_showOnMap);
+        startNavigationButton = (Button) findViewById(R.id.button_nav);
     }
 
     private void createTimeView() {
@@ -152,5 +211,27 @@ public class CivicPoolDetailActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDataDistanceDataReceived(double dist) {
+        distance = dist;
+        textDistance.setText(String.valueOf(distance));
+        Log.d("Distance: ", String.valueOf(distance));
+    }
+
+    @Override
+    public void onFormattedLocationReceived(String formattedLocation) {
+        int separator = 0;
+        for (int i = 0; i < formattedLocation.length(); i++) {
+            char charToCheck = formattedLocation.charAt(i);
+            if (charToCheck == ','){
+                separator = i;
+            }
+        }
+        String latString = formattedLocation.substring(0, separator);
+        String longString = formattedLocation.substring(separator + 1);
+        userLat = Double.parseDouble(latString);
+        userLong = Double.parseDouble(longString);
     }
 }

@@ -92,6 +92,7 @@
     <string name="string_km">km</string>
     <string name="string_open">geöffnet</string>
     <string name="string_closed">geschlossen</string>
+    <string name="string_km_airline">km Luftlinie</string>
 
     <!--Detail View-->
     <string name="string_openTime">Öffnungszeiten:</string>
@@ -120,9 +121,9 @@
     <string name="title_activity_all_civic_pools">Alle Badeorte</string>
     <string name="title_activity_closest_civic_pool">ClosestCivicPoolActivity</string>
     <string name="title_activity_all_civic_pools_on_map">AllCivicPoolsOnMapActivity</string>
-    <string name="title_activity_civic_pool_detail">CivicPoolDetailActivity</string>
-    <string name="title_activity_search_civic_pools">SearchCivicPoolsActivity</string>
-    <string name="title_activity_my_account">MyAccountActivity</string>
+    <string name="title_activity_civic_pool_detail">Details</string>
+    <string name="title_activity_search_civic_pools">Suchergebnisse</string>
+    <string name="title_activity_my_account">Mein Account</string>
 
 
 
