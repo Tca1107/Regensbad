@@ -29,7 +29,6 @@ import com.example.tom.regensbad.Domain.CivicPool;
 import com.example.tom.regensbad.LocationService.DistanceCalculator;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.Database;
-import com.example.tom.regensbad.Persistence.DistanceDataProvider;
 import com.example.tom.regensbad.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;

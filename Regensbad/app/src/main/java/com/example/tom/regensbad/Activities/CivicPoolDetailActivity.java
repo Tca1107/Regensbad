@@ -66,14 +66,14 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         super.onCreate(savedInstanceState);
         initDatabase();
         getExtras();
-        initializeUIElements();
         getDistance();
+        initializeUIElements();
         handleInput();
 
     }
 
     private void getDistance() {
-        System.out.print("Es geht was!");
+        System.out.println("Es geht was!");
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
         locationUpdater.setLocationUpdateListener(this);
         locationUpdater.requestLocationUpdates();
@@ -89,10 +89,11 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         // hier pool Namen aus Parse holen, unten Guggenberger See als Dummy
 
 
-        String destinationAddress = pool.getName().replace(" ", ""); //From: http://stackoverflow.com/questions/6932163/removing-spaces-from-string
+        String destinationAddress = pool.getName().replace(" ", "-"); //From: http://stackoverflow.com/questions/6932163/removing-spaces-from-string
         Log.d("Address: ", destinationAddress);
         Log.d("UserLat um 19:18", String.valueOf(userLat));
         String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + destinationAddress + "&mode=driving&sensor=false";
+        Log.d("wehdewh", downloadString);
         distanceDataProvider.execute(downloadString);
         //distanceDataProvider.execute("http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + "UniRegensburg" + "&mode=driving&sensor=false");
 
@@ -239,7 +240,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     public void onDataDistanceDataReceived(double dist) {
         distance = dist;
         textDistance.setText(String.valueOf(distance));
-        Log.d("Distance: ", String.valueOf(distance));
     }
 
     @Override
