@@ -97,4 +97,8 @@ public class CivicPool implements Comparable<CivicPool> {
         return currentDistance;
     }
 
+    public void setDecimalPlacesInCurrentDistance(double distance) {
+        currentDistance = distance;
+    }
+
 }

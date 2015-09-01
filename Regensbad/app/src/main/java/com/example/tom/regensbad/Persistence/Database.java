@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 
 import com.example.tom.regensbad.Domain.CivicPool;
 
@@ -40,6 +41,7 @@ public class Database {
         private static final String KEY_DISTANCE = "currentDistance";
 
         private static String REMOVE_ALL_ROWS = "1";
+        private static final double DOUBLE_CUTTING_FACTOR = 100.0;
 
         //private static final int COLUMN_ID_INDEX = 0;
         private static final int COLUMN_NAME_INDEX = 1;
@@ -78,7 +80,7 @@ public class Database {
 
 
         public long deleteAllPoolItems () {
-            return db.delete(DATABASE_TABLE,REMOVE_ALL_ROWS, null);
+            return db.delete(DATABASE_TABLE,null, null);
         }
 
 
@@ -96,8 +98,10 @@ public class Database {
             newPoolValues.put(KEY_PICPATH, civicPool.getPicPath());
             newPoolValues.put(KEY_CIVICID, civicPool.getID());
             newPoolValues.put(KEY_DISTANCE, civicPool.getCurrentDistance());
+            Log.d("currentDistance1117", String.valueOf(civicPool.getCurrentDistance()));
             return db.insert(DATABASE_TABLE, null, newPoolValues);
         }
+
 
         public CivicPool getPoolItem(int poolItemID) {
             Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH, KEY_CIVICID}, KEY_CIVICID + "=" + poolItemID, null, null, null, null, null);
@@ -171,6 +175,7 @@ public class Database {
                     String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
                     float currentDistance = cursor.getFloat(COLUMN_DISTANCE_INDEX);
 
+                    Log.d("getAllPoolItems", String.valueOf(currentDistance));
                     // TEST
 
 
@@ -223,7 +228,7 @@ public class Database {
                     + KEY_CLOSETIME + " text, "
                     + KEY_PICPATH + " text not null, "
                     + KEY_CIVICID + " integer, "
-                    + KEY_DISTANCE + "float);";
+                    + KEY_DISTANCE + " float);";
 
             public PoolDBOpenHelper(Context c, String dbname, SQLiteDatabase.CursorFactory factory, int version) {
                 super(c, dbname, factory, version);

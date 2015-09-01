@@ -43,18 +43,14 @@ import java.util.List;
 
 
 public class AllCivicPoolsActivity extends ActionBarActivity implements
-        DistanceDataProvider.DistanceDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener{
+        LocationUpdater.OnLocationUpdateReceivedListener{
 
-
-    // Distance Data Provider dann in der DetailbActivity, um den genauen Wert zu bekommen (der Distanz), hier wird ja sonst mit Luftlinie gerrechnet
 
     private ListView list;
     private ListAdapter adapter;
     private ArrayList<CivicPool> pools = new ArrayList<CivicPool>();
 
     private Database db;
-    private DistanceDataProvider distanceDataProvider;
-    private DistanceCalculator distanceCalculator;
 
     private double userLat;
     private double userLong;
@@ -86,21 +82,18 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
 
-
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeUIElements();
-        initPoolList();
+        initializeAdapter();
+        initializePoolList();
         initializeDB();
         fetchUserLocation();
         fetchDataFromParse();
         initializeActionBar();
         handleClick();
-        // getDistances();
-
     }
 
     private void fetchUserLocation() {
@@ -131,7 +124,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         if (checkIfConnectedToInternet() == true) {
             db.deleteAllPoolItems();
             processParseComQuery();
-            //CleanTheDatabaseAndSaveThePoolsIntoTheDatabase();
         } else {
             GetLatestUpdateFromDatabase();
         }
@@ -139,20 +131,26 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     }
 
     private void GetLatestUpdateFromDatabase() {
-        pools.clear();
-        pools.addAll(db.getAllPoolItems());
-        Log.d("allepools", String.valueOf(pools));
+        ArrayList<CivicPool> myPoolArray = new ArrayList<CivicPool>();
+        myPoolArray.addAll(db.getAllPoolItems());
+        ArrayList<CivicPool> myPoolArrayWithCorrectDistances = setTheDecimalPlacesOfCurrentDistanceRight(myPoolArray);
+        Collections.sort(myPoolArrayWithCorrectDistances);
+        adapter = new ListAdapter(this, myPoolArrayWithCorrectDistances);
+        list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
-    /*
-    private void CleanTheDatabaseAndSaveThePoolsIntoTheDatabase() {
-        db.deleteAllPoolItems();
-        for (int i = 0; i < pools.size(); i++) {
-            CivicPool poolToAdd = pools.get(i);
-            db.addCivicPoolItem(poolToAdd);
+    private ArrayList<CivicPool> setTheDecimalPlacesOfCurrentDistanceRight(ArrayList<CivicPool> myPoolArray) {
+        ArrayList<CivicPool> arrayToReturn = new ArrayList<CivicPool>();
+        for (int i = 0; i < myPoolArray.size(); i++) {
+            CivicPool pool = myPoolArray.get(i);
+            // myPoolArray.remove(i);
+            pool.setDecimalPlacesInCurrentDistance(cutTheRedundantPlaces(pool.getCurrentDistance()));
+            arrayToReturn.add(pool);
         }
-    } */
+        return arrayToReturn;
+    }
+
 
 
     /* This method retrieves the civic pool objects from the parse.com backend and adds them
@@ -169,7 +167,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
                     Log.d("Seen RETRIEVED", String.valueOf(list.size()) + " Seen");
                     pools.clear();
                     assignParseDataToArrayList(list);
-                    initAdapter();
+                    initializeAdapter();
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -196,11 +194,10 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         }
         // sort the pools by their distance to the current location of the user
         Collections.sort(pools);
-        Log.d("ALLE AUS DB", String.valueOf(db.getAllPoolItems()));
     }
 
 
-    /* Did we use a source for that? Maybe refer to the android developer documentation
+    /* Look at Android developer documentation:
     * http://developer.android.com/reference/android/location/Location.html#distanceBetween(double, double, double, double, float[])*/
     private double calculateCurrentDistance(double poolLat, double poolLong) {
         float[]dist=new float[FLOAT_DISTANCE_LENGTH];
@@ -214,30 +211,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         return Math.round(longDistanceDouble * DOUBLE_CUTTING_FACTOR)/DOUBLE_CUTTING_FACTOR;
     }
 
-    private void getDistances() {
-        LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
-        locationUpdater.setLocationUpdateListener(this);
-        locationUpdater.requestLocationUpdates();
 
-
-
-        distanceDataProvider = new DistanceDataProvider();
-        distanceDataProvider.setOnDistanceDataReceivedListener(this);
-        //distanceCalculator = new DistanceCalculator(this);
-        // hier dann ne for - schleife mit allen Pools
-        // double lat = distanceCalculator.getLatitude();
-        // double longi = distanceCalculator.getLongitude();
-        // hier pool Namen aus Parse holen, unten Guggenberger See als Dummy
-
-            String destinationAddress = "GuggenbergerSee";
-            Log.d("UserLat um 19:18", String.valueOf(userLat));
-            String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + destinationAddress + "&mode=driving&sensor=false";
-            distanceDataProvider.execute(downloadString);
-            //distanceDataProvider.execute("http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + "UniRegensburg" + "&mode=driving&sensor=false");
-
-        // wir muessten das hier dann mit ner arraylist loesen, in die alle distances eingefuegt werden, dann wird der adapter informiert
-        // per notifydatasetcahnged.
-    }
 
     private void handleClick() {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -253,16 +227,10 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         });
     }
 
-    private void initPoolList() {
-        updateList();
-    }
-
-    private void updateList() {
+    private void initializePoolList() {
         pools.clear();
-        //pools.addAll(db.getAllPoolItems());
         adapter.notifyDataSetChanged();
     }
-
 
 
     private void initializeDB() {
@@ -278,10 +246,9 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         }
         setContentView(R.layout.activity_list_view);
         list = (ListView) findViewById(R.id.listview_lake_list);
-        initAdapter();
     }
 
-    private void initAdapter() {
+    private void initializeAdapter() {
         adapter = new ListAdapter(this, pools);
         list.setAdapter(adapter);
     }
@@ -313,9 +280,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch(id){
             case R.id.action_settings:
@@ -344,20 +308,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         startActivity(changeToMyAccountActivity);
     }
 
-    @Override
-    public void onDataDistanceDataReceived(double dist) {
-            Log.d("krieg mas", String.valueOf(dist));
-       // die können wir nur in der DetailActivity verwenden!!! Async Task geht nur einmal! :-(
-
-            CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "09414009615", "http://www.landkreis-regensburg.de/Freizeit-Tourismus/Freizeitangebote/Baden/GuggenbergerSee(EU).aspx", "0800", "1900", "path", 11, 3.3);
-            //CivicPool test2 = new CivicPool ("Seee in da Hood", "See", 56.2132, 21.3333, "09417777", "inetadresse", "0700", "1700", "path", 23);
-            pools.clear();
-            pools.add(test);
-            Log.d("POOOOLS", String.valueOf(pools));
-            adapter = new ListAdapter(this, pools);
-            list.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-    }
 
     /* This method checks whether the system has access to the internet.
     * It was created taking the resource which can be found at the following link, as a guideline:
@@ -393,5 +343,71 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         super.onDestroy();
         db.close();
     }
+
+
+
+    /*
+
+        private void getDistances() {
+        LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
+        locationUpdater.setLocationUpdateListener(this);
+        locationUpdater.requestLocationUpdates();
+
+
+
+        distanceDataProvider = new DistanceDataProvider();
+        distanceDataProvider.setOnDistanceDataReceivedListener(this);
+        //distanceCalculator = new DistanceCalculator(this);
+        // hier dann ne for - schleife mit allen Pools
+        // double lat = distanceCalculator.getLatitude();
+        // double longi = distanceCalculator.getLongitude();
+        // hier pool Namen aus Parse holen, unten Guggenberger See als Dummy
+
+            String destinationAddress = "GuggenbergerSee";
+            Log.d("UserLat um 19:18", String.valueOf(userLat));
+            String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + destinationAddress + "&mode=driving&sensor=false";
+            distanceDataProvider.execute(downloadString);
+            //distanceDataProvider.execute("http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + "UniRegensburg" + "&mode=driving&sensor=false");
+
+        // wir muessten das hier dann mit ner arraylist loesen, in die alle distances eingefuegt werden, dann wird der adapter informiert
+        // per notifydatasetcahnged.
+    }
+
+
+
+
+    @Override
+    public void onDataDistanceDataReceived(double dist) {
+            Log.d("krieg mas", String.valueOf(dist));
+       // die können wir nur in der DetailActivity verwenden!!! Async Task geht nur einmal! :-(
+
+            CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "09414009615", "http://www.landkreis-regensburg.de/Freizeit-Tourismus/Freizeitangebote/Baden/GuggenbergerSee(EU).aspx", "0800", "1900", "path", 11, 3.3);
+            //CivicPool test2 = new CivicPool ("Seee in da Hood", "See", 56.2132, 21.3333, "09417777", "inetadresse", "0700", "1700", "path", 23);
+            pools.clear();
+            pools.add(test);
+            Log.d("POOOOLS", String.valueOf(pools));
+            adapter = new ListAdapter(this, pools);
+            list.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+    }
+
+
+
+
+
+       /*private void updateList() {
+        pools.clear();
+        adapter.notifyDataSetChanged();
+    }
+
+
+
+    */
+
+
+
+
+
+
 
 }

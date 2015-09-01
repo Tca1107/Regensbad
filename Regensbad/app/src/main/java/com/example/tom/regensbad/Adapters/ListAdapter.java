@@ -35,7 +35,7 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
 
     private ArrayList<CivicPool> listItems;
     private Context context;
-    private CivicPool pool;
+    // private CivicPool pool;
 
     private TextView distance;
     private TextView openStatus;
@@ -60,7 +60,7 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
             v = inflater.inflate(R.layout.single_lake_list_item, null);
         }
 
-        pool = listItems.get(position);
+        CivicPool pool = listItems.get(position);
 
         if(pool != null){
             TextView poolName = (TextView) v.findViewById(R.id.textview_lakeName);
