@@ -136,10 +136,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if (manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-            Log.d("INTERNET", "CONNECTED!");
             return true;
         } else {
-            Log.d("INTERNET", "NOT CONNECTED!");
             return false;
         }
     }
@@ -303,7 +301,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button_closest_lake:
-                //changeToClosestCivicPoolActivity();
+                changeToClosestCivicPoolActivity();
                 break;
             case R.id.button_goToList:
                 changeToAllCivicPoolsActivity();
@@ -311,12 +309,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         }
     }
 
-    private void calculateDistances() {
-      //  double userLatitude = location.getLatitude();
-        //double userLongitude = location.getLongitude();
-       // System.out.println("Lati: "+userLatitude);
-        //System.out.println("Longi: "+userLongitude);
-    }
 
     private void changeToAllCivicPoolsActivity() {
         Intent changeToAllCivicPoolsActivity = new Intent (HomeScreenActivity.this, AllCivicPoolsActivity.class);
@@ -324,7 +316,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
     private void changeToClosestCivicPoolActivity() {
-        Intent changeToClosestCivicPoolActivity = new Intent (HomeScreenActivity.this, MapsActivity.class);
+        Intent changeToClosestCivicPoolActivity = new Intent (HomeScreenActivity.this, ClosestCivicPoolActivity.class);
         startActivity(changeToClosestCivicPoolActivity);
     }
 
@@ -504,4 +496,14 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     public void onFormattedLocationReceived(String formattedLocation) {
         System.out.println(formattedLocation);
     }
+
+
+    /*
+    private void calculateDistances() {
+      //  double userLatitude = location.getLatitude();
+        //double userLongitude = location.getLongitude();
+       // System.out.println("Lati: "+userLatitude);
+        //System.out.println("Longi: "+userLongitude);
+    }
+     */
 }

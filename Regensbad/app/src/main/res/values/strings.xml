@@ -82,10 +82,8 @@
     <string name="change_password">Passwort ändern</string>
 
 
-
-
     <!--Main Activity-->
-    <string name="button_closest_lake">Nächsten See finden</string>
+    <string name="button_closest_lake">Nächstes Bad finden</string>
     <string name="button_all_lakes">Alle Badeorte anzeigen</string>
 
     <!--Single List Item-->

@@ -157,7 +157,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         Bundle extras = i.getExtras();
         ID = extras.getInt("ID");
         pool = db.getPoolItem(ID);
-
     }
 
     private void initializeUIElements() {

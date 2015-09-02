@@ -148,7 +148,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
     /* This method was written using the tutorial which is available at:
     http://examples.javacodegeeks.com/android/core/ui/progressbar/android-progress-bar-example/ */
-
     private void createProgressBar() {
         progressBar = new ProgressDialog(this);
         progressBar.setCancelable(true);
