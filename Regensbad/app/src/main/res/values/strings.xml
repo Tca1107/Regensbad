@@ -5,10 +5,7 @@
     <string name="regensburg">Regensburg</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Sortieren nach</string>
-    <string name="sort_AtoZ">A-Z</string>
-    <string name="sort_rating">Bewertung</string>
-    <string name="sort_distance">Distanz</string>
+    <string name="action_settings">Settings</string>
     <string name="app_icon_content_description">app icon</string>
     <string name="user_online_description">User Online</string>
     <string name="no_internet_connection">Keine Internetverbindung</string>
@@ -94,6 +91,11 @@
     <string name="string_open">geöffnet</string>
     <string name="string_closed">geschlossen</string>
     <string name="string_km_airline">km Luftlinie</string>
+
+    <!--AllCivicPoolsActivity-->
+    <string name="sort_AtoZ">nach Alphabet sortieren</string>
+    <string name="sort_rating">nach Bewertung sortieren</string>
+    <string name="sort_distance">nach Entfernung sortieren</string>
 
     <!--Detail View-->
     <string name="string_openTime">Öffnungszeiten:</string>

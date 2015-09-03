@@ -196,6 +196,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         ArrayList<CivicPool> myPoolArray = new ArrayList<CivicPool>();
         myPoolArray.addAll(db.getAllPoolItems());
         ArrayList<CivicPool> myPoolArrayWithCorrectDistances = setTheDecimalPlacesOfCurrentDistanceRight(myPoolArray);
+        pools.clear();
+        pools = myPoolArrayWithCorrectDistances;
         Collections.sort(myPoolArrayWithCorrectDistances);
         adapter = new ListAdapter(this, myPoolArrayWithCorrectDistances);
         list.setAdapter(adapter);
@@ -396,12 +398,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     }*/
 
     private void sortDistance() {
-        Collections.sort(pools, new Comparator<CivicPool>() {
-            @Override
-            public int compare(CivicPool arg0, CivicPool arg1) {
-                return (Double.toString(arg0.getCurrentDistance()).compareToIgnoreCase(Double.toString(arg1.getCurrentDistance())));
-            }
-        });
+        Collections.sort(pools);
         adapter.notifyDataSetChanged();
     }
 
