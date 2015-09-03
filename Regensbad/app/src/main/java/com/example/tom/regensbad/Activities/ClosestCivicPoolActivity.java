@@ -3,6 +3,7 @@ package com.example.tom.regensbad.Activities;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -12,8 +13,10 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -33,6 +36,9 @@ import java.util.List;
 
 public class ClosestCivicPoolActivity extends ActionBarActivity implements LocationUpdater.OnLocationUpdateReceivedListener,
         DistanceDataProvider.DistanceDataReceivedListener {
+
+    /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
+    private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
     // Properties for location updates
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
@@ -93,10 +99,24 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeUIElements();
+        initializeActionBar();
         fetchUserLocation();
         fetchDataFromParse();
     }
 
+    /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
+    with Android", which is available at:
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+    private void initializeActionBar() {
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.home_screen_action_bar, null);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
+        ((TextView)view.findViewById(R.id.text_view_action_bar_home_screen)).setTypeface(typeface);
+        this.getSupportActionBar().setCustomView(view);
+    }
 
 
     private void fetchDataFromParse() {
@@ -268,6 +288,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == android.R.id.home){
+            finish();}
 
         return super.onOptionsItemSelected(item);
     }
