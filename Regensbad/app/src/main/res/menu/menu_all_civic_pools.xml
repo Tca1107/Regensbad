@@ -2,15 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.tom.regensbad.Activities.AllCivicPoolsActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
 
     <item android:id="@+id/sort_AtoZ" android:title="@string/sort_AtoZ"
         android:orderInCategory="100" app:showAsAction="never" />
-
     <item android:id="@+id/sort_rating" android:title="@string/sort_rating"
         android:orderInCategory="100" app:showAsAction="never" />
-
     <item android:id="@+id/sort_distance" android:title="@string/sort_distance"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
