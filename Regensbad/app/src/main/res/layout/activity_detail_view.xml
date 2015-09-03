@@ -5,13 +5,7 @@
     android:background="@drawable/background_for_activities"
     android:weightSum="10">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
 
-
-
-    </ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
