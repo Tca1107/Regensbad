@@ -3,16 +3,20 @@ package com.example.tom.regensbad.Activities;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +25,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.LocationService.LocationUpdater;
@@ -73,6 +79,10 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final int PROGRESS_BAR_MAX = 100;
     private static final int PROGRESS_BAR_SLEEP_TIME = 1000;
 
+    private static final int SCREEN_HEIGHT_DIVIDE_FACTOR = 10;
+    private static final int SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED = 20;
+    private static final int SCREEN_MAX_HEIGHT = 1000;
+
 
     private ImageView poolPicture;
     private TextView textName;
@@ -82,6 +92,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private TextView textWebsite;
     private Button showMapButton;
     private Button startNavigationButton;
+    private RelativeLayout relativeLayout;
 
     private ProgressDialog progressBar;
     private int progressBarStatus = 0;
@@ -92,6 +103,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private double userLong;
     private DistanceDataProvider distanceDataProvider;
 
+    private ParseObject currentPool;
 
 
 
@@ -102,7 +114,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         initializeActionBar();
         fetchUserLocation();
         fetchDataFromParse();
+        handleInput();
     }
+
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
     with Android", which is available at:
@@ -124,7 +138,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                 createProgressBar();
                 processParseComQuery();
             } else {
-                // GetLatestUpdateFromDatabase();
+                // GetLatestUpdateFromDatabase(); myabe rather sorry you are not connected to the internet
             }
 
     }
@@ -165,21 +179,37 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     }
 
     private void setDataOnScreen(ParseObject closestPool, double controlDistance) {
+        currentPool = closestPool;
         String poolName = closestPool.getString(PARSE_NAME);
         calculateDistanceByCar(poolName);
         textName.setText(poolName);
         createTimeView(closestPool.getString(PARSE_OPEN_TIME), closestPool.getString(PARSE_CLOSE_TIME));
         textPhoneNumber.setText(closestPool.getString(PARSE_PHONE_NUMBER));
-        textWebsite.setText(closestPool.getString(PARSE_WEBSITE));
         setPoolPicture(closestPool.getString(PARSE_PIC_PATH));
     }
 
     /*Following four lines retrieved from: http://stackoverflow.com/questions/13105430/android-setting-image-from-string */
     private void setPoolPicture(String picPath) {
+        setScreenHeight();
         int id = getResources().getIdentifier(picPath, DRAWABLE, getPackageName());
         Drawable drawable = getResources().getDrawable(id);
         poolPicture.setImageDrawable(drawable);
         poolPicture.setScaleType(ImageView.ScaleType.FIT_XY);
+
+    }
+
+    // Created with the help of: http://stackoverflow.com/questions/22743153/android-device-screen-resolution
+    private void setScreenHeight() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        Log.d("Höhe", String.valueOf(height));
+        if (height >= SCREEN_MAX_HEIGHT) {
+            relativeLayout.getLayoutParams().height = height/SCREEN_HEIGHT_DIVIDE_FACTOR;
+        } else {
+            relativeLayout.getLayoutParams().height = height /SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED;
+        }
     }
 
     private void calculateDistanceByCar(String poolName) {
@@ -234,6 +264,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             setStatusBarColor();
         }
         setContentView(R.layout.activity_detail_view);
+        relativeLayout = (RelativeLayout)findViewById(R.id.relative_layout);
         poolPicture = (ImageView)findViewById(R.id.imageView_bathIMG);
         textName = (TextView) findViewById(R.id.textView_bathName);
         textName.setText("");
@@ -266,6 +297,49 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     }
 
+
+    private void handleInput() {
+        showMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent goToMap = new Intent(ClosestCivicPoolActivity.this, MapsActivity.class);
+                goToMap.putExtra("ID", currentPool.getString(PARSE_CIVIC_ID));
+                goToMap.putExtra("origin", "detail");
+                startActivity(goToMap);
+            }
+        });
+
+        startNavigationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //From: http://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
+                double lati = (double)currentPool.getNumber(PARSE_LATI);
+                double longi = (double)currentPool.getNumber(PARSE_LONGI);
+                Intent startNavigationIntent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?daddr=" + lati + "," + longi));
+                startActivity(startNavigationIntent);
+            }
+        });
+
+        textWebsite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
+                Intent startBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(currentPool.getString(PARSE_WEBSITE)));
+                startActivity(startBrowser);
+            }
+        });
+
+        textPhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically
+                Intent makeCall = new Intent(Intent.ACTION_CALL);
+                makeCall.setData(Uri.parse("tel:" + currentPool.getString(PARSE_PHONE_NUMBER)));
+                startActivity(makeCall);
+            }
+        });
+    }
 
 
 

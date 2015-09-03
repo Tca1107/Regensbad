@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:fillViewport="false">
+
+
+<LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/background_for_activities"
-    android:weightSum="10">
+    android:weightSum="6.6">
 
     <RelativeLayout
+        android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_weight="3"
         android:layout_marginBottom="25dp">
 
         <ImageView
@@ -26,19 +36,22 @@
             android:textStyle="bold"
             android:background="@layout/round_corners_for_single_lake_list_item"
             android:gravity="center"
+            android:layout_marginBottom="15dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.0"
+        android:layout_weight="0.15"
         android:background="@layout/round_corners_for_single_lake_list_item"
         android:layout_gravity="center"
         android:padding="5dp"
         android:orientation="vertical"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         >
 
         <LinearLayout
@@ -97,58 +110,78 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="350dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="0.01"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"
+        android:weightSum="10"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_showOnMap"
-            android:layout_width="155dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.4"
             android:text="@string/string_showOnMap"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
-            android:layout_alignParentLeft="true"
             android:drawableLeft="@drawable/ic_place_white_24dp"/>
+
+        <View
+            android:id="@+id/view_to_keep_margin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"/>
 
         <Button
             android:id="@+id/button_nav"
-            android:layout_width="155dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.4"
             android:text="@string/string_nav"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
-            android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/ic_navigation_white_24dp"/>
-    </RelativeLayout>
-
-    <LinearLayout
-    android:layout_width="350dp"
-    android:layout_height="0dp"
-    android:layout_weight="1.3"
-    android:background="@layout/round_corners_for_single_lake_list_item"
-    android:layout_gravity="center"
-    android:layout_marginTop="20dp">
-    <TextView
-        android:id="@+id/text_phoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textColor="@color/blue_primary_color"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="350dp"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="0.3"
+    android:background="@layout/round_corners_for_single_lake_list_item"
+    android:layout_gravity="center"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp">
+
+
+        <TextView
+            android:id="@+id/text_phoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/blue_primary_color"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.3"
+        android:layout_weight="0.3"
         android:background="@layout/round_corners_for_single_lake_list_item"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
+
+
         <TextView
             android:id="@+id/text_website"
             android:layout_width="match_parent"
@@ -158,6 +191,10 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:textColor="@color/blue_primary_color"/>
+
+
     </LinearLayout>
 
+
 </LinearLayout>
+</ScrollView>

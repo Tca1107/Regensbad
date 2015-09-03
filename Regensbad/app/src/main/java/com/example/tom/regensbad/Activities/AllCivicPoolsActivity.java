@@ -274,6 +274,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         float[]dist=new float[FLOAT_DISTANCE_LENGTH];
         Location.distanceBetween(userLat, userLong, poolLat, poolLong, dist);
         double toReturn = cutTheRedundantPlaces((double) dist[DISTANCE_LOCATION_IN_FLOAT]/KILOMETERS_FACTOR);
+        Log.d("TORETURNADW", String.valueOf(toReturn));
         return toReturn;
     }
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -14,6 +15,7 @@ import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.CivicPool;
@@ -41,6 +44,10 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
     private static final int FIX_UPDATE_DISTANCE = 5; // meters
 
+    private static final int SCREEN_HEIGHT_DIVIDE_FACTOR = 10;
+    private static final int SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED = 20;
+    private static final int SCREEN_MAX_HEIGHT = 1000;
+
     private int ID;
     private double distance;
     private double userLat;
@@ -55,6 +62,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private TextView textWebsite;
     private Button showMapButton;
     private Button startNavigationButton;
+    private RelativeLayout relativeLayout;
 
     private DistanceDataProvider distanceDataProvider;
     private Database db;
@@ -202,16 +210,33 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         textWebsite = (TextView) findViewById(R.id.text_website);
         showMapButton = (Button) findViewById(R.id.button_showOnMap);
         startNavigationButton = (Button) findViewById(R.id.button_nav);
+        relativeLayout = (RelativeLayout)findViewById(R.id.relative_layout);
     }
 
     /* Following four lines were created with the help of the following web resource:
     http://stackoverflow.com/questions/13105430/android-setting-image-from-string */
     private void setPoolPictureFromPathString() {
+        setScreenHeight();
         String picPath = db.getPicPath(ID);
         int id = getResources().getIdentifier(picPath, "drawable", getPackageName());
         Drawable drawable = getResources().getDrawable(id);
         poolPicture.setImageDrawable(drawable);
         poolPicture.setScaleType(ImageView.ScaleType.FIT_XY);
+    }
+
+
+    // Created with the help of: http://stackoverflow.com/questions/22743153/android-device-screen-resolution
+    private void setScreenHeight() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        Log.d("Höhe", String.valueOf(height));
+        if (height >= SCREEN_MAX_HEIGHT) {
+            relativeLayout.getLayoutParams().height = height/SCREEN_HEIGHT_DIVIDE_FACTOR;
+        } else {
+            relativeLayout.getLayoutParams().height = height /SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED;
+        }
     }
 
 
