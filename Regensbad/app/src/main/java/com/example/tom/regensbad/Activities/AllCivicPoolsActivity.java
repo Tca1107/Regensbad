@@ -41,6 +41,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -352,6 +353,15 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         switch(id){
             case R.id.action_settings:
                 return true;
+            case R.id.sort_AtoZ:
+                sortList();
+                return true;
+            case R.id.sort_rating:
+                //sortRating();
+                return true;
+            case R.id.sort_distance:
+                sortDistance();
+                return true;
             case android.R.id.home:
                 finish();
                 return true;
@@ -363,6 +373,36 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //from http://stackoverflow.com/questions/9109890/android-java-how-to-sort-a-list-of-objects-by-a-certain-value-within-the-object
+    private void sortList() {
+        Collections.sort(pools, new Comparator<CivicPool>() {
+            @Override
+            public int compare(CivicPool arg0, CivicPool arg1) {
+                return arg0.getName().compareToIgnoreCase(arg1.getName());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    /*private void sortRating() {
+        Collections.sort(pools, new Comparator<CivicPool>() {
+            @Override
+            public int compare(CivicPool arg0, CivicPool arg1) {
+                return ();
+            }
+        });
+    }*/
+
+    private void sortDistance() {
+        Collections.sort(pools, new Comparator<CivicPool>() {
+            @Override
+            public int compare(CivicPool arg0, CivicPool arg1) {
+                return (Double.toString(arg0.getCurrentDistance()).compareToIgnoreCase(Double.toString(arg1.getCurrentDistance())));
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 
     // from https://parse.com/docs/android/guide#users
