@@ -15,16 +15,17 @@
         app:showAsAction="ifRoom"/>
 
 
-    <item android:id="@+id/action_myAccount" android:title="@string/action_myAccount"
-        android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_logout" android:title="@string/action_logout"
-        android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/sort_AtoZ" android:title="@string/sort_AtoZ"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/sort_rating" android:title="@string/sort_rating"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/sort_distance" android:title="@string/sort_distance"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_myAccount" android:title="@string/action_myAccount"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_logout" android:title="@string/action_logout"
+        android:orderInCategory="100" app:showAsAction="never" />
+
 
 
 
