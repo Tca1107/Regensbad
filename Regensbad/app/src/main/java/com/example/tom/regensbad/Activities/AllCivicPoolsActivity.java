@@ -354,7 +354,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch(id){
-            case R.id.action_settings:
+            case R.id.button_all_civic_pools_on_map:
+                showAllCivicPoolsOnMap();
                 return true;
             case R.id.sort_AtoZ:
                 sortList();
@@ -376,6 +377,12 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAllCivicPoolsOnMap() {
+        Intent startMapWithAllPools = new Intent(AllCivicPoolsActivity.this, MapsActivity.class);
+        startMapWithAllPools.putExtra("origin", "all");
+        startActivity(startMapWithAllPools);
     }
 
     //from http://stackoverflow.com/questions/9109890/android-java-how-to-sort-a-list-of-objects-by-a-certain-value-within-the-object
