@@ -21,12 +21,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Adapters.ListAdapter;
 import com.example.tom.regensbad.Domain.CivicPool;
-import com.example.tom.regensbad.LocationService.DistanceCalculator;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.Database;
 import com.example.tom.regensbad.R;
@@ -36,10 +34,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -49,22 +44,18 @@ import java.util.List;
 public class AllCivicPoolsActivity extends ActionBarActivity implements
         LocationUpdater.OnLocationUpdateReceivedListener{
 
-
     private ListView list;
     private ListAdapter adapter;
     private ArrayList<CivicPool> pools = new ArrayList<CivicPool>();
 
     private Database db;
 
-
     private ProgressDialog progressBar;
     private int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
 
-
     private double userLat;
     private double userLong;
-
 
     // Properties for location updates
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
@@ -96,7 +87,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
-
 
 
     @Override
@@ -284,7 +274,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     }
 
 
-
     private void handleClick() {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -456,71 +445,5 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         super.onDestroy();
         db.close();
     }
-
-
-
-    /*
-
-        private void getDistances() {
-        LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
-        locationUpdater.setLocationUpdateListener(this);
-        locationUpdater.requestLocationUpdates();
-
-
-
-        distanceDataProvider = new DistanceDataProvider();
-        distanceDataProvider.setOnDistanceDataReceivedListener(this);
-        //distanceCalculator = new DistanceCalculator(this);
-        // hier dann ne for - schleife mit allen Pools
-        // double lat = distanceCalculator.getLatitude();
-        // double longi = distanceCalculator.getLongitude();
-        // hier pool Namen aus Parse holen, unten Guggenberger See als Dummy
-
-            String destinationAddress = "GuggenbergerSee";
-            Log.d("UserLat um 19:18", String.valueOf(userLat));
-            String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + destinationAddress + "&mode=driving&sensor=false";
-            distanceDataProvider.execute(downloadString);
-            //distanceDataProvider.execute("http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + "UniRegensburg" + "&mode=driving&sensor=false");
-
-        // wir muessten das hier dann mit ner arraylist loesen, in die alle distances eingefuegt werden, dann wird der adapter informiert
-        // per notifydatasetcahnged.
-    }
-
-
-
-
-    @Override
-    public void onDataDistanceDataReceived(double dist) {
-            Log.d("krieg mas", String.valueOf(dist));
-       // die können wir nur in der DetailActivity verwenden!!! Async Task geht nur einmal! :-(
-
-            CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "09414009615", "http://www.landkreis-regensburg.de/Freizeit-Tourismus/Freizeitangebote/Baden/GuggenbergerSee(EU).aspx", "0800", "1900", "path", 11, 3.3);
-            //CivicPool test2 = new CivicPool ("Seee in da Hood", "See", 56.2132, 21.3333, "09417777", "inetadresse", "0700", "1700", "path", 23);
-            pools.clear();
-            pools.add(test);
-            Log.d("POOOOLS", String.valueOf(pools));
-            adapter = new ListAdapter(this, pools);
-            list.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-    }
-
-
-
-
-
-       /*private void updateList() {
-        pools.clear();
-        adapter.notifyDataSetChanged();
-    }
-
-
-
-    */
-
-
-
-
-
-
 
 }

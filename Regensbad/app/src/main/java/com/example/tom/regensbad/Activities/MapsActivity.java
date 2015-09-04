@@ -164,7 +164,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         for(int i = 0; i < allPools.size(); i++){
             CivicPool cp = allPools.get(i);
             allMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(cp.getLati(), cp.getLongi())).title(cp.getName()).snippet(snippetText));
-            
+
         }
         handleClick();
     }
