@@ -417,10 +417,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         progressBarStatus += value;
     }
 
-
-
-
-
     @Override
     public void onFormattedLocationReceived(String formattedLocation) {
         int separator = 0;

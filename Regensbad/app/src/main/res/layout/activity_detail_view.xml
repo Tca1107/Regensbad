@@ -192,6 +192,18 @@
             android:layout_gravity="center"
             android:textColor="@color/blue_primary_color"/>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ExpandableListView
+            android:id="@+id/list_view_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ExpandableListView>
 
     </LinearLayout>
 
