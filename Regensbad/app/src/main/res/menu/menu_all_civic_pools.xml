@@ -9,4 +9,6 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/sort_distance" android:title="@string/sort_distance"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/button_all_civic_pools_on_map" android:title="@string/all_civic_pools" android:orderInCategory="100" app:showAsAction="ifRoom" android:icon="@drawable/ic_map_white_24dp" />
 </menu>
