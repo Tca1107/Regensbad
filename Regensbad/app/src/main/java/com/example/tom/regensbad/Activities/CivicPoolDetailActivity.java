@@ -24,6 +24,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -54,15 +55,25 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private double userLong;
 
 
+    /* User interface elements */
     private ImageView poolPicture;
     private TextView textName;
     private TextView textOpenTime;
     private TextView textDistance;
+    private RatingBar averageRating;
     private TextView textPhoneNumber;
     private TextView textWebsite;
     private Button showMapButton;
     private Button startNavigationButton;
     private RelativeLayout relativeLayout;
+    private TextView usernameComment;
+    private RatingBar ratingComment;
+    private TextView comment;
+    private TextView dateComment;
+    private TextView latestComment;
+    private Button makeACommnent;
+    private Button allComments;
+
 
     private DistanceDataProvider distanceDataProvider;
     private Database db;
@@ -74,9 +85,9 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         super.onCreate(savedInstanceState);
         initializeDatabase();
         initializeActionBar();
+        initializeUIElements();
         getExtras();
         getDistance();
-        initializeUIElements();
         handleInput();
     }
 
@@ -178,15 +189,24 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     }
 
     private void getTheElements() {
+        relativeLayout = (RelativeLayout)findViewById(R.id.relative_layout);
         poolPicture = (ImageView)findViewById(R.id.imageView_bathIMG);
         textName = (TextView) findViewById(R.id.textView_bathName);
+        textName.setText("");
+        averageRating = (RatingBar)findViewById(R.id.ratingbar_detailAverageRating);
         textOpenTime = (TextView) findViewById(R.id.textview_openTime);
         textDistance = (TextView) findViewById(R.id.textView_detail_distance);
         textPhoneNumber = (TextView) findViewById(R.id.text_phoneNumber);
         textWebsite = (TextView) findViewById(R.id.text_website);
         showMapButton = (Button) findViewById(R.id.button_showOnMap);
         startNavigationButton = (Button) findViewById(R.id.button_nav);
-        relativeLayout = (RelativeLayout)findViewById(R.id.relative_layout);
+        latestComment = (TextView)findViewById(R.id.text_view_latest_comment);
+        usernameComment = (TextView)findViewById(R.id.text_view_username_comment);
+        ratingComment = (RatingBar)findViewById(R.id.ratingbar_comment_rating);
+        comment = (TextView)findViewById(R.id.text_view_comment);
+        dateComment = (TextView)findViewById(R.id.text_view_comment_date);
+        allComments = (Button)findViewById(R.id.button_show_all_comments);
+        makeACommnent = (Button)findViewById(R.id.button_make_a_comment);
     }
 
     /* Following four lines were created with the help of the following web resource:

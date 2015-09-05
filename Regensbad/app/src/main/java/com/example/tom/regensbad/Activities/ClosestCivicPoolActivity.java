@@ -104,6 +104,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private TextView textName;
     private TextView textOpenTime;
     private TextView textDistance;
+    private RatingBar averageRating;
     private TextView textPhoneNumber;
     private TextView textWebsite;
     private Button showMapButton;
@@ -125,7 +126,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
 
     /* Instance variables needed to calculate the user's distance to the pools. */
-
     private double userLat;
     private double userLong;
     private DistanceDataProvider distanceDataProvider;
@@ -170,19 +170,20 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                 createProgressBar();
                 processParseComQuery();
             } else {
-                // GetLatestUpdateFromDatabase(); myabe rather sorry you are not connected to the internet
+                // GetLatestUpdateFromDatabase(); maybe rather sorry you are not connected to the internet
             }
 
     }
 
 
     /* This method retrieves the latest CommentRating Object from parse.com It was written using the parse.com documentation at:
-  https://parse.com/docs/android/guide#objects-retrieving-objects
+   https://parse.com/docs/android/guide#objects-retrieving-objects
    https://parse.com/docs/android/guide#queries .*/
     private void getDataForLatestComment() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
         query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
-        Log.d("CLOSESTCIVICPOOLID", String.valueOf(closestPoolCivicID));
+        // following line from http://stackoverflow.com/questions/27971733/how-to-get-latest-updated-parse-object-in-android
+        query.orderByDescending(PARSE_CREATED_AT);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -192,20 +193,31 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     }
 
-    /* This method retrieves CommnetRating objects from the parse backend, which consist of the username, the comment itself,
+    /* This method retrieves CommentRating objects from the parse backend, which consist of the username, the comment itself,
     * the user's rating, and the date the comment was submitted. On top, it calculates which one of the commentRating objects
     * is the latest and displays it on the screen. */
     private void getCommentDataAndSetItOnScreen(List<ParseObject> list) {
         String date = "";
+        ParseObject currentObject = list.get(0);
+        Log.d("Datum", String.valueOf(currentObject.getDate(PARSE_CREATED_AT)));
+        usernameComment.setText(currentObject.getString(PARSE_USERNAME));
+        comment.setText(currentObject.getString(PARSE_COMMENT));
+        dateComment.setText(currentObject.getString(PARSE_DATE));
+        ratingComment.setRating((int) currentObject.getNumber(PARSE_RATING));
+        Log.d("RATING", String.valueOf(currentObject.getNumber(PARSE_RATING)));
+        setRatingInDetailView(list);
+    }
+
+    private void setRatingInDetailView(List<ParseObject> list) {
+        int counter = 0;
+        float aggregated = 0;
         for (int i = 0; i < list.size(); i++) {
             ParseObject currentObject = list.get(i);
-            Log.d("Datum", String.valueOf(currentObject.getDate(PARSE_CREATED_AT)));
-            usernameComment.setText(currentObject.getString(PARSE_USERNAME));
-            comment.setText(currentObject.getString(PARSE_COMMENT));
-            dateComment.setText(currentObject.getString(PARSE_DATE));
-            ratingComment.setRating((int) currentObject.getNumber(PARSE_RATING));
-            Log.d("RATING", String.valueOf(currentObject.getNumber(PARSE_RATING)));
+            aggregated += (int)currentObject.getNumber(PARSE_RATING);
+            counter++;
         }
+        float rating = aggregated/counter;
+        averageRating.setRating(rating);
     }
 
 
@@ -346,6 +358,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         poolPicture = (ImageView)findViewById(R.id.imageView_bathIMG);
         textName = (TextView) findViewById(R.id.textView_bathName);
         textName.setText("");
+        averageRating = (RatingBar)findViewById(R.id.ratingbar_detailAverageRating);
         textOpenTime = (TextView) findViewById(R.id.textview_openTime);
         textDistance = (TextView) findViewById(R.id.textView_detail_distance);
         textPhoneNumber = (TextView) findViewById(R.id.text_phoneNumber);
