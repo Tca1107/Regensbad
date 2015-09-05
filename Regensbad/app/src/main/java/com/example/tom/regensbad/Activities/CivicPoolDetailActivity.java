@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tom.regensbad.Domain.CivicPool;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
@@ -55,6 +56,9 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private static final int SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED = 20;
     private static final int SCREEN_MAX_HEIGHT = 1000;
 
+    private static final double DEFAULT_LAT = 49.010259;
+    private static final double DEFAULT_LONG = 12.100722;
+
     private static final String PARSE_COMMENT_RATING = "CommentRating";
     private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
     private static final String PARSE_USERNAME = "userName";
@@ -62,6 +66,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private static final String PARSE_COMMENT = "comment";
     private static final String PARSE_RATING = "rating";
     private static final String PARSE_CREATED_AT = "createdAt";
+
+    private String defaultLocationToast = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
 
     private int ID;
     private double distance;
@@ -354,6 +360,10 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         String longString = formattedLocation.substring(separator + 1);
         userLat = Double.parseDouble(latString);
         userLong = Double.parseDouble(longString);
+
+        if(userLat == DEFAULT_LAT && userLong == DEFAULT_LONG){
+            Toast.makeText(CivicPoolDetailActivity.this, defaultLocationToast, Toast.LENGTH_LONG).show();
+        }
     }
 
     protected void onDestroy(){
