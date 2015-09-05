@@ -45,7 +45,6 @@ import com.example.tom.regensbad.R;
             // copied from respective power point slide from the lecture
             String locService = Context.LOCATION_SERVICE;
             LocationManager locationManager = (LocationManager)context.getSystemService(locService);
-            Log.d("LOCATIONMANAGER", String.valueOf(locationManager));
             Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_COARSE);
             criteria.setPowerRequirement(Criteria.POWER_LOW);
@@ -56,12 +55,9 @@ import com.example.tom.regensbad.R;
             String bestProvider = locationManager.getBestProvider(criteria,
                     true);
             Location location = locationManager.getLastKnownLocation(bestProvider);
-            Log.d("LOCATIONLOCATION", String.valueOf(location));
             if (location != null) {
-                Log.d("LastKnownLoc", String.valueOf(location));
                 // update location now with last known position from GPS provider
                 String formattedLocation = createFormattedLocation(location);
-                Log.d("FORAMTEED", formattedLocation);
                 publishLocationUpdate(formattedLocation);
 
                 // triggers location updates at the specified time and when distance of

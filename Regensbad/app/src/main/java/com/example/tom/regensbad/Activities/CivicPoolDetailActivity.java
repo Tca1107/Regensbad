@@ -67,8 +67,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private DistanceDataProvider distanceDataProvider;
     private Database db;
     private CivicPool pool;
-
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +78,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         getDistance();
         initializeUIElements();
         handleInput();
-
     }
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
@@ -96,10 +94,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         this.getSupportActionBar().setCustomView(view);
     }
 
-
-
     private void getDistance() {
-        System.out.println("Es geht was!");
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
         locationUpdater.setLocationUpdateListener(this);
         locationUpdater.requestLocationUpdates();
@@ -107,14 +102,9 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         distanceDataProvider = new DistanceDataProvider();
         distanceDataProvider.setOnDistanceDataReceivedListener(this);
 
-        String destinationAddress = pool.getName().replace(" ", "-"); //From: http://stackoverflow.com/questions/6932163/removing-spaces-from-string
-        Log.d("Address: ", destinationAddress);
-        Log.d("UserLat um 19:18", String.valueOf(userLat));
-        String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + destinationAddress + "&mode=driving&sensor=false";
-        Log.d("wehdewh", downloadString);
+        String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + pool.getLati() + "," + pool.getLongi() + "&mode=driving&sensor=false";
         distanceDataProvider.execute(downloadString);
     }
-
 
     private void initializeDatabase() {
         db = new Database(this);
@@ -179,7 +169,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         setTheContentOfTheElements();
         setPoolPictureFromPathString();
         createTimeView();
-
     }
 
     private void setTheContentOfTheElements() {
@@ -211,7 +200,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         poolPicture.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 
-
     // Created with the help of: http://stackoverflow.com/questions/22743153/android-device-screen-resolution
     private void setScreenHeight() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -224,7 +212,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
             relativeLayout.getLayoutParams().height = height /SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED;
         }
     }
-
 
     private void createTimeView() {
         String timeString = " " + pool.getOpenTime().substring(0,2) + ":" + pool.getOpenTime().substring(2) + " - " + pool.getCloseTime().substring(0, 2) + ":" + pool.getCloseTime().substring(2);
@@ -239,7 +226,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(CivicPoolDetailActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -290,6 +276,4 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         db.close();
         super.onDestroy();
     }
-
-
 }
