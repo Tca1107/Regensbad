@@ -83,7 +83,7 @@
 
 
     <!--Main Activity-->
-    <string name="button_closest_lake">Nächstes Bad finden</string>
+    <string name="button_closest_lake">Nähestes Bad finden</string>
     <string name="button_all_lakes">Alle Badeorte anzeigen</string>
 
     <!--Single List Item-->
@@ -106,6 +106,7 @@
     <string name="string_infos">Informationen</string>
     <string name="string_ratings">Bewertungen</string>
     <string name="string_website">Zur Website</string>
+    <string name="comments">Kommentare</string>
 
     <!--Dummies-->
     <string name="string_lakeName">Name des Sees</string>
@@ -115,7 +116,9 @@
     <string name="weather_description">stark bewölkt</string>
     <string name="max_temp">H 30°</string>
     <string name="min_temp">T 18°</string>
-
+    <string name="username_list">Nutzername</string>
+    <string name="dummy_commnet">Dieses Schwimmbad ist sehr schön. Es gibt zwei Becken und eine große Wiese zum Entspannen. Auch das Essensangebot ist super, schmeckt gut und kostet nicht zu viel. </string>
+    <string name="dummy_date">Vor 2 Monaten</string>
 
 
     <string name="title_activity_maps">Map</string>

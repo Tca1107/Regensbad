@@ -68,6 +68,7 @@ import com.example.tom.regensbad.R;
             //android.location.LocationManager locationManager = (android.location.LocationManager)context.getSystemService(locService);
             // String provider = LocationManager.GPS_PROVIDER;;
             Location location = locationManager.getLastKnownLocation(bestProvider);
+            Log.d("LOCATIONLOCATION", String.valueOf(location));
             if (location != null) {
                 Log.d("LastKnownLoc", String.valueOf(location));
                 // update location now with last known position from GPS provider

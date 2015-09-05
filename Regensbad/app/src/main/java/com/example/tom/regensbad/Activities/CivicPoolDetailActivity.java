@@ -231,7 +231,7 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         Point size = new Point();
         display.getSize(size);
         int height = size.y;
-        Log.d("Höhe", String.valueOf(height));
+        Log.d("Hoehe", String.valueOf(height));
         if (height >= SCREEN_MAX_HEIGHT) {
             relativeLayout.getLayoutParams().height = height/SCREEN_HEIGHT_DIVIDE_FACTOR;
         } else {

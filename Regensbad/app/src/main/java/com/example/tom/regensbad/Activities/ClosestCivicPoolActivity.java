@@ -24,8 +24,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,11 +48,12 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
-    // Properties for location updates
+    /* Properties for location updates */
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
     private static final int FIX_UPDATE_DISTANCE = 5; // meters
 
 
+    /* Constants of the type String needed for the execution of the queries to the parse backend. */
     private static final String PARSE_CIVIC_POOL = "CivicPool";
     private static final String PARSE_NAME = "name";
     private static final String PARSE_TYPE = "type";
@@ -62,28 +65,41 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final String PARSE_CLOSE_TIME = "closeTime";
     private static final String PARSE_PIC_PATH = "picPath";
     private static final String PARSE_CIVIC_ID = "civicID";
+    private static final String PARSE_COMMENT_RATING = "CommentRating";
+    private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
+    private static final String PARSE_USERNAME = "userName";
+    private static final String PARSE_DATE = "date";
+    private static final String PARSE_COMMENT = "comment";
+    private static final String PARSE_RATING = "rating";
+    private static final String PARSE_CREATED_AT = "createdAt";
 
+    /* Constant of the type String needed for the creation of a drawable from a String. */
     private static final String DRAWABLE = "drawable";
 
+    /* Separators */
     private static final int SUBSTRING_SEPARATOR_START = 0;
     private static final int SUBSTRING_SEPARATOR_END = 2;
 
+    /* Numeric constants needed to calculate distances and to bring the in an acceptable form. */
     private static final int FLOAT_DISTANCE_LENGTH = 1;
     private static final int DISTANCE_LOCATION_IN_FLOAT = 0;
     private static final int KILOMETERS_FACTOR = 1000;
     private static final double DOUBLE_CUTTING_FACTOR = 100.0;
     private static final double CONTROL_DISTANCE = 100.0;
 
+    /* Constants needed for the progress dialog/progress bar. */
     private static final String PROGRESS_BAR_MESSAGE = "Nähestes Bad wird ermittelt.";
     private static final int PROGRESS_BAR_MIN = 0;
     private static final int PROGRESS_BAR_MAX = 100;
     private static final int PROGRESS_BAR_SLEEP_TIME = 1000;
 
-    private static final int SCREEN_HEIGHT_DIVIDE_FACTOR = 10;
-    private static final int SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED = 20;
+    /* Constants needed for making the pool images' design acceptable. */
+    private static final int SCREEN_HEIGHT_DIVIDE_FACTOR = 6;
+    private static final int SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED = 12;
     private static final int SCREEN_MAX_HEIGHT = 1000;
 
 
+    /* User interface elements */
     private ImageView poolPicture;
     private TextView textName;
     private TextView textOpenTime;
@@ -93,17 +109,22 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private Button showMapButton;
     private Button startNavigationButton;
     private RelativeLayout relativeLayout;
+    private TextView usernameComment;
+    private RatingBar ratingComment;
+    private TextView comment;
+    private TextView dateComment;
 
+    /* Instance variables needed for the progress dialog/progress bar. */
     private ProgressDialog progressBar;
     private int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
 
-
+    /* Instance variables needed to calculate the user's distance to the pools. */
     private double userLat;
     private double userLong;
     private DistanceDataProvider distanceDataProvider;
-
     private ParseObject currentPool;
+    private int closestPoolCivicID;
 
 
 
@@ -119,8 +140,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
-    with Android", which is available at:
-     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+     with Android", which is available at:
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+     It enables the bck button and styles the action bar the way it is defined in the corresponding xml layout file.*/
     private void initializeActionBar() {
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -132,7 +154,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         this.getSupportActionBar().setCustomView(view);
     }
 
-
+    /* This method first checks whether the system is connected to the internet. If so, it initializes the progress dialog
+    * and starts to fetch data from the parse backend. If the system is not connected to the internet, a respective dialog
+    * is called that tells the user that he or she is not able to download data from the internet. */
     private void fetchDataFromParse() {
             if (checkIfConnectedToInternet() == true) {
                 createProgressBar();
@@ -141,6 +165,39 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                 // GetLatestUpdateFromDatabase(); myabe rather sorry you are not connected to the internet
             }
 
+    }
+
+
+    /* This method retrieves the latest CommentRating Object from parse.com It was written using the parse.com documentation at:
+  https://parse.com/docs/android/guide#objects-retrieving-objects
+   https://parse.com/docs/android/guide#queries .*/
+    private void getDataForLatestComment() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
+        query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
+        Log.d("CLOSESTCIVICPOOLID", String.valueOf(closestPoolCivicID));
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                getCommentDataAndSetItOnScreen(list);
+            }
+        });
+
+    }
+
+    /* This method retrieves CommnetRating objects from the parse backend, which consist of the username, the comment itself,
+    * the user's rating, and the date the comment was submitted. On top, it calculates which one of the commentRating objects
+    * is the latest and displays it on the screen. */
+    private void getCommentDataAndSetItOnScreen(List<ParseObject> list) {
+        String date = "";
+        for (int i = 0; i < list.size(); i++) {
+            ParseObject currentObject = list.get(i);
+            Log.d("Datum", String.valueOf(currentObject.getDate(PARSE_CREATED_AT)));
+            usernameComment.setText(currentObject.getString(PARSE_USERNAME));
+            comment.setText(currentObject.getString(PARSE_COMMENT));
+            dateComment.setText(currentObject.getString(PARSE_DATE));
+            ratingComment.setRating((int) currentObject.getNumber(PARSE_RATING));
+            Log.d("RATING", String.valueOf(currentObject.getNumber(PARSE_RATING)));
+        }
     }
 
 
@@ -161,6 +218,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         });
     }
 
+    /* Depending on the user's current position, this method calculates which one of is the closest. */
     private void getDataAndFindClosestCivicPool(List<ParseObject> list) {
         double controlDistance = CONTROL_DISTANCE;
         int poolIndex = 0;
@@ -176,8 +234,11 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         }
         ParseObject closestPool = list.get(poolIndex);
         setDataOnScreen(closestPool, controlDistance);
+        closestPoolCivicID = (int) closestPool.getNumber(PARSE_CIVIC_ID);
+        getDataForLatestComment();
     }
 
+    /* Sets the data of the closest civic pool to the screen. */
     private void setDataOnScreen(ParseObject closestPool, double controlDistance) {
         currentPool = closestPool;
         String poolName = closestPool.getString(PARSE_NAME);
@@ -188,7 +249,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         setPoolPicture(closestPool.getString(PARSE_PIC_PATH));
     }
 
-    /*Following four lines retrieved from: http://stackoverflow.com/questions/13105430/android-setting-image-from-string */
+    /*Following four lines retrieved from: http://stackoverflow.com/questions/13105430/android-setting-image-from-string
+    * Helps to get the image for the civic pool from a String. */
     private void setPoolPicture(String picPath) {
         setScreenHeight();
         int id = getResources().getIdentifier(picPath, DRAWABLE, getPackageName());
@@ -198,7 +260,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     }
 
-    // Created with the help of: http://stackoverflow.com/questions/22743153/android-device-screen-resolution
+    /* Created with the help of: http://stackoverflow.com/questions/22743153/android-device-screen-resolution
+    * Calculates the screen height and sets the height of the relative layout containing the pool image correspondingly. */
     private void setScreenHeight() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -212,6 +275,13 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         }
     }
 
+    /* This method calculates the "real" distance between the user's position and the closest pool.
+    * This is to say, it tells the user how many kilometers he or she would need to drive by their car in order
+    * to reach the site of the civic pool. This is done by executing an async task, downloading information from the
+    * Google Maps API. At first, we tried to use the async task for each and every object in the AllCivicPoolsActivity, as well.
+    * However, executing an async task more than once in a single running activity is unfortunately not possible, which is why we
+    * had to resort to calculating beelines instead of actual driver's routes. Calculating the former is possible without
+    * using the async task class and can therefore be performed faster and more than once at a time. */
     private void calculateDistanceByCar(String poolName) {
         distanceDataProvider = new DistanceDataProvider();
         distanceDataProvider.setOnDistanceDataReceivedListener(this);
@@ -220,6 +290,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         distanceDataProvider.execute(downloadString);
     }
 
+    /* Brings the opening times in an acceptable form. */
     private void createTimeView(String openTime, String closeTime) {
         String timeString = " " + openTime.substring(SUBSTRING_SEPARATOR_START,SUBSTRING_SEPARATOR_END)
                 + ":" + openTime.substring(SUBSTRING_SEPARATOR_END)
@@ -234,7 +305,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private double calculateDistance(double poolLat, double poolLong) {
         float[]dist=new float[FLOAT_DISTANCE_LENGTH];
         Location.distanceBetween(userLat, userLong, poolLat, poolLong, dist);
-        double toReturn = cutTheRedundantPlaces((double) dist[DISTANCE_LOCATION_IN_FLOAT]/KILOMETERS_FACTOR);
+        double toReturn = cutTheRedundantPlaces((double) dist[DISTANCE_LOCATION_IN_FLOAT] / KILOMETERS_FACTOR);
         return toReturn;
     }
 
@@ -274,6 +345,10 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         textWebsite = (TextView) findViewById(R.id.text_website);
         showMapButton = (Button) findViewById(R.id.button_showOnMap);
         startNavigationButton = (Button) findViewById(R.id.button_nav);
+        usernameComment = (TextView)findViewById(R.id.text_view_username_comment);
+        ratingComment = (RatingBar)findViewById(R.id.ratingbar_comment_rating);
+        comment = (TextView)findViewById(R.id.text_view_comment);
+        dateComment = (TextView)findViewById(R.id.text_view_comment_date);
     }
 
 
