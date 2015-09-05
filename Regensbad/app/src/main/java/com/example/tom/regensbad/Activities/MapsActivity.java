@@ -95,7 +95,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(MapsActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
-
     }
 
     @Override
@@ -164,7 +163,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         for(int i = 0; i < allPools.size(); i++){
             CivicPool cp = allPools.get(i);
             allMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(cp.getLati(), cp.getLongi())).title(cp.getName()).snippet(snippetText));
-
         }
         handleClick();
     }
@@ -174,18 +172,12 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         mMap.setOnInfoWindowClickListener(this);
     }
 
-
-
     @Override
     public void onInfoWindowClick(Marker marker) {
         if (marker.equals(singleMarker)){
-            Toast.makeText(MapsActivity.this, "Es hat funktioniert!", Toast.LENGTH_SHORT).show();
             Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
             showDetailView.putExtra("ID", singlePool.getID());
             startActivity(showDetailView);
         }
-
     }
-
-
 }
