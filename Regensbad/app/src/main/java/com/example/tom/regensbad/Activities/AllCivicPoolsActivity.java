@@ -355,6 +355,9 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             case R.id.sort_distance:
                 sortDistance();
                 return true;
+            case R.id.sort_type:
+                sortType();
+                return true;
             case android.R.id.home:
                 finish();
                 return true;
@@ -396,6 +399,16 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
     private void sortDistance() {
         Collections.sort(pools);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void sortType() {
+        Collections.sort(pools, new Comparator<CivicPool>() {
+            @Override
+            public int compare(CivicPool arg0, CivicPool arg1) {
+                return arg0.getType().compareToIgnoreCase(arg1.getType());
+            }
+        });
         adapter.notifyDataSetChanged();
     }
 

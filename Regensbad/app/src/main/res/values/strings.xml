@@ -96,6 +96,7 @@
     <string name="sort_AtoZ">nach Alphabet sortieren</string>
     <string name="sort_rating">nach Bewertung sortieren</string>
     <string name="sort_distance">nach Entfernung sortieren</string>
+    <string name="sort_type">nach Typ sortieren</string>
 
     <!--Detail View-->
     <string name="string_openTime">Öffnungszeiten:</string>
