@@ -96,7 +96,6 @@
             android:name=".Activities.CivicPoolDetailActivity"
             android:label="@string/title_activity_civic_pool_detail"
             android:screenOrientation="portrait" >
-
         </activity>
 
         <!-- Some lines from the following piece were taken from http://developer.android.com/guide/topics/search/search-dialog.html -->
@@ -114,7 +113,11 @@
         <activity
             android:name=".Activities.MyAccountActivity"
             android:label="@string/title_activity_my_account"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Activities.AllCommentsActivity"
+            android:label="@string/title_activity_all_comments" >
         </activity>
     </application>
 

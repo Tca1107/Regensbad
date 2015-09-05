@@ -121,8 +121,8 @@
     <string name="max_temp">H 30°</string>
     <string name="min_temp">T 18°</string>
     <string name="username_list">Nutzername</string>
-    <string name="dummy_commnet">Dieses Schwimmbad ist sehr schön. Es gibt zwei Becken und eine große Wiese zum Entspannen. Auch das Essensangebot ist super, schmeckt gut und kostet nicht zu viel. </string>
-    <string name="dummy_date">Vor 2 Monaten</string>
+    <string name="dummy_commnet">Leider hat noch kein Nutzer einen Kommentar zu diesem See bzw. diesem Bad abgegeben. Seien Sie der erste! Drücken Sie einfach auf "Kommentar verfassen". </string>
+    <string name="dummy_date">Gerade Eben</string>
 
 
     <string name="title_activity_maps">Map</string>
@@ -134,6 +134,7 @@
     <string name="title_activity_civic_pool_detail">Details</string>
     <string name="title_activity_search_civic_pools">Suchergebnisse</string>
     <string name="title_activity_my_account">Mein Account</string>
+    <string name="title_activity_all_comments">AllCommentsActivity</string>
 
 
 
