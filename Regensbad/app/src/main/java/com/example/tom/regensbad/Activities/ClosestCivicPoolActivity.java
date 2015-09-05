@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.DistanceDataProvider;
@@ -98,6 +99,10 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final int SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED = 12;
     private static final int SCREEN_MAX_HEIGHT = 1000;
 
+    private static final double DEFAULT_LAT = 49.010259;
+    private static final double DEFAULT_LONG = 12.100722;
+
+    private String defaultLocationToast = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
 
     /* User interface elements */
     private ImageView poolPicture;
@@ -554,6 +559,10 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         String longString = formattedLocation.substring(separator + 1);
         userLat = Double.parseDouble(latString);
         userLong = Double.parseDouble(longString);
+
+        if(userLat == DEFAULT_LAT && userLong == DEFAULT_LONG){
+            Toast.makeText(ClosestCivicPoolActivity.this, defaultLocationToast, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
