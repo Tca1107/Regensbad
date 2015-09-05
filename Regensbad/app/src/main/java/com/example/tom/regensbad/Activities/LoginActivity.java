@@ -76,7 +76,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
 
-
     /* This method checks whether the system has access to the internet.
     * It was created taking the resource which can be found at the following link, as a guideline:
     * http://stackoverflow.com/questions/5474089/how-to-check-currently-internet-connection-is-available-or-not-in-android*/
@@ -91,9 +90,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
 
-
-
-
     private void registerOnClickListeners() {
         login.setOnClickListener(this);
         skip.setOnClickListener(this);
@@ -105,10 +101,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         if(Integer.parseInt(android.os.Build.VERSION.SDK)>=21){
             setStatusBarColor();
         }
-
-
-
-
         appIcon = (ImageView)findViewById(R.id.ic_regensbad_logo_login);
         appIcon.setImageResource(R.drawable.ic_regensbad_logo_login);
         appName = (TextView)findViewById(R.id.text_view_app_name);

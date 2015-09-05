@@ -68,11 +68,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
     private static final String TIME_ZONE = "CET"; // Central European Time
 
-    // Properties for location updates
-    private static final int FIX_UPDATE_TIME = 500; // milliseconds
-    private static final int FIX_UPDATE_DISTANCE = 5; // meters
-
-
     /* Constant of the type string defining the web resource from which the JSON array will be downloaded from.
     * This is provided by the API of www.openweathermap.org . Here, one can get information on the current weather in Regensburg
     * for free. */
@@ -203,8 +198,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
 
-
-
     /* This method was created using the tutorial on including external fonts in Android Studio which can be found
     * at the following website: http://www.thedevline.com/2014/03/how-to-include-fonts-in-android.html .
     * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
@@ -213,8 +206,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
         appName.setTypeface(typeface);
     }
-
-
 
 
     @Override
@@ -497,13 +488,4 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         System.out.println(formattedLocation);
     }
 
-
-    /*
-    private void calculateDistances() {
-      //  double userLatitude = location.getLatitude();
-        //double userLongitude = location.getLongitude();
-       // System.out.println("Lati: "+userLatitude);
-        //System.out.println("Longi: "+userLongitude);
-    }
-     */
 }

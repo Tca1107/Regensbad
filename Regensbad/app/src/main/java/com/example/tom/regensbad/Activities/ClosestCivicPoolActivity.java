@@ -98,7 +98,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
 
-
     private double userLat;
     private double userLong;
     private DistanceDataProvider distanceDataProvider;
@@ -204,7 +203,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         Point size = new Point();
         display.getSize(size);
         int height = size.y;
-        Log.d("Höhe", String.valueOf(height));
         if (height >= SCREEN_MAX_HEIGHT) {
             relativeLayout.getLayoutParams().height = height/SCREEN_HEIGHT_DIVIDE_FACTOR;
         } else {

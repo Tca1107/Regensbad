@@ -31,10 +31,6 @@ public class MyAccountActivity extends ActionBarActivity implements View.OnClick
     private Button changePassword;
     private Button logout;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +39,6 @@ public class MyAccountActivity extends ActionBarActivity implements View.OnClick
         registerOnClickListeners();
         setValuesToTextViews();
         initializeActionBar();
-
     }
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
