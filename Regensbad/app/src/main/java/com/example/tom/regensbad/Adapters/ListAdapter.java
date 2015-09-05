@@ -1,9 +1,7 @@
 package com.example.tom.regensbad.Adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.tom.regensbad.Activities.AllCivicPoolsActivity;
 import com.example.tom.regensbad.Domain.CivicPool;
-import com.example.tom.regensbad.LocationService.DistanceCalculator;
 import com.example.tom.regensbad.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -35,7 +30,6 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
 
     private ArrayList<CivicPool> listItems;
     private Context context;
-    // private CivicPool pool;
 
     private TextView distance;
     private TextView openStatus;
@@ -75,7 +69,6 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
 
             //Rating über parse.com
 
-            //getDistance();
             String currentTime = fetchCurrentTime();
             if (getOpenStatus(Integer.valueOf(currentTime), pool)) {
                 openStatus.setText(OPEN);
@@ -96,29 +89,6 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
       } else {
           return false;
       }
-
-
-
-        //From: http://stackoverflow.com/questions/5369682/get-current-time-and-date-on-android
-        /* Calendar c = Calendar.getInstance();
-        int hours = c.get(Calendar.HOUR_OF_DAY);
-        Log.d("HOURS", String.valueOf(hours));
-
-        int openHours;
-        if(pool.getOpenTime().substring(0).equals("0")){
-            openHours = Integer.parseInt(pool.getOpenTime().substring(1, 2));
-        }else{
-            openHours = Integer.parseInt(pool.getOpenTime().substring(0, 2));
-
-        }
-
-        if(openHours <= hours && Integer.parseInt(pool.getCloseTime().substring(0, 2)) >= hours){
-            openStatus.setText(R.string.string_open);
-            openStatus.setTextColor(Color.parseColor(green)); //Found no other solution, getResourses doesn´t work in adapter classes
-        }else{
-            openStatus.setText(R.string.string_closed);
-            openStatus.setTextColor(Color.parseColor(red));
-        } */
 
     }
 
@@ -143,11 +113,5 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
         return dateInFormat;
     }
 
-    /*
-    private void getDistance() {
-        DistanceCalculator calculator = new DistanceCalculator(context);
-        System.out.println("Adapter: "+pool.getID());
-        distance.setText(String.valueOf(calculator.calculateDistanceToPool(pool.getID())));
-    } */
 
 }

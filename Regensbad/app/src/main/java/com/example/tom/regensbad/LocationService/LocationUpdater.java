@@ -22,20 +22,11 @@ import com.example.tom.regensbad.R;
         private String locService;
         private int time;
         private int distance;
-        private static final String PROVIDER = LocationManager.GPS_PROVIDER;
 
         private Context context;
 
-        private static final String LONGITUDE = "Länge";
-        private static final String LATITUDE = "Breite: ";
-        private static final String ALTITUDE = "Höhe: ";
-        private static final String GROUND_SPEED = "Geschwindigkeit";
-
         private static final String NO_LOCATION_FOUND = "No location found...";
-        private static final String NEW_LINE_CHAR = "\n";
         private static final String REGENSBURG_MAIN_STATION_GPS = "49.010259,12.100722";
-
-        private Location location;
 
         private OnLocationUpdateReceivedListener onLocationUpdateReceivedListener;
 
@@ -51,7 +42,6 @@ import com.example.tom.regensbad.R;
         }
 
         public void requestLocationUpdates() {
-            //Log.d("Requesting location updates in location updater");
             // copied from respective power point slide from the lecture
             String locService = Context.LOCATION_SERVICE;
             LocationManager locationManager = (LocationManager)context.getSystemService(locService);
@@ -65,8 +55,6 @@ import com.example.tom.regensbad.R;
             criteria.setCostAllowed(true);
             String bestProvider = locationManager.getBestProvider(criteria,
                     true);
-            //android.location.LocationManager locationManager = (android.location.LocationManager)context.getSystemService(locService);
-            // String provider = LocationManager.GPS_PROVIDER;;
             Location location = locationManager.getLastKnownLocation(bestProvider);
             Log.d("LOCATIONLOCATION", String.valueOf(location));
             if (location != null) {
@@ -92,13 +80,8 @@ import com.example.tom.regensbad.R;
             }
         }
 
-
-
-
-
     private void publishLocationUpdate(String formattedLocation) {
             if (onLocationUpdateReceivedListener != null) {
-                //Log.d("Publishing location to Activity");
                 onLocationUpdateReceivedListener.onFormattedLocationReceived(formattedLocation);
             } else {
                 Log.d("Location app: ", "Error, location update listener not set.");

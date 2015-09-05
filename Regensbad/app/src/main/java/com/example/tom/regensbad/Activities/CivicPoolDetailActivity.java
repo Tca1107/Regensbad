@@ -104,16 +104,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         locationUpdater.setLocationUpdateListener(this);
         locationUpdater.requestLocationUpdates();
 
-
-
         distanceDataProvider = new DistanceDataProvider();
         distanceDataProvider.setOnDistanceDataReceivedListener(this);
-        //distanceCalculator = new DistanceCalculator(this);
-        // hier dann ne for - schleife mit allen Pools
-        // double lat = distanceCalculator.getLatitude();
-        // double longi = distanceCalculator.getLongitude();
-        // hier pool Namen aus Parse holen, unten Guggenberger See als Dummy
-
 
         String destinationAddress = pool.getName().replace(" ", "-"); //From: http://stackoverflow.com/questions/6932163/removing-spaces-from-string
         Log.d("Address: ", destinationAddress);
@@ -121,10 +113,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + destinationAddress + "&mode=driving&sensor=false";
         Log.d("wehdewh", downloadString);
         distanceDataProvider.execute(downloadString);
-        //distanceDataProvider.execute("http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + "UniRegensburg" + "&mode=driving&sensor=false");
-
-        // wir muessten das hier dann mit ner arraylist loesen, in die alle distances eingefuegt werden, dann wird der adapter informiert
-        // per notifydatasetcahnged.
     }
 
 
@@ -197,7 +185,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private void setTheContentOfTheElements() {
         textName.setText(pool.getName());
         textDistance.setText(String.valueOf(distance));
-        // Log.d("INIDISTANCE: ", String.valueOf(distance));
         textPhoneNumber.setText(pool.getPhoneNumber());
     }
 
@@ -231,7 +218,11 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         Point size = new Point();
         display.getSize(size);
         int height = size.y;
+<<<<<<< HEAD
         Log.d("Hoehe", String.valueOf(height));
+=======
+        Log.d("H�he", String.valueOf(height));
+>>>>>>> origin/master
         if (height >= SCREEN_MAX_HEIGHT) {
             relativeLayout.getLayoutParams().height = height/SCREEN_HEIGHT_DIVIDE_FACTOR;
         } else {
@@ -252,7 +243,6 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(CivicPoolDetailActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
-
     }
 
 

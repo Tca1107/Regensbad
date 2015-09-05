@@ -20,12 +20,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     private Marker singleMarker;
+    private Marker allMarker;
 
+    private String snippetText = "Für Details hier klicken!";
     private String origin;
     private int ID;
 
@@ -36,6 +40,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     private static final double START_LAT = 49.012985;
     private static final double START_LANG = 12.092370;
     private static final float START_ZOOM = 12;
+    private static final float START_ZOOM_ALL = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,9 +142,32 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         handleClick();
         if(origin.equals("detail")){
             setSingleStartPosition();
-            singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(singlePool.getLati(), singlePool.getLongi())).title(singlePool.getName()).snippet("Details"));
+            singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(singlePool.getLati(), singlePool.getLongi())).title(singlePool.getName()).snippet(snippetText));
+        }
+        if (origin.equals("all")){
+            setAllStartPosition();
+            setUpAllMarkers();
         }
   }
+
+    private void setAllStartPosition() {
+        /*From: http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in*/
+        CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(START_LAT, START_LANG));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(START_ZOOM_ALL);
+
+        mMap.moveCamera(start);
+        mMap.animateCamera(zoom);
+    }
+
+    private void setUpAllMarkers() {
+        ArrayList<CivicPool> allPools = db.getAllPoolItems();
+        for(int i = 0; i < allPools.size(); i++){
+            CivicPool cp = allPools.get(i);
+            allMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(cp.getLati(), cp.getLongi())).title(cp.getName()).snippet(snippetText));
+
+        }
+        handleClick();
+    }
 
     private void handleClick() {
         /*From: http://stackoverflow.com/questions/14226453/google-maps-api-v2-how-to-make-markers-clickable*/
@@ -156,6 +184,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             showDetailView.putExtra("ID", singlePool.getID());
             startActivity(showDetailView);
         }
+
     }
 
 

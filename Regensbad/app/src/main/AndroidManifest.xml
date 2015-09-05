@@ -93,11 +93,6 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".Activities.AllCivicPoolsOnMapActivity"
-            android:label="@string/title_activity_all_civic_pools_on_map"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name=".Activities.CivicPoolDetailActivity"
             android:label="@string/title_activity_civic_pool_detail"
             android:screenOrientation="portrait" >

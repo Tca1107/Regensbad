@@ -107,8 +107,8 @@ public class Database {
             newPoolValues.put(KEY_TYPE, civicPool.getType());
             newPoolValues.put(KEY_LATI, civicPool.getLati());
             newPoolValues.put(KEY_LONGI, civicPool.getLongi());
-            newPoolValues.put(KEY_PHONENUMBER, civicPool.getPhoneNumberAsString());
-            newPoolValues.put(KEY_WEBSITE, civicPool.getWebsiteAsString());
+            newPoolValues.put(KEY_PHONENUMBER, civicPool.getPhoneNumber());
+            newPoolValues.put(KEY_WEBSITE, civicPool.getWebsite());
             newPoolValues.put(KEY_OPENTIME, civicPool.getOpenTime());
             newPoolValues.put(KEY_CLOSETIME, civicPool.getCloseTime());
             newPoolValues.put(KEY_PICPATH, civicPool.getPicPath());
@@ -135,9 +135,6 @@ public class Database {
                 String picPath = cursor.getString(COLUMN_PICPATH_INDEX);
                 String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
                 double currentDistance = cursor.getDouble(COLUMN_DISTANCE_INDEX);
-
-                // TETS
-
 
                 result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, openTime, closeTime, picPath, Integer.parseInt(civicID), currentDistance);
                 return result;
@@ -202,33 +199,6 @@ public class Database {
             return poolItems;
 
         }
-
-
-        public int deletePoolItem(CivicPool singleItem) {
-            String whereClause = KEY_NAME + " = '" + singleItem.getName() + "'";
-            db.delete(DATABASE_TABLE, whereClause, null);
-            return 0;
-        }
-
-        public void saveCivicPoolsintoDB(){
-            String count = "SELECT count(*) FROM pooltasks";
-            Cursor mcursor = db.rawQuery(count, null);
-            mcursor.moveToFirst();
-            int icount = mcursor.getInt(0);
-            if(icount>0){
-
-            }else{
-                setUpPools();
-            }
-
-        }
-
-    private void setUpPools() {
-        // testpool
-        CivicPool test = new CivicPool("Guggenberger See", "See", 48.977177, 12.223866, "09414009615", "http://www.landkreis-regensburg.de/Freizeit-Tourismus/Freizeitangebote/Baden/GuggenbergerSee(EU).aspx", "0800", "1900", "path", 11, 7.7);
-
-        addCivicPoolItem(test);
-    }
 
     private class PoolDBOpenHelper extends SQLiteOpenHelper {
             private static final String DATABASE_CREATE = "create table "

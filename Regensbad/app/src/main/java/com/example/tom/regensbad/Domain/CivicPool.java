@@ -63,18 +63,8 @@ public class CivicPool implements Comparable<CivicPool> {
         return phoneNumber;
     }
 
-    public String getPhoneNumberAsString() {
-        String numberString = String.valueOf(phoneNumber);
-        return numberString;
-    }
-
     public String getWebsite() {
         return website;
-    }
-
-    public String getWebsiteAsString() {
-        String webstieString = website.toString();
-        return webstieString;
     }
 
     public String getOpenTime() {
