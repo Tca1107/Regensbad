@@ -175,8 +175,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         textPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically
-                Intent makeCall = new Intent(Intent.ACTION_CALL);
+                //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically and http://developer.android.com/reference/android/content/Intent.html
+                Intent makeCall = new Intent(Intent.ACTION_DIAL);
                 makeCall.setData(Uri.parse("tel:" + pool.getPhoneNumber()));
                 startActivity(makeCall);
             }

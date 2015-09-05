@@ -69,10 +69,6 @@ import com.example.tom.regensbad.R;
             } else {
                 Log.d("REGENSBURGER", "BAHNHOF");
                 publishLocationUpdate(REGENSBURG_MAIN_STATION_GPS);
-
-                // HIER UNBEDINGT DEN USER NOCH WISSEN LASSEN, DASS ES VOM REGENSBURGER BAHNHOF ASU GEMESSEN WIRD!!!!
-
-
             }
         }
 
