@@ -125,12 +125,16 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private Handler progressBarHandler = new Handler();
 
 
-    /* Instance variables needed to calculate the user's distance to the pools. */
+    /* Instance variables needed to calculate the user's distance to the pools and to request data needed for the intents. */
     private double userLat;
     private double userLong;
     private DistanceDataProvider distanceDataProvider;
     private ParseObject currentPool;
     private int closestPoolCivicID;
+    private double poolLati;
+    private double poolLongi;
+    private String poolWebsite;
+    private String poolPhoneNumber;
 
 
 
@@ -187,7 +191,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                getCommentDataAndSetItOnScreen(list);
+                if (list != null) {
+                    getCommentDataAndSetItOnScreen(list);
+                }
             }
         });
 
@@ -197,15 +203,17 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     * the user's rating, and the date the comment was submitted. On top, it calculates which one of the commentRating objects
     * is the latest and displays it on the screen. */
     private void getCommentDataAndSetItOnScreen(List<ParseObject> list) {
-        String date = "";
-        ParseObject currentObject = list.get(0);
-        Log.d("Datum", String.valueOf(currentObject.getDate(PARSE_CREATED_AT)));
-        usernameComment.setText(currentObject.getString(PARSE_USERNAME));
-        comment.setText(currentObject.getString(PARSE_COMMENT));
-        dateComment.setText(currentObject.getString(PARSE_DATE));
-        ratingComment.setRating((int) currentObject.getNumber(PARSE_RATING));
-        Log.d("RATING", String.valueOf(currentObject.getNumber(PARSE_RATING)));
-        setRatingInDetailView(list);
+        if (list.size() > 0) {
+            String date = "";
+            ParseObject currentObject = list.get(0);
+            Log.d("Datum", String.valueOf(currentObject.getDate(PARSE_CREATED_AT)));
+            usernameComment.setText(currentObject.getString(PARSE_USERNAME));
+            comment.setText(currentObject.getString(PARSE_COMMENT));
+            dateComment.setText(currentObject.getString(PARSE_DATE));
+            ratingComment.setRating((int) currentObject.getNumber(PARSE_RATING));
+            Log.d("RATING", String.valueOf(currentObject.getNumber(PARSE_RATING)));
+            setRatingInDetailView(list);
+        }
     }
 
     private void setRatingInDetailView(List<ParseObject> list) {
@@ -253,9 +261,18 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             }
         }
         ParseObject closestPool = list.get(poolIndex);
+        setTheInstanceVariables(closestPool);
         setDataOnScreen(closestPool, controlDistance);
-        closestPoolCivicID = (int) closestPool.getNumber(PARSE_CIVIC_ID);
         getDataForLatestComment();
+    }
+
+    private void setTheInstanceVariables(ParseObject closestPool) {
+        closestPoolCivicID = (int) closestPool.getNumber(PARSE_CIVIC_ID);
+        poolLati = (double)closestPool.getNumber(PARSE_LATI);
+        poolLongi = (double)closestPool.getNumber(PARSE_LONGI);
+        poolPhoneNumber = closestPool.getString(PARSE_PHONE_NUMBER);
+        poolWebsite = closestPool.getString(PARSE_WEBSITE);
+
     }
 
     /* Sets the data of the closest civic pool to the screen. */
@@ -426,28 +443,26 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private void makeACall() {
         //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically
         Intent makeCall = new Intent(Intent.ACTION_CALL);
-        makeCall.setData(Uri.parse("tel:" + currentPool.getString(PARSE_PHONE_NUMBER)));
+        makeCall.setData(Uri.parse("tel:" + poolPhoneNumber));
         startActivity(makeCall);
     }
 
     private void startBrowerAndGoToWebsite() {
         //From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
-        Intent startBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(currentPool.getString(PARSE_WEBSITE)));
+        Intent startBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(poolWebsite));
         startActivity(startBrowser);
     }
 
     private void goToNavigation() {
         //From: http://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
-        double lati = (double)currentPool.getNumber(PARSE_LATI);
-        double longi = (double)currentPool.getNumber(PARSE_LONGI);
         Intent startNavigationIntent = new Intent(android.content.Intent.ACTION_VIEW,
-                Uri.parse("http://maps.google.com/maps?daddr=" + lati + "," + longi));
+                Uri.parse("http://maps.google.com/maps?daddr=" + poolLati + "," + poolLongi));
         startActivity(startNavigationIntent);
     }
 
     private void goToMap() {
         Intent goToMap = new Intent(ClosestCivicPoolActivity.this, MapsActivity.class);
-        goToMap.putExtra("ID", currentPool.getString(PARSE_CIVIC_ID));
+        goToMap.putExtra("ID", closestPoolCivicID);
         goToMap.putExtra("origin", "detail");
         startActivity(goToMap);
     }

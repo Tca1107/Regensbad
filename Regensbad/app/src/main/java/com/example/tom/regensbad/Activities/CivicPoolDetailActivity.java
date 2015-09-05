@@ -33,6 +33,12 @@ import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.Database;
 import com.example.tom.regensbad.Persistence.DistanceDataProvider;
 import com.example.tom.regensbad.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 
 public class CivicPoolDetailActivity extends ActionBarActivity implements DistanceDataProvider.DistanceDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener {
@@ -48,6 +54,14 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     private static final int SCREEN_HEIGHT_DIVIDE_FACTOR = 10;
     private static final int SCREEN_HEIGHT_DIVIDE_FACTOR_EXTENDED = 20;
     private static final int SCREEN_MAX_HEIGHT = 1000;
+
+    private static final String PARSE_COMMENT_RATING = "CommentRating";
+    private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
+    private static final String PARSE_USERNAME = "userName";
+    private static final String PARSE_DATE = "date";
+    private static final String PARSE_COMMENT = "comment";
+    private static final String PARSE_RATING = "rating";
+    private static final String PARSE_CREATED_AT = "createdAt";
 
     private int ID;
     private double distance;
@@ -85,11 +99,13 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         super.onCreate(savedInstanceState);
         initializeDatabase();
         initializeActionBar();
-        initializeUIElements();
         getExtras();
         getDistance();
+        initializeUIElements();
+        setTheCurrentComment();
         handleInput();
     }
+
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
     with Android", which is available at:
@@ -109,10 +125,8 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
         locationUpdater.setLocationUpdateListener(this);
         locationUpdater.requestLocationUpdates();
-
         distanceDataProvider = new DistanceDataProvider();
         distanceDataProvider.setOnDistanceDataReceivedListener(this);
-
         String downloadString = "http://maps.googleapis.com/maps/api/directions/json?origin=" + userLat + "," + userLong + "&destination=" + pool.getLati() + "," + pool.getLongi() + "&mode=driving&sensor=false";
         distanceDataProvider.execute(downloadString);
     }
@@ -237,6 +251,56 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         String timeString = " " + pool.getOpenTime().substring(0,2) + ":" + pool.getOpenTime().substring(2) + " - " + pool.getCloseTime().substring(0, 2) + ":" + pool.getCloseTime().substring(2);
         textOpenTime.setText(timeString);
     }
+
+
+    /* This method retrieves the latest CommentRating Object from parse.com It was written using the parse.com documentation at:
+  https://parse.com/docs/android/guide#objects-retrieving-objects
+  https://parse.com/docs/android/guide#queries .*/
+    private void setTheCurrentComment () {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
+        query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, ID);
+        // following line from http://stackoverflow.com/questions/27971733/how-to-get-latest-updated-parse-object-in-android
+        query.orderByDescending(PARSE_CREATED_AT);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (list != null) {
+                    getCommentDataAndSetItOnScreen(list);
+                }
+            }
+        });
+
+    }
+
+    /* This method retrieves CommentRating objects from the parse backend, which consist of the username, the comment itself,
+    * the user's rating, and the date the comment was submitted. On top, it calculates which one of the commentRating objects
+    * is the latest and displays it on the screen. */
+    private void getCommentDataAndSetItOnScreen(List<ParseObject> list) {
+        String date = "";
+        if (list.size() > 0) {
+            ParseObject currentObject = list.get(0);
+            Log.d("Datum", String.valueOf(currentObject.getDate(PARSE_CREATED_AT)));
+            usernameComment.setText(currentObject.getString(PARSE_USERNAME));
+            comment.setText(currentObject.getString(PARSE_COMMENT));
+            dateComment.setText(currentObject.getString(PARSE_DATE));
+            ratingComment.setRating((int) currentObject.getNumber(PARSE_RATING));
+            Log.d("RATING", String.valueOf(currentObject.getNumber(PARSE_RATING)));
+            setRatingInDetailView(list);
+        }
+    }
+
+    private void setRatingInDetailView(List<ParseObject> list) {
+        int counter = 0;
+        float aggregated = 0;
+        for (int i = 0; i < list.size(); i++) {
+            ParseObject currentObject = list.get(i);
+            aggregated += (int)currentObject.getNumber(PARSE_RATING);
+            counter++;
+        }
+        float rating = aggregated/counter;
+        averageRating.setRating(rating);
+    }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {
