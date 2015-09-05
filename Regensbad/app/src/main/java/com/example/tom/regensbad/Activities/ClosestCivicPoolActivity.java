@@ -43,7 +43,7 @@ import java.util.List;
 
 
 public class ClosestCivicPoolActivity extends ActionBarActivity implements LocationUpdater.OnLocationUpdateReceivedListener,
-        DistanceDataProvider.DistanceDataReceivedListener {
+        DistanceDataProvider.DistanceDataReceivedListener, View.OnClickListener {
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
@@ -113,16 +113,19 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private RatingBar ratingComment;
     private TextView comment;
     private TextView dateComment;
+    private TextView latestComment;
+    private Button makeACommnent;
+    private Button allComments;
+
 
     /* Instance variables needed for the progress dialog/progress bar. */
     private ProgressDialog progressBar;
     private int progressBarStatus = 0;
     private Handler progressBarHandler = new Handler();
 
-<<<<<<< HEAD
+
     /* Instance variables needed to calculate the user's distance to the pools. */
-=======
->>>>>>> origin/master
+
     private double userLat;
     private double userLong;
     private DistanceDataProvider distanceDataProvider;
@@ -136,10 +139,12 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         super.onCreate(savedInstanceState);
         initializeUIElements();
         initializeActionBar();
+        registerOnClickListeners();
         fetchUserLocation();
         fetchDataFromParse();
-        handleInput();
     }
+
+
 
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
@@ -347,10 +352,14 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         textWebsite = (TextView) findViewById(R.id.text_website);
         showMapButton = (Button) findViewById(R.id.button_showOnMap);
         startNavigationButton = (Button) findViewById(R.id.button_nav);
+        latestComment = (TextView)findViewById(R.id.text_view_latest_comment);
         usernameComment = (TextView)findViewById(R.id.text_view_username_comment);
         ratingComment = (RatingBar)findViewById(R.id.ratingbar_comment_rating);
         comment = (TextView)findViewById(R.id.text_view_comment);
         dateComment = (TextView)findViewById(R.id.text_view_comment_date);
+        allComments = (Button)findViewById(R.id.button_show_all_comments);
+        makeACommnent = (Button)findViewById(R.id.button_make_a_comment);
+
     }
 
 
@@ -374,51 +383,61 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     }
 
-
-    private void handleInput() {
-        showMapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent goToMap = new Intent(ClosestCivicPoolActivity.this, MapsActivity.class);
-                goToMap.putExtra("ID", currentPool.getString(PARSE_CIVIC_ID));
-                goToMap.putExtra("origin", "detail");
-                startActivity(goToMap);
-            }
-        });
-
-        startNavigationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //From: http://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
-                double lati = (double)currentPool.getNumber(PARSE_LATI);
-                double longi = (double)currentPool.getNumber(PARSE_LONGI);
-                Intent startNavigationIntent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?daddr=" + lati + "," + longi));
-                startActivity(startNavigationIntent);
-            }
-        });
-
-        textWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
-                Intent startBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(currentPool.getString(PARSE_WEBSITE)));
-                startActivity(startBrowser);
-            }
-        });
-
-        textPhoneNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically
-                Intent makeCall = new Intent(Intent.ACTION_CALL);
-                makeCall.setData(Uri.parse("tel:" + currentPool.getString(PARSE_PHONE_NUMBER)));
-                startActivity(makeCall);
-            }
-        });
+    private void registerOnClickListeners() {
+        showMapButton.setOnClickListener(this);
+        startNavigationButton.setOnClickListener(this);
+        textWebsite.setOnClickListener(this);
+        textPhoneNumber.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.button_showOnMap:
+                goToMap();
+                break;
+            case R.id.button_nav:
+                goToNavigation();
+                break;
+            case R.id.text_website:
+                startBrowerAndGoToWebsite();
+                break;
+            case R.id.text_phoneNumber:
+                makeACall();
+                break;
 
+        }
+
+    }
+
+    private void makeACall() {
+        //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically
+        Intent makeCall = new Intent(Intent.ACTION_CALL);
+        makeCall.setData(Uri.parse("tel:" + currentPool.getString(PARSE_PHONE_NUMBER)));
+        startActivity(makeCall);
+    }
+
+    private void startBrowerAndGoToWebsite() {
+        //From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
+        Intent startBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(currentPool.getString(PARSE_WEBSITE)));
+        startActivity(startBrowser);
+    }
+
+    private void goToNavigation() {
+        //From: http://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
+        double lati = (double)currentPool.getNumber(PARSE_LATI);
+        double longi = (double)currentPool.getNumber(PARSE_LONGI);
+        Intent startNavigationIntent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr=" + lati + "," + longi));
+        startActivity(startNavigationIntent);
+    }
+
+    private void goToMap() {
+        Intent goToMap = new Intent(ClosestCivicPoolActivity.this, MapsActivity.class);
+        goToMap.putExtra("ID", currentPool.getString(PARSE_CIVIC_ID));
+        goToMap.putExtra("origin", "detail");
+        startActivity(goToMap);
+    }
 
 
     @Override
@@ -514,6 +533,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         textDistance.setText(String.valueOf(dist));
         updateProgressBarStatus(PROGRESS_BAR_MAX);
     }
+
 
 
 }

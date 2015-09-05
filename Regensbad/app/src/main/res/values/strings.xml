@@ -102,12 +102,15 @@
     <string name="string_openTime">Öffnungszeiten:</string>
     <string name="string_price">Eintritt</string>
     <string name="string_euro">€</string>
-    <string name="string_showOnMap">auf Karte zeigen</string>
+    <string name="string_showOnMap">Auf Karte zeigen</string>
     <string name="string_nav">Navigation</string>
     <string name="string_infos">Informationen</string>
     <string name="string_ratings">Bewertungen</string>
     <string name="string_website">Zur Website</string>
     <string name="comments">Kommentare</string>
+    <string name="latest_comment">Neuester Kommentar: </string>
+    <string name="all_comments">Alle Kommntare</string>
+    <string name="make_a_comment">Kommentar verfassen</string>
 
     <!--Dummies-->
     <string name="string_lakeName">Name des Sees</string>

@@ -18,7 +18,7 @@
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="5"
         android:layout_marginBottom="25dp">
 
         <ImageView
@@ -130,7 +130,8 @@
             android:text="@string/string_showOnMap"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
-            android:drawableLeft="@drawable/ic_place_white_24dp"/>
+            android:drawableLeft="@drawable/ic_place_white_24dp"
+            android:textAllCaps="false"/>
 
         <View
             android:id="@+id/view_to_keep_margin"
@@ -146,7 +147,8 @@
             android:text="@string/string_nav"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
-            android:drawableLeft="@drawable/ic_navigation_white_24dp"/>
+            android:drawableLeft="@drawable/ic_navigation_white_24dp"
+            android:textAllCaps="false"/>
     </LinearLayout>
 
     <LinearLayout
@@ -193,6 +195,21 @@
             android:textColor="@color/blue_primary_color"/>
 
     </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/text_view_latest_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:text="@string/latest_comment"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="-10dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -241,11 +258,54 @@
             android:paddingLeft="10dp"
             android:layout_marginBottom="5dp"/>
 
-
-
-
-
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.01"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"
+        android:weightSum="10"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_show_all_comments"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.4"
+            android:text="@string/all_comments"
+            android:background="@drawable/button_selector"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/ic_list_white_24dp"
+            android:paddingLeft="5dp"
+            />
+
+        <View
+            android:id="@+id/view_to_keep_margin_two"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"/>
+
+        <Button
+            android:id="@+id/button_make_a_comment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.4"
+            android:text="@string/make_a_comment"
+            android:background="@drawable/button_selector"
+            android:textColor="@drawable/button_text_color"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/ic_comment_white_24dp"
+            android:paddingLeft="5dp"/>
+    </LinearLayout>
+
+
+
 
 
 
