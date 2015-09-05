@@ -423,6 +423,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         startNavigationButton.setOnClickListener(this);
         textWebsite.setOnClickListener(this);
         textPhoneNumber.setOnClickListener(this);
+        allComments.setOnClickListener(this);
+        makeACommnent.setOnClickListener(this);
     }
 
     @Override
@@ -440,9 +442,18 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             case R.id.text_phoneNumber:
                 makeACall();
                 break;
+            case R.id.button_show_all_comments:
+                switchToAllCommentsActivity();
+                break;
 
         }
 
+    }
+
+    private void switchToAllCommentsActivity() {
+        Intent switchToAllCommentsActivity = new Intent (ClosestCivicPoolActivity.this, AllCommentsActivity.class);
+        switchToAllCommentsActivity.putExtra("id", closestPoolCivicID);
+        startActivity(switchToAllCommentsActivity);
     }
 
     private void makeACall() {

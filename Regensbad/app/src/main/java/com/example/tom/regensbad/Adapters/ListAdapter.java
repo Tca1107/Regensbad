@@ -2,6 +2,7 @@ package com.example.tom.regensbad.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,15 @@ import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.CivicPool;
 import com.example.tom.regensbad.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -28,20 +34,30 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
     private static final int SUBSTRING_START = 11;
     private static final int SUBSTRING_END = 16;
 
-    private ArrayList<CivicPool> listItems;
-    private Context context;
-
-    private TextView distance;
-    private TextView openStatus;
-
     private static final String GREEN = "#4CAF50";
     private static final String RED = "#F44336";
     private static final String OPEN = "geöffnet";
     private static final String CLOSED = "geschlossen";
 
+    private static final String PARSE_COMMENT_RATING = "CommentRating";
+    private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
+    private static final String PARSE_USERNAME = "userName";
+    private static final String PARSE_DATE = "date";
+    private static final String PARSE_COMMENT = "comment";
+    private static final String PARSE_RATING = "rating";
+    private static final String PARSE_CREATED_AT = "createdAt";
+
+    private ArrayList<CivicPool> listItems;
+    private Context context;
+
+    private TextView distance;
+    private TextView openStatus;
+    private RatingBar ratingBar;
+
+
+
     public ListAdapter (Context context, ArrayList<CivicPool> listItems){
         super(context, R.layout.single_lake_list_item, listItems);
-
         this.context = context;
         this.listItems = listItems;
     }
@@ -59,15 +75,15 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
         if(pool != null){
             TextView poolName = (TextView) v.findViewById(R.id.textview_lakeName);
             TextView poolType = (TextView) v.findViewById(R.id.textview_bathType);
-            RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingbar_averageRatingPreview);
+            ratingBar = (RatingBar) v.findViewById(R.id.ratingbar_averageRatingPreview);
             distance = (TextView) v.findViewById(R.id.textview_distance);
             openStatus = (TextView) v.findViewById(R.id.textview_openStatus);
 
             poolName.setText(pool.getName());
             poolType.setText(pool.getType());
             distance.setText(String.valueOf(pool.getCurrentDistance()));
+            getDataForRating(pool.getID());
 
-            //Rating über parse.com
 
             String currentTime = fetchCurrentTime();
             if (getOpenStatus(Integer.valueOf(currentTime), pool)) {
@@ -80,6 +96,40 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
         }
         return v;
     }
+
+    /* This method retrieves the latest CommentRating Object from parse.com It was written using the parse.com documentation at:
+  https://parse.com/docs/android/guide#objects-retrieving-objects
+  https://parse.com/docs/android/guide#queries .*/
+    private void getDataForRating(int poolID) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
+        query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, poolID);
+        // following line from http://stackoverflow.com/questions/27971733/how-to-get-latest-updated-parse-object-in-android
+        query.orderByDescending(PARSE_CREATED_AT);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (list != null) {
+                    setRatingInListElement(list);
+                }
+            }
+        });
+
+    }
+
+
+    private void setRatingInListElement(List<ParseObject> list) {
+        int counter = 0;
+        float aggregated = 0;
+        for (int i = 0; i < list.size(); i++) {
+            ParseObject currentObject = list.get(i);
+            aggregated += (int)currentObject.getNumber(PARSE_RATING);
+            counter++;
+        }
+        float rating = aggregated/counter;
+        ratingBar.setRating(rating);
+    }
+
+
 
   private boolean getOpenStatus(int currentTime, CivicPool pool) {
       int openTime = Integer.valueOf(pool.getOpenTime());
