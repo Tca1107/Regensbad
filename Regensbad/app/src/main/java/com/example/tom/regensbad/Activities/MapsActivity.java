@@ -3,6 +3,7 @@ package com.example.tom.regensbad.Activities;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -21,6 +22,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWindowClickListener {
 
@@ -28,6 +33,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     private Marker singleMarker;
     private Marker allMarker;
+
+    private HashMap<Marker, Integer> map;
 
     private String snippetText = "Für Details hier klicken!";
     private String origin;
@@ -160,9 +167,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     private void setUpAllMarkers() {
         ArrayList<CivicPool> allPools = db.getAllPoolItems();
+        map = new HashMap<>();
         for(int i = 0; i < allPools.size(); i++){
             CivicPool cp = allPools.get(i);
             allMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(cp.getLati(), cp.getLongi())).title(cp.getName()).snippet(snippetText));
+            map.put(allMarker, cp.getID());
         }
         handleClick();
     }
@@ -177,6 +186,12 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         if (marker.equals(singleMarker)){
             Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
             showDetailView.putExtra("ID", singlePool.getID());
+            startActivity(showDetailView);
+        }else {
+            //From: http://stackoverflow.com/questions/16714327/differentiate-between-different-markers-in-maps-api-v2-unique-identifiers
+            int id = map.get(marker);
+            Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
+            showDetailView.putExtra("ID", id);
             startActivity(showDetailView);
         }
     }
