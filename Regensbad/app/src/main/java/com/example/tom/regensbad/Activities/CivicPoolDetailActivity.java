@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tom.regensbad.Domain.CivicPool;
+import com.example.tom.regensbad.Domain.CommentRating;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.Database;
 import com.example.tom.regensbad.Persistence.DistanceDataProvider;
@@ -43,7 +45,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class CivicPoolDetailActivity extends ActionBarActivity implements DistanceDataProvider.DistanceDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener,
@@ -72,9 +77,29 @@ View.OnClickListener{
     private static final String PARSE_RATING = "rating";
     private static final String PARSE_CREATED_AT = "createdAt";
 
+    /* Constants used to calculate the current time. */
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
+    private static final String TIME_ZONE = "CET"; // Central European Time
+    private static final int SUBSTRING_TIME_START = 11;
+    private static final int SUBSTRING_TIME_END = 16;
+    private static final int SUBSTRING_DAY_START = 8;
+    private static final int SUBSTRING_DAY_END = 10;
+    private static final int SUBSTRING_MONTH_START = 5;
+    private static final int SUBSTRING_MONTH_END = 7;
+    private static final int SUBSTRING_YEAR_START = 0;
+    private static final int SUBSTRING_YEAR_END = 4;
+
     /* Constants of the type String needed for the Toasts. */
     private static final String DEFAULT_LOCATION_TOAST = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
     private static final String NOT_ALLOWED_TO_COMMENT = "Sie haben keinen Account oder sind nicht eingeloggt. Sie können daher keine Kommentare oder Bewertungen abgeben.";
+    private static final int MIN_COMMENT_LENGTH = 5;
+    private static final int MAX_COMMENT_LENGTH = 250;
+    private static final String COMMENT_TOO_SHORT = "Ein Kommentar muss mindestens fünf Zeichen umfassen.";
+    private static final String COMMENT_TOO_LONG = "Ein Kommentar darf nicht mehr als 250 Zeichen umfassen.";
+    private static final String FORGOT_RATING = "Bitte geben Sie eine Bewertung ab.";
+    private static final int MIN_RATING = 1;
+
+
 
     private int ID;
     private double distance;
@@ -373,7 +398,6 @@ View.OnClickListener{
             case R.id.text_phoneNumber:
                 makeACall();
                 break;
-
         }
     }
 
@@ -393,12 +417,16 @@ View.OnClickListener{
         poolName.setText(textName.getText().toString());
         TextView userName = (TextView)dialogView.findViewById(R.id.text_view_dialog_comment_username);
         userName.setText(ParseUser.getCurrentUser().getUsername());
+        final EditText commentFromUser = (EditText)dialogView.findViewById(R.id.text_view_dialog_comment);
+        final RatingBar ratingFromUser = (RatingBar)dialogView.findViewById(R.id.ratingbar_dialog_comment);
 
         dialogBuilder.setTitle(R.string.make_a_comment);
         dialogBuilder.setPositiveButton(R.string.submit_comment, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // get data and post it to parse
+                String userComment = commentFromUser.getText().toString();
+                int userRating = (int)ratingFromUser.getRating();
+                postObjectToParseBackend(userComment, userRating);
             }
         });
         dialogBuilder.setNegativeButton(R.string.cancel_submit_comment, new Dialog.OnClickListener() {
@@ -410,6 +438,63 @@ View.OnClickListener{
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
     }
+
+    /* This method was created using the official parse.com documentation as a source:
+    * https://parse.com/docs/android/guide#objects .*/
+    private void postObjectToParseBackend(String userComment, int userRating) {
+        if (userComment.length() < MIN_COMMENT_LENGTH) {
+            Toast.makeText(CivicPoolDetailActivity.this, COMMENT_TOO_SHORT, Toast.LENGTH_LONG).show();
+        } else if (userComment.length() > MAX_COMMENT_LENGTH) {
+            Toast.makeText(CivicPoolDetailActivity.this, COMMENT_TOO_LONG, Toast.LENGTH_LONG).show();
+        } else if (userRating < MIN_RATING) {
+            Toast.makeText(CivicPoolDetailActivity.this, FORGOT_RATING, Toast.LENGTH_LONG).show();
+        } else {
+            ParseObject commentObject = new ParseObject(PARSE_COMMENT_RATING);
+            commentObject.put(PARSE_USERNAME, ParseUser.getCurrentUser().getUsername());
+            commentObject.put(PARSE_RATING, userRating);
+            String date = fetchCurrentTime();
+            commentObject.put(PARSE_DATE, date);
+            commentObject.put(PARSE_CORRESPONDING_CIVIC_ID, ID);
+            commentObject.put(PARSE_COMMENT, userComment);
+            commentObject.saveInBackground();
+            CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
+                    ID, userRating, date);
+            updateLatestComment(commentRating);
+        }
+    }
+
+    private void updateLatestComment(CommentRating commentRating) {
+        usernameComment.setText(commentRating.getUserName());
+        ratingComment.setRating(commentRating.getRating());
+        comment.setText(commentRating.getComment());
+        dateComment.setText(commentRating.getDate());
+    }
+
+    /* This method was written using the resource http://stackoverflow.com/questions/8077530/android-get-current-timestamp
+    * as a guideline. It gets the current time of the system. */
+    private String fetchCurrentTime () {
+        long time = System.currentTimeMillis();
+        String formattedTime = formatTimeString(time);
+        String formattedTimeString =
+                formattedTime.substring(SUBSTRING_DAY_START, SUBSTRING_DAY_END) + "."
+                + formattedTime.substring(SUBSTRING_MONTH_START, SUBSTRING_MONTH_END) + "."
+                + formattedTime.substring(SUBSTRING_YEAR_START, SUBSTRING_YEAR_END) + "  "
+                + formattedTime.substring(SUBSTRING_TIME_START, SUBSTRING_TIME_END);
+        Log.d("aktuelle Zeit", formattedTimeString);
+        return formattedTimeString;
+    }
+
+
+    /* This method was written using the resource http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
+    * as a guideline. It formats the unix time string into a human-readable format. */
+    private String formatTimeString(long time) {
+        Date todayDate = new Date (time);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+        String dateInFormat = simpleDateFormat.format(todayDate);
+        return dateInFormat;
+    }
+
 
 
     private void makeACall() {
