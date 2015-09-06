@@ -133,7 +133,7 @@ public class CreateAccountActivity extends ActionBarActivity {
         String mailAddress = this.mailAddress.getText().toString();
         String username = this.username.getText().toString();
         String password = this.password.getText().toString();
-        // hier noch toaten was genau fehlt, falls was leer is
+        // hier noch toasten was genau fehlt, falls was leer is
         ParseUser user = new ParseUser();
         user.setEmail(mailAddress);
         user.setUsername(username);

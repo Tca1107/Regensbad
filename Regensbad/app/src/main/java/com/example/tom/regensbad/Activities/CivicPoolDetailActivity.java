@@ -1,7 +1,10 @@
 package com.example.tom.regensbad.Activities;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
@@ -38,6 +41,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -68,7 +72,9 @@ View.OnClickListener{
     private static final String PARSE_RATING = "rating";
     private static final String PARSE_CREATED_AT = "createdAt";
 
-    private String defaultLocationToast = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
+    /* Constants of the type String needed for the Toasts. */
+    private static final String DEFAULT_LOCATION_TOAST = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
+    private static final String NOT_ALLOWED_TO_COMMENT = "Sie haben keinen Account oder sind nicht eingeloggt. Sie können daher keine Kommentare oder Bewertungen abgeben.";
 
     private int ID;
     private double distance;
@@ -111,12 +117,15 @@ View.OnClickListener{
         initializeUIElements();
         registerOnClickListeners();
         setTheCurrentComment();
-        handleInput();
     }
 
     private void registerOnClickListeners() {
         makeACommnent.setOnClickListener(this);
         allComments.setOnClickListener(this);
+        showMapButton.setOnClickListener(this);
+        startNavigationButton.setOnClickListener(this);
+        textWebsite.setOnClickListener(this);
+        textPhoneNumber.setOnClickListener(this);
     }
 
 
@@ -149,46 +158,7 @@ View.OnClickListener{
         db.open();
     }
 
-    private void handleInput() {
-        showMapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent goToMap = new Intent(CivicPoolDetailActivity.this, MapsActivity.class);
-                goToMap.putExtra("ID", pool.getID());
-                goToMap.putExtra("origin", "detail");
-                startActivity(goToMap);
-            }
-        });
 
-        startNavigationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //From: http://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
-                Intent startNavigationIntent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?daddr=" + pool.getLati() + "," + pool.getLongi()));
-                startActivity(startNavigationIntent);
-            }
-        });
-
-        textWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
-                Intent startBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(pool.getWebsite()));
-                startActivity(startBrowser);
-            }
-        });
-
-        textPhoneNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically and http://developer.android.com/reference/android/content/Intent.html
-                Intent makeCall = new Intent(Intent.ACTION_DIAL);
-                makeCall.setData(Uri.parse("tel:" + pool.getPhoneNumber()));
-                startActivity(makeCall);
-            }
-        });
-    }
 
     private void getExtras() {
         Intent i = getIntent();
@@ -369,7 +339,7 @@ View.OnClickListener{
         userLong = Double.parseDouble(longString);
 
         if(userLat == DEFAULT_LAT && userLong == DEFAULT_LONG){
-            Toast.makeText(CivicPoolDetailActivity.this, defaultLocationToast, Toast.LENGTH_LONG).show();
+            Toast.makeText(CivicPoolDetailActivity.this, DEFAULT_LOCATION_TOAST, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -381,12 +351,94 @@ View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
+            case R.id.button_make_a_comment:
+                if (ParseUser.getCurrentUser() != null) {
+                    showCommentDialog();
+                } else {
+                    showYouAreNotSignedInToast();
+                }
+                break;
             case R.id.button_show_all_comments:
                 switchToAllCommentsActivity();
+                break;
+            case R.id.text_website:
+                goToWebsite();
+                break;
+            case R.id.button_nav:
+                startNavigation();
+                break;
+            case R.id.button_showOnMap:
+                goToMap();
+                break;
+            case R.id.text_phoneNumber:
+                makeACall();
                 break;
 
         }
     }
+
+
+    private void showYouAreNotSignedInToast() {
+        Toast.makeText(CivicPoolDetailActivity.this, NOT_ALLOWED_TO_COMMENT, Toast.LENGTH_LONG).show();
+    }
+
+    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source. */
+    private void showCommentDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_comment_rating, null);
+        dialogBuilder.setView(dialogView);
+
+        TextView poolName = (TextView)dialogView.findViewById(R.id.text_view_dialog_comment_civic_pool_name);
+        poolName.setText(textName.getText().toString());
+        TextView userName = (TextView)dialogView.findViewById(R.id.text_view_dialog_comment_username);
+        userName.setText(ParseUser.getCurrentUser().getUsername());
+
+        dialogBuilder.setTitle(R.string.make_a_comment);
+        dialogBuilder.setPositiveButton(R.string.submit_comment, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // get data and post it to parse
+            }
+        });
+        dialogBuilder.setNegativeButton(R.string.cancel_submit_comment, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // nothing since the dialog only closes
+            }
+        });
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+
+    private void makeACall() {
+        //From: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically and http://developer.android.com/reference/android/content/Intent.html
+        Intent makeCall = new Intent(Intent.ACTION_DIAL);
+        makeCall.setData(Uri.parse("tel:" + pool.getPhoneNumber()));
+        startActivity(makeCall);
+    }
+
+    private void goToWebsite() {
+        //From: http://stackoverflow.com/questions/2201917/how-can-i-open-a-url-in-androids-web-browser-from-my-application
+        Intent startBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(pool.getWebsite()));
+        startActivity(startBrowser);
+    }
+
+    private void startNavigation() {
+        //From: http://stackoverflow.com/questions/2662531/launching-google-maps-directions-via-an-intent-on-android
+        Intent startNavigationIntent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr=" + pool.getLati() + "," + pool.getLongi()));
+        startActivity(startNavigationIntent);
+    }
+
+    private void goToMap() {
+        Intent goToMap = new Intent(CivicPoolDetailActivity.this, MapsActivity.class);
+        goToMap.putExtra("ID", pool.getID());
+        goToMap.putExtra("origin", "detail");
+        startActivity(goToMap);
+    }
+
 
     private void switchToAllCommentsActivity() {
         Intent switchToAllCommentsActivity = new Intent (CivicPoolDetailActivity.this, AllCommentsActivity.class);

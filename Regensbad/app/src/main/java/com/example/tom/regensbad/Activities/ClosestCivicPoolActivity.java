@@ -1,8 +1,11 @@
 package com.example.tom.regensbad.Activities;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -38,6 +41,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +106,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final double DEFAULT_LAT = 49.010259;
     private static final double DEFAULT_LONG = 12.100722;
 
-    private String defaultLocationToast = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
+    /* Constants of the type String needed for the Toasts. */
+    private static final String DEFAULT_LOCATION_TOAST = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
+    private static final String NOT_ALLOWED_TO_COMMENT = "Sie haben keinen Account oder sind nicht eingeloggt. Sie können daher keine Kommentare oder Bewertungen abgeben.";
 
     /* User interface elements */
     private ImageView poolPicture;
@@ -445,10 +451,51 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             case R.id.button_show_all_comments:
                 switchToAllCommentsActivity();
                 break;
+            case R.id.button_make_a_comment:
+                if (ParseUser.getCurrentUser() != null) {
+                    showCommentDialog();
+                } else {
+                    showYouAreNotSignedInToast();
+                }
+                break;
 
         }
 
     }
+
+    private void showYouAreNotSignedInToast() {
+        Toast.makeText(ClosestCivicPoolActivity.this, NOT_ALLOWED_TO_COMMENT, Toast.LENGTH_LONG).show();
+    }
+
+    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source. */
+    private void showCommentDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_comment_rating, null);
+        dialogBuilder.setView(dialogView);
+
+        TextView poolName = (TextView)dialogView.findViewById(R.id.text_view_dialog_comment_civic_pool_name);
+        poolName.setText(textName.getText().toString());
+        TextView userName = (TextView)dialogView.findViewById(R.id.text_view_dialog_comment_username);
+        userName.setText(ParseUser.getCurrentUser().getUsername());
+
+        dialogBuilder.setTitle(R.string.make_a_comment);
+        dialogBuilder.setPositiveButton(R.string.submit_comment, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // get data and post it to parse
+            }
+        });
+        dialogBuilder.setNegativeButton(R.string.cancel_submit_comment, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // nothing since the dialog only closes
+            }
+        });
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
 
     private void switchToAllCommentsActivity() {
         Intent switchToAllCommentsActivity = new Intent (ClosestCivicPoolActivity.this, AllCommentsActivity.class);
@@ -572,7 +619,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         userLong = Double.parseDouble(longString);
 
         if(userLat == DEFAULT_LAT && userLong == DEFAULT_LONG){
-            Toast.makeText(ClosestCivicPoolActivity.this, defaultLocationToast, Toast.LENGTH_LONG).show();
+            Toast.makeText(ClosestCivicPoolActivity.this, DEFAULT_LOCATION_TOAST, Toast.LENGTH_LONG).show();
         }
     }
 
