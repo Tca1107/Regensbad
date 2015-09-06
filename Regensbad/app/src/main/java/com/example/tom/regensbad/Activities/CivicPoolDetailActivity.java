@@ -42,7 +42,8 @@ import com.parse.ParseQuery;
 import java.util.List;
 
 
-public class CivicPoolDetailActivity extends ActionBarActivity implements DistanceDataProvider.DistanceDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener {
+public class CivicPoolDetailActivity extends ActionBarActivity implements DistanceDataProvider.DistanceDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener,
+View.OnClickListener{
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
@@ -108,8 +109,14 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
         getExtras();
         getDistance();
         initializeUIElements();
+        registerOnClickListeners();
         setTheCurrentComment();
         handleInput();
+    }
+
+    private void registerOnClickListeners() {
+        makeACommnent.setOnClickListener(this);
+        allComments.setOnClickListener(this);
     }
 
 
@@ -369,5 +376,21 @@ public class CivicPoolDetailActivity extends ActionBarActivity implements Distan
     protected void onDestroy(){
         db.close();
         super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.button_show_all_comments:
+                switchToAllCommentsActivity();
+                break;
+
+        }
+    }
+
+    private void switchToAllCommentsActivity() {
+        Intent switchToAllCommentsActivity = new Intent (CivicPoolDetailActivity.this, AllCommentsActivity.class);
+        switchToAllCommentsActivity.putExtra("id", ID);
+        startActivity(switchToAllCommentsActivity);
     }
 }

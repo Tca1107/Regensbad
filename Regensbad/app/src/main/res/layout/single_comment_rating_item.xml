@@ -20,16 +20,13 @@
         android:text="@string/user_name"
         android:textColor="@color/blue_primary_color"
         android:textSize="16sp"
-        android:paddingLeft="10dp"
         android:layout_marginBottom="5dp"/>
 
     <RatingBar
         android:id="@+id/ratingbar_comment_rating_single"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"
-        android:layout_marginLeft="10dp"
         android:layout_marginBottom="5dp"/>
 
     <TextView
@@ -38,16 +35,13 @@
         android:layout_height="wrap_content"
         android:text="@string/dummy_commnet"
         android:textColor="@color/black"
-        android:paddingLeft="10dp"
         android:layout_marginBottom="5dp"/>
 
     <TextView
         android:id="@+id/text_view_comment_date_single"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dummy_date"
-        android:paddingLeft="10dp"
-        android:layout_marginBottom="5dp"/>
+        android:text="@string/dummy_date" />
 
     </LinearLayout>
 
