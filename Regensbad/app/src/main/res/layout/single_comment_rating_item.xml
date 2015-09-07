@@ -46,17 +46,10 @@
             android:id="@+id/text_view_comment_date_single"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dummy_date" />
-        <ImageView
-            android:id="@+id/image_view_thumbs_down"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_thumb_down_blue_24dp"
-            android:scaleType="fitXY"
-            android:layout_below="@+id/text_view_comment_date_single"
-            android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@+id/image_view_thumbs_up"
-            android:layout_toStartOf="@+id/image_view_thumbs_up" />
+            android:text="@string/dummy_date"
+            android:gravity="center_vertical"
+             />
+
         <ImageView
             android:id="@+id/image_view_thumbs_up"
             android:layout_width="wrap_content"
