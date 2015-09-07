@@ -1,10 +1,13 @@
 package com.example.tom.regensbad.Persistence;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
 
 
 /**
@@ -45,21 +48,46 @@ public class RatingDatabase {
         db.close();
     }
 
-    public long getRating (int poolID) {
+    public long clearRatingDatabase () {
+        return db.delete(DATABASE_TABLE, null, null);
+    }
+
+
+    public long saveRatingToDatabase (int poolID, int rating) {
+        ContentValues ratingValue = new ContentValues();
+        ratingValue.put(KEY_CIVICID, poolID);
+        ratingValue.put(KEY_RATING, rating);
+        return db.insert(DATABASE_TABLE, null, ratingValue);
+    }
+
+
+    public ArrayList<Integer> getAllCivicPoolIDs () {
+        ArrayList<Integer> allCivicIDs = new ArrayList<Integer>();
+        Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID}, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int civicID = cursor.getInt(0);
+                allCivicIDs.add(civicID);
+            } while (cursor.moveToNext());
+        }
+        return allCivicIDs;
+    }
+
+    /*
+    public ArrayList getRatings (int poolID) {
         Cursor cursor = db.query(DATABASE_TABLE, new String [] {KEY_CIVICID, KEY_RATING}, null, null, null, null, null);
         int idCheck = 0;
         if (cursor.moveToFirst()){
             do {
                 idCheck = cursor.getInt(0);
-                long rating = cursor.getLong(1);
+                int rating = cursor.getInt(1);
                 if (idCheck == poolID) {
-
                     return rating;
                 }
             } while (cursor.moveToNext());
         }
-        return 00;
-    }
+        return 0;
+    } */
 
 
 
@@ -68,8 +96,8 @@ public class RatingDatabase {
             private static final String DATABASE_CREATE = "create table "
                     + DATABASE_TABLE + " ("
                     + KEY_ID + " integer primary key autoincrement, "
-                    + KEY_CIVICID + " text, "
-                    + KEY_RATING + " float);";
+                    + KEY_CIVICID + " integer, "
+                    + KEY_RATING + " integer);";
 
             public RatingDBOpenHelper(Context c, String dbname, SQLiteDatabase.CursorFactory factory, int version) {
                 super(c, dbname, factory, version);

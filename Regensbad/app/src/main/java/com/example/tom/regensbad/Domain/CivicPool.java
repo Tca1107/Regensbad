@@ -19,9 +19,10 @@ public class CivicPool implements Comparable<CivicPool> {
     private String picPath;
     private int civicID;
     private double currentDistance;
+    private float currentRating;
 
 
-    public CivicPool(String name, String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime, String picPath, int civicID, double currentDistance) {
+    public CivicPool(String name, String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime, String picPath, int civicID, double currentDistance, float currentRating) {
         this.name = name;
         this.type = type;
         this.lati = lati;
@@ -33,6 +34,7 @@ public class CivicPool implements Comparable<CivicPool> {
         this.picPath = picPath;
         this.civicID = civicID;
         this.currentDistance = currentDistance;
+        this.currentRating = currentRating;
 
     }
 
@@ -42,6 +44,13 @@ public class CivicPool implements Comparable<CivicPool> {
         return currentDistanceAsDouble.compareTo(civicPool.getCurrentDistance());
     }
 
+    public void setCurrentRating (float rating) {
+        this.currentRating = rating;
+    }
+
+    public float getCurrentRating() {
+        return currentRating;
+    }
 
     public String getName() {
         return name;

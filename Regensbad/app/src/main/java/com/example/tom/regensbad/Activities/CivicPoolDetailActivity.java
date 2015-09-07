@@ -76,6 +76,9 @@ View.OnClickListener{
     private static final String PARSE_COMMENT = "comment";
     private static final String PARSE_RATING = "rating";
     private static final String PARSE_CREATED_AT = "createdAt";
+    private static final String PARSE_CIVIC_POOL = "CivicPool";
+    private static final String PARSE_CURRENT_RATING = "currentRating";
+    private static final String PARSE_CIVIC_ID = "civicID";
 
     /* Constants used to calculate the current time. */
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
@@ -460,7 +463,42 @@ View.OnClickListener{
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
                     ID, userRating, date);
             updateLatestComment(commentRating);
+            updateCivicPoolAverageRatingOnParse();
         }
+    }
+
+    private void updateCivicPoolAverageRatingOnParse() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
+        query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, ID);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    int score = 0;
+                    for (int i = 0; i < list.size(); i++) {
+                        score += (list.get(i)).getInt(PARSE_RATING);
+                    }
+                    final int averageRating = score/list.size();
+                    Log.d("AVERAGERATINGSSS77", String.valueOf(averageRating));
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
+                    query.whereEqualTo(PARSE_CIVIC_ID, ID);
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+                            if (e == null) {
+                                ParseObject object = list.get(0);
+                                Log.d("AVERAGERATINGSSS88", String.valueOf(averageRating));
+                                object.put(PARSE_CURRENT_RATING, averageRating);
+                                object.saveInBackground();
+                                // noch die Rating Bar oben angleichen!
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
     }
 
     private void updateLatestComment(CommentRating commentRating) {
@@ -494,7 +532,6 @@ View.OnClickListener{
         String dateInFormat = simpleDateFormat.format(todayDate);
         return dateInFormat;
     }
-
 
 
     private void makeACall() {

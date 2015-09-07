@@ -39,6 +39,7 @@ public class Database {
         private static final String KEY_PICPATH = "picPath";
         private static final String KEY_CIVICID = "civicID";
         private static final String KEY_DISTANCE = "currentDistance";
+        private static final String KEY_RATING = "currentRating";
 
         private static String REMOVE_ALL_ROWS = "1";
         private static final double DOUBLE_CUTTING_FACTOR = 100.0;
@@ -55,6 +56,7 @@ public class Database {
         private static final int COLUMN_PICPATH_INDEX = 9;
         private static final int COLUMN_CIVICID_INDEX = 10;
         private static final int COLUMN_DISTANCE_INDEX = 11;
+        private static final int COLUMN_RATING_INDEX = 12;
 
 
         private PoolDBOpenHelper dbHelper;
@@ -80,7 +82,7 @@ public class Database {
 
 
         public long deleteAllPoolItems () {
-            return db.delete(DATABASE_TABLE,null, null);
+            return db.delete(DATABASE_TABLE, null, null);
         }
 
         public String getPicPath (int poolID) {
@@ -114,13 +116,14 @@ public class Database {
             newPoolValues.put(KEY_PICPATH, civicPool.getPicPath());
             newPoolValues.put(KEY_CIVICID, civicPool.getID());
             newPoolValues.put(KEY_DISTANCE, civicPool.getCurrentDistance());
+            newPoolValues.put(KEY_RATING, civicPool.getCurrentRating());
             Log.d("currentDistance1117", String.valueOf(civicPool.getCurrentDistance()));
             return db.insert(DATABASE_TABLE, null, newPoolValues);
         }
 
 
         public CivicPool getPoolItem(int poolItemID) {
-            Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH, KEY_CIVICID, KEY_DISTANCE}, KEY_CIVICID + "=" + poolItemID, null, null, null, null, null);
+            Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH, KEY_CIVICID, KEY_DISTANCE, KEY_RATING}, KEY_CIVICID + "=" + poolItemID, null, null, null, null, null);
 
             CivicPool result;
             if (cursor.moveToFirst()) {
@@ -135,8 +138,9 @@ public class Database {
                 String picPath = cursor.getString(COLUMN_PICPATH_INDEX);
                 String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
                 double currentDistance = cursor.getDouble(COLUMN_DISTANCE_INDEX);
+                float currentRating = cursor.getFloat(COLUMN_RATING_INDEX);
 
-                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, openTime, closeTime, picPath, Integer.parseInt(civicID), currentDistance);
+                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, openTime, closeTime, picPath, Integer.parseInt(civicID), currentDistance, currentRating);
                 return result;
             } else {
                 return null;
@@ -187,12 +191,13 @@ public class Database {
                     String picpath = cursor.getString(COLUMN_PICPATH_INDEX);
                     String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
                     float currentDistance = cursor.getFloat(COLUMN_DISTANCE_INDEX);
+                    float currentRating = cursor.getFloat(COLUMN_RATING_INDEX);
 
                     Log.d("getAllPoolItems", String.valueOf(currentDistance));
                     // TEST
 
 
-                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, opentime, closetime, picpath, Integer.parseInt(civicID), currentDistance));
+                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, opentime, closetime, picpath, Integer.parseInt(civicID), currentDistance, currentRating));
 
                 } while (cursor.moveToNext());
             }
@@ -214,7 +219,8 @@ public class Database {
                     + KEY_CLOSETIME + " text, "
                     + KEY_PICPATH + " text not null, "
                     + KEY_CIVICID + " integer, "
-                    + KEY_DISTANCE + " float);";
+                    + KEY_DISTANCE + " float, "
+                    + KEY_RATING + " float);";
 
             public PoolDBOpenHelper(Context c, String dbname, SQLiteDatabase.CursorFactory factory, int version) {
                 super(c, dbname, factory, version);

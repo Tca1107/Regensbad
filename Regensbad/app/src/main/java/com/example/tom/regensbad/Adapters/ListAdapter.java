@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.CivicPool;
+import com.example.tom.regensbad.Persistence.RatingDatabase;
 import com.example.tom.regensbad.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -82,7 +83,7 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
             poolName.setText(pool.getName());
             poolType.setText(pool.getType());
             distance.setText(String.valueOf(pool.getCurrentDistance()));
-            getDataForRating(pool.getID());
+            ratingBar.setRating(pool.getCurrentRating());
 
 
             String currentTime = fetchCurrentTime();
@@ -97,9 +98,11 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
         return v;
     }
 
+
+    /*
     /* This method retrieves the latest CommentRating Object from parse.com It was written using the parse.com documentation at:
   https://parse.com/docs/android/guide#objects-retrieving-objects
-  https://parse.com/docs/android/guide#queries .*/
+  https://parse.com/docs/android/guide#queries .
     private void getDataForRating(int poolID) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
         query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, poolID);
@@ -127,7 +130,7 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
         }
         float rating = aggregated/counter;
         ratingBar.setRating(rating);
-    }
+    } */
 
 
 
@@ -141,7 +144,6 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
       }
 
     }
-
 
     /* This method was written using the resource http://stackoverflow.com/questions/8077530/android-get-current-timestamp
     * as a guideline. It gets the current time of the system. */

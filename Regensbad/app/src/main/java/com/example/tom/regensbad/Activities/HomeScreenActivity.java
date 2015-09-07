@@ -99,6 +99,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
         initializeUIElements();
         initializeActionBar();
         initializeWeatherLastUpdateDataProvider();

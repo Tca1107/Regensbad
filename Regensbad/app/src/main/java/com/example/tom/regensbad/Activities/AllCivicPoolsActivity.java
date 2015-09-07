@@ -27,6 +27,7 @@ import com.example.tom.regensbad.Adapters.ListAdapter;
 import com.example.tom.regensbad.Domain.CivicPool;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.Database;
+import com.example.tom.regensbad.Persistence.RatingDatabase;
 import com.example.tom.regensbad.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -34,9 +35,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -48,6 +51,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private ListAdapter adapter;
     private ArrayList<CivicPool> pools = new ArrayList<CivicPool>();
 
+    /* Databases as instance variables, needed for the ListView showing all civic pool items. */
     private Database db;
 
     private ProgressDialog progressBar;
@@ -56,6 +60,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
     private double userLat;
     private double userLong;
+    private float ratingToReturn;
+
 
     // Properties for location updates
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
@@ -72,6 +78,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private static final String PARSE_CLOSE_TIME = "closeTime";
     private static final String PARSE_PIC_PATH = "picPath";
     private static final String PARSE_CIVIC_ID = "civicID";
+    private static final String PARSE_CURRENT_RATING = "currentRating";
 
     private static final String PROGRESS_BAR_MESSAGE = "Bäder werden heruntergeladen.";
     private static final int PROGRESS_BAR_MIN = 0;
@@ -101,6 +108,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         initializeActionBar();
         handleClick();
     }
+
+
 
     private void fetchUserLocation() {
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
@@ -222,6 +231,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
                     pools.clear();
                     assignParseDataToArrayList(list);
                     initializeAdapter();
+                    Log.d("We are through", "yeah we are");
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -233,24 +243,25 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             ParseObject civicPoolToAdd = list.get(i);
             String name = civicPoolToAdd.getString(PARSE_NAME);
             String type = civicPoolToAdd.getString(PARSE_TYPE);
-            double latitude = (double)civicPoolToAdd.getNumber(PARSE_LATI);
-            double longitude = (double)civicPoolToAdd.getNumber(PARSE_LONGI);
+            double latitude = (double) civicPoolToAdd.getNumber(PARSE_LATI);
+            double longitude = (double) civicPoolToAdd.getNumber(PARSE_LONGI);
             String phoneNumber = civicPoolToAdd.getString(PARSE_PHONE_NUMBER);
             String website = civicPoolToAdd.getString(PARSE_WEBSITE);
             String openTime = civicPoolToAdd.getString(PARSE_OPEN_TIME);
             String closeTime = civicPoolToAdd.getString(PARSE_CLOSE_TIME);
             String picPath = civicPoolToAdd.getString(PARSE_PIC_PATH);
-            int civicID = (int)civicPoolToAdd.getNumber(PARSE_CIVIC_ID);
+            int civicID = (int) civicPoolToAdd.getNumber(PARSE_CIVIC_ID);
             double currentDistance = calculateCurrentDistance(latitude, longitude);
-            CivicPool civicPoolFromParse = new CivicPool(name, type, latitude, longitude, phoneNumber, website, openTime, closeTime, picPath, civicID, currentDistance);
+            float currentRating = (int)civicPoolToAdd.getNumber(PARSE_CURRENT_RATING);
+            CivicPool civicPoolFromParse = new CivicPool(name, type, latitude, longitude, phoneNumber, website, openTime, closeTime, picPath, civicID, currentDistance, currentRating);
             pools.add(civicPoolFromParse);
             db.addCivicPoolItem(civicPoolFromParse);
-            if (i == NUMBER_OF_POOLS_ON_SCREEN){
+            if (i == NUMBER_OF_POOLS_ON_SCREEN) {
                 updateProgressBarStatus(PROGRESS_BAR_MAX);
             }
+            // sort the pools by their distance to the current location of the user
+            Collections.sort(pools);
         }
-        // sort the pools by their distance to the current location of the user
-        Collections.sort(pools);
     }
 
     private void updateProgressBarStatus(int addValue) {
