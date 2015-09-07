@@ -478,8 +478,8 @@ View.OnClickListener{
                     for (int i = 0; i < list.size(); i++) {
                         score += (list.get(i)).getInt(PARSE_RATING);
                     }
-                    final int averageRating = score/list.size();
-                    Log.d("AVERAGERATINGSSS77", String.valueOf(averageRating));
+                    final float averageRatingParse = score/list.size();
+                    Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
                     ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
                     query.whereEqualTo(PARSE_CIVIC_ID, ID);
                     query.findInBackground(new FindCallback<ParseObject>() {
@@ -487,10 +487,10 @@ View.OnClickListener{
                         public void done(List<ParseObject> list, ParseException e) {
                             if (e == null) {
                                 ParseObject object = list.get(0);
-                                Log.d("AVERAGERATINGSSS88", String.valueOf(averageRating));
-                                object.put(PARSE_CURRENT_RATING, averageRating);
+                                Log.d("AVERAGERATINGSSS88", String.valueOf(averageRatingParse));
+                                object.put(PARSE_CURRENT_RATING, averageRatingParse);
                                 object.saveInBackground();
-                                // noch die Rating Bar oben angleichen!
+                                averageRating.setRating(averageRatingParse);
                             }
                         }
                     });

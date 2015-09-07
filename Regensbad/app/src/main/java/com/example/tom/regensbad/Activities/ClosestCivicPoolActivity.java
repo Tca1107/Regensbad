@@ -82,6 +82,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final String PARSE_COMMENT = "comment";
     private static final String PARSE_RATING = "rating";
     private static final String PARSE_CREATED_AT = "createdAt";
+    private static final String PARSE_CURRENT_RATING = "currentRating";
 
     /* Constant of the type String needed for the creation of a drawable from a String. */
     private static final String DRAWABLE = "drawable";
@@ -545,8 +546,46 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
                     closestPoolCivicID, userRating, date);
             updateLatestComment(commentRating);
+            updateCivicPoolAverageRatingOnParse();
         }
     }
+
+    private void updateCivicPoolAverageRatingOnParse() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
+        query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    int score = 0;
+                    for (int i = 0; i < list.size(); i++) {
+                        score += (list.get(i)).getInt(PARSE_RATING);
+                    }
+                    final float averageRatingParse = score/list.size();
+                    Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
+                    query.whereEqualTo(PARSE_CIVIC_ID, closestPoolCivicID);
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+                            if (e == null) {
+                                ParseObject object = list.get(0);
+                                Log.d("AVERAGERATINGSSS88", String.valueOf(averageRatingParse));
+                                object.put(PARSE_CURRENT_RATING, averageRatingParse);
+                                object.saveInBackground();
+                                averageRating.setRating(averageRatingParse);
+
+                            }
+                        }
+                    });
+
+                }
+            }
+        });
+
+    }
+
+
 
     private void updateLatestComment(CommentRating commentRating) {
         usernameComment.setText(commentRating.getUserName());

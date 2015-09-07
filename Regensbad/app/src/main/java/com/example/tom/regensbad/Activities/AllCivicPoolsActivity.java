@@ -252,8 +252,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             String picPath = civicPoolToAdd.getString(PARSE_PIC_PATH);
             int civicID = (int) civicPoolToAdd.getNumber(PARSE_CIVIC_ID);
             double currentDistance = calculateCurrentDistance(latitude, longitude);
-            float currentRating = (int)civicPoolToAdd.getNumber(PARSE_CURRENT_RATING);
-            CivicPool civicPoolFromParse = new CivicPool(name, type, latitude, longitude, phoneNumber, website, openTime, closeTime, picPath, civicID, currentDistance, currentRating);
+            float currentRating = (int) civicPoolToAdd.getNumber(PARSE_CURRENT_RATING);
+            CivicPool civicPoolFromParse = new CivicPool(name, type, latitude, longitude, phoneNumber, website, openTime, closeTime, picPath, civicID, currentDistance, (float)currentRating);
             pools.add(civicPoolFromParse);
             db.addCivicPoolItem(civicPoolFromParse);
             if (i == NUMBER_OF_POOLS_ON_SCREEN) {
