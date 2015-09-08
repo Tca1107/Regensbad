@@ -79,6 +79,7 @@ View.OnClickListener{
     private static final String PARSE_CIVIC_POOL = "CivicPool";
     private static final String PARSE_CURRENT_RATING = "currentRating";
     private static final String PARSE_CIVIC_ID = "civicID";
+    private static final String PARSE_UP_VOTES = "upVotes";
 
     /* Constants used to calculate the current time. */
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
@@ -91,6 +92,7 @@ View.OnClickListener{
     private static final int SUBSTRING_MONTH_END = 7;
     private static final int SUBSTRING_YEAR_START = 0;
     private static final int SUBSTRING_YEAR_END = 4;
+    private static final int ZERO_UP_VOTES = 0;
 
     /* Constants of the type String needed for the Toasts. */
     private static final String DEFAULT_LOCATION_TOAST = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
@@ -459,9 +461,10 @@ View.OnClickListener{
             commentObject.put(PARSE_DATE, date);
             commentObject.put(PARSE_CORRESPONDING_CIVIC_ID, ID);
             commentObject.put(PARSE_COMMENT, userComment);
+            commentObject.put(PARSE_UP_VOTES, ZERO_UP_VOTES);
             commentObject.saveInBackground();
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
-                    ID, userRating, date);
+                    ID, userRating, date, ZERO_UP_VOTES);
             updateLatestComment(commentRating);
             updateCivicPoolAverageRatingOnParse();
         }

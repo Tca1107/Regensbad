@@ -126,6 +126,7 @@
     <string name="dummy_commnet">Leider hat noch kein Nutzer einen Kommentar zu diesem See bzw. diesem Bad abgegeben. Seien Sie der erste! Drücken Sie einfach auf "Kommentar verfassen". </string>
     <string name="dummy_date">04.11.2015  14:30</string>
     <string name="dummy_comment">Kommentar</string>
+    <string name="dummy_upvotes">(0)</string>
 
 
     <string name="title_activity_maps">Map</string>

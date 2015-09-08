@@ -10,14 +10,16 @@ public class CommentRating {
     private int correspondingCivicID;
     private int rating;
     private String date;
+    private int upVotes;
 
 
-    public CommentRating (String userName, String comment, int correspondingCivicID, int rating, String date) {
+    public CommentRating (String userName, String comment, int correspondingCivicID, int rating, String date, int upVotes) {
         this.userName = userName;
         this.comment = comment;
         this.correspondingCivicID = correspondingCivicID;
         this.rating = rating;
         this.date = date;
+        this.upVotes = upVotes;
     }
 
     public String getUserName () {
@@ -39,6 +41,8 @@ public class CommentRating {
     public String getDate () {
         return date;
     }
+
+    public int getUpVotes () { return upVotes;}
 
 
 

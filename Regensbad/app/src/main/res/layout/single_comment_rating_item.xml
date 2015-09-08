@@ -37,7 +37,6 @@
         android:textColor="@color/black"
         android:layout_marginBottom="5dp"/>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,8 +46,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dummy_date"
-            android:gravity="center_vertical"
              />
+
+        <TextView
+            android:id="@+id/text_view_comment_upvotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dummy_upvotes"
+            android:layout_toLeftOf="@+id/image_view_thumbs_up"
+            android:paddingRight="10dp"
+            />
+
 
         <ImageView
             android:id="@+id/image_view_thumbs_up"

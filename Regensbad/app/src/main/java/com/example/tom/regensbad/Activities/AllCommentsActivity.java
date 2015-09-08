@@ -35,6 +35,7 @@ public class AllCommentsActivity extends ActionBarActivity {
     private static final String PARSE_COMMENT = "comment";
     private static final String PARSE_RATING = "rating";
     private static final String PARSE_CREATED_AT = "createdAt";
+    private static final String PARSE_UP_VOTES = "upVotes";
 
 
 
@@ -91,7 +92,8 @@ public class AllCommentsActivity extends ActionBarActivity {
             int rating = (int)currentObject.getNumber(PARSE_RATING);
             int correspondingCivicID = (int)currentObject.getNumber(PARSE_CORRESPONDING_CIVIC_ID);
             String date = currentObject.getString(PARSE_DATE);
-            CommentRating commentRating = new CommentRating(userName, comment, correspondingCivicID, rating, date);
+            int upVotes = currentObject.getInt(PARSE_UP_VOTES);
+            CommentRating commentRating = new CommentRating(userName, comment, correspondingCivicID, rating, date, upVotes);
             commentRatingsArrayList.add(commentRating);
         }
         Log.d("arrayList", String.valueOf(commentRatingsArrayList));

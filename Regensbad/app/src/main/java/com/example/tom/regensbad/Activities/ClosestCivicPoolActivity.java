@@ -83,6 +83,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final String PARSE_RATING = "rating";
     private static final String PARSE_CREATED_AT = "createdAt";
     private static final String PARSE_CURRENT_RATING = "currentRating";
+    private static final String PARSE_UP_VOTES = "upVotes";
 
     /* Constant of the type String needed for the creation of a drawable from a String. */
     private static final String DRAWABLE = "drawable";
@@ -134,6 +135,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final int SUBSTRING_YEAR_START = 0;
     private static final int SUBSTRING_YEAR_END = 4;
 
+    private static final int ZERO_UP_VOTES = 0;
 
     /* User interface elements */
     private ImageView poolPicture;
@@ -542,9 +544,10 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             commentObject.put(PARSE_DATE, date);
             commentObject.put(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
             commentObject.put(PARSE_COMMENT, userComment);
+            commentObject.put(PARSE_UP_VOTES, ZERO_UP_VOTES);
             commentObject.saveInBackground();
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
-                    closestPoolCivicID, userRating, date);
+                    closestPoolCivicID, userRating, date, ZERO_UP_VOTES);
             updateLatestComment(commentRating);
             updateCivicPoolAverageRatingOnParse();
         }
