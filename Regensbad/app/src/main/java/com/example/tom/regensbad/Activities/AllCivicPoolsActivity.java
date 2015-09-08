@@ -361,7 +361,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
                 sortList();
                 return true;
             case R.id.sort_rating:
-                //sortRating();
+                sortRating();
                 return true;
             case R.id.sort_distance:
                 sortDistance();
@@ -399,14 +399,15 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         adapter.notifyDataSetChanged();
     }
 
-    /*private void sortRating() {
+    private void sortRating() {
         Collections.sort(pools, new Comparator<CivicPool>() {
             @Override
             public int compare(CivicPool arg0, CivicPool arg1) {
-                return ();
+                return (Float.toString(arg1.getCurrentRating()).compareToIgnoreCase(Float.toString(arg0.getCurrentRating())));
             }
         });
-    }*/
+        adapter.notifyDataSetChanged();
+    }
 
     private void sortDistance() {
         Collections.sort(pools);
