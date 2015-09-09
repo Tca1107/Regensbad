@@ -43,7 +43,6 @@ public class AllCommentsActivity extends ActionBarActivity {
     private static final String PARSE_COMMENT = "comment";
     private static final String PARSE_RATING = "rating";
     private static final String PARSE_CREATED_AT = "createdAt";
-    private static final String PARSE_UP_VOTES = "upVotes";
 
 
 
@@ -60,30 +59,8 @@ public class AllCommentsActivity extends ActionBarActivity {
         initializeActionBar();
         fetchCommentsFromParse();
         initializeAdapter();
-        // registerOnClickListener();
     }
 
-
-    /*
-    private void registerOnClickListener() {
-        allCommentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                ImageView thumbsUp = (ImageView)view.findViewById(R.id.image_view_thumbs_up);
-                thumbsUp.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        CommentRating commentRating = commentRatingsArrayList.get(position);
-                        commentRating.setIsLiked(true);
-                        commentAdapter.notifyDataSetChanged();
-                    }
-                });
-
-            }
-        });
-
-    }
-*/
 
     private void initializeAdapter() {
         commentAdapter = new CommentAdapter(this, commentRatingsArrayList);
@@ -124,8 +101,7 @@ public class AllCommentsActivity extends ActionBarActivity {
             int rating = (int)currentObject.getNumber(PARSE_RATING);
             int correspondingCivicID = (int)currentObject.getNumber(PARSE_CORRESPONDING_CIVIC_ID);
             String date = currentObject.getString(PARSE_DATE);
-            int upVotes = currentObject.getInt(PARSE_UP_VOTES);
-            CommentRating commentRating = new CommentRating(userName, comment, correspondingCivicID, rating, date, upVotes, false);
+            CommentRating commentRating = new CommentRating(userName, comment, correspondingCivicID, rating, date);
             commentRatingsArrayList.add(commentRating);
         }
         Log.d("arrayList", String.valueOf(commentRatingsArrayList));

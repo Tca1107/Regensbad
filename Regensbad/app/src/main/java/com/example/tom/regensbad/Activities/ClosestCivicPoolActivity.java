@@ -544,10 +544,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             commentObject.put(PARSE_DATE, date);
             commentObject.put(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
             commentObject.put(PARSE_COMMENT, userComment);
-            commentObject.put(PARSE_UP_VOTES, ZERO_UP_VOTES);
             commentObject.saveInBackground();
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
-                    closestPoolCivicID, userRating, date, ZERO_UP_VOTES, false);
+                    closestPoolCivicID, userRating, date);
             updateLatestComment(commentRating);
             updateCivicPoolAverageRatingOnParse();
         }

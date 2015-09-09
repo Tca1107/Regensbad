@@ -480,10 +480,9 @@ View.OnClickListener{
             commentObject.put(PARSE_DATE, date);
             commentObject.put(PARSE_CORRESPONDING_CIVIC_ID, ID);
             commentObject.put(PARSE_COMMENT, userComment);
-            commentObject.put(PARSE_UP_VOTES, ZERO_UP_VOTES);
             commentObject.saveInBackground();
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
-                    ID, userRating, date, ZERO_UP_VOTES, false);
+                    ID, userRating, date);
             updateLatestComment(commentRating);
             updateCivicPoolAverageRatingOnParse();
         }

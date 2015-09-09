@@ -37,10 +37,6 @@
         android:textColor="@color/black"
         android:layout_marginBottom="5dp"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
         <TextView
             android:id="@+id/text_view_comment_date_single"
             android:layout_width="wrap_content"
@@ -48,26 +44,7 @@
             android:text="@string/dummy_date"
              />
 
-        <TextView
-            android:id="@+id/text_view_comment_upvotes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dummy_upvotes"
-            android:layout_toLeftOf="@+id/image_view_thumbs_up"
-            android:paddingRight="10dp"
-            />
 
-
-        <ImageView
-            android:id="@+id/image_view_thumbs_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_thumb_up_blue_24dp"
-            android:scaleType="fitXY"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            />
-    </RelativeLayout>
 
     </LinearLayout>
 
