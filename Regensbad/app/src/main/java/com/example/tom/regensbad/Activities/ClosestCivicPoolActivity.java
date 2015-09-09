@@ -547,7 +547,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             commentObject.put(PARSE_UP_VOTES, ZERO_UP_VOTES);
             commentObject.saveInBackground();
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
-                    closestPoolCivicID, userRating, date, ZERO_UP_VOTES);
+                    closestPoolCivicID, userRating, date, ZERO_UP_VOTES, false);
             updateLatestComment(commentRating);
             updateCivicPoolAverageRatingOnParse();
         }
@@ -660,8 +660,14 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_closest_civic_pool, menu);
-        return true;
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null && checkIfConnectedToInternet() == true) {
+            getMenuInflater().inflate(R.menu.menu_user_online, menu);
+            return super.onCreateOptionsMenu(menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_closest_civic_pool, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
     }
 
     @Override
@@ -670,11 +676,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (id == android.R.id.home){
             finish();}
 
@@ -695,7 +696,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             public void run() {
                 while(progressBarStatus < PROGRESS_BAR_MAX){
                     progressBarStatus = getProgressBarStatus();
-                    Log.d("PROGRESS", String.valueOf(progressBarStatus));
                     try {
                         Thread.sleep(PROGRESS_BAR_SLEEP_TIME);
                     } catch (InterruptedException e) {

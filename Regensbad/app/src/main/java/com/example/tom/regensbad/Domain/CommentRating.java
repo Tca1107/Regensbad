@@ -11,15 +11,17 @@ public class CommentRating {
     private int rating;
     private String date;
     private int upVotes;
+    private boolean isLiked;
 
 
-    public CommentRating (String userName, String comment, int correspondingCivicID, int rating, String date, int upVotes) {
+    public CommentRating (String userName, String comment, int correspondingCivicID, int rating, String date, int upVotes, boolean isLiked) {
         this.userName = userName;
         this.comment = comment;
         this.correspondingCivicID = correspondingCivicID;
         this.rating = rating;
         this.date = date;
         this.upVotes = upVotes;
+        this.isLiked = isLiked;
     }
 
     public String getUserName () {
@@ -43,6 +45,14 @@ public class CommentRating {
     }
 
     public int getUpVotes () { return upVotes;}
+
+    public boolean getIsLiked () {
+        return isLiked;
+    }
+
+    public void setIsLiked (boolean isLiked) {
+        this.isLiked = isLiked;
+    }
 
 
 

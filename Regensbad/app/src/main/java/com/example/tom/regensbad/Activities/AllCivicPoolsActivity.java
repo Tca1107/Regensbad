@@ -160,7 +160,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             public void run() {
                 while(progressBarStatus < PROGRESS_BAR_MAX){
                     progressBarStatus = getProgressBarStatus();
-                    Log.d("PROGRESS", String.valueOf(progressBarStatus));
                     try {
                         Thread.sleep(PROGRESS_BAR_SLEEP_TIME);
                     } catch (InterruptedException e) {
@@ -342,7 +341,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         // Inflate the menu; this adds items to the action bar if it is present.
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null && checkIfConnectedToInternet() == true) {
-            getMenuInflater().inflate(R.menu.menu_user_online, menu);
+            getMenuInflater().inflate(R.menu.menu_all_civic_pools_user_online, menu);
             return super.onCreateOptionsMenu(menu);
         } else {
             getMenuInflater().inflate(R.menu.menu_all_civic_pools, menu);

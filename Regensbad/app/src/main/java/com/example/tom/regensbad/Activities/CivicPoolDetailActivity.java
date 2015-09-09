@@ -12,6 +12,8 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
@@ -327,9 +329,31 @@ View.OnClickListener{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_civic_pool_detail, menu);
-        return true;
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null && checkIfConnectedToInternet() == true) {
+            getMenuInflater().inflate(R.menu.menu_user_online, menu);
+            return super.onCreateOptionsMenu(menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_civic_pool_detail, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
     }
+
+
+    /* This method checks whether the system has access to the internet.
+    * It was created taking the resource which can be found at the following link, as a guideline:
+    * http://stackoverflow.com/questions/5474089/how-to-check-currently-internet-connection-is-available-or-not-in-android*/
+    private boolean checkIfConnectedToInternet () {
+        ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -337,11 +361,6 @@ View.OnClickListener{
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if (id == android.R.id.home){
         finish();}
 
@@ -464,7 +483,7 @@ View.OnClickListener{
             commentObject.put(PARSE_UP_VOTES, ZERO_UP_VOTES);
             commentObject.saveInBackground();
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
-                    ID, userRating, date, ZERO_UP_VOTES);
+                    ID, userRating, date, ZERO_UP_VOTES, false);
             updateLatestComment(commentRating);
             updateCivicPoolAverageRatingOnParse();
         }

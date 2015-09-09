@@ -8,11 +8,23 @@
     following link: https://developer.android.com/training/basics/actionbar/adding-buttons.html .-->
 
 
+    <item android:id="@+id/button_all_civic_pools_on_map" android:title="@string/all_civic_pools" android:orderInCategory="100" app:showAsAction="ifRoom" android:icon="@drawable/ic_map_white_24dp" />
+
+
     <item android:id="@+id/action_button_online"
         android:icon="@android:drawable/presence_online"
         android:title="@string/user_online_description"
         app:showAsAction="ifRoom"/>
 
+
+    <item android:id="@+id/sort_AtoZ" android:title="@string/sort_AtoZ"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/sort_rating" android:title="@string/sort_rating"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/sort_distance" android:title="@string/sort_distance"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/sort_type" android:title="@string/sort_type"
+        android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_myAccount" android:title="@string/action_myAccount"
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_logout" android:title="@string/action_logout"
