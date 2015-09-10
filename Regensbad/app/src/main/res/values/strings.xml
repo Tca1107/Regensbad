@@ -20,7 +20,8 @@
     <string name="button_skip">Überspringen</string>
     <string name="pacifico_font_path">Fonts/Pacifico.ttf</string>
     <string name="skip_login">Wenn Sie ohne Nutzer Account fortfahren, müssen Sie mit eingeschränkter Funktionalität rechnen.
-    Sie werden beispielsweise keine Kommentare zu Bädern abgeben können. </string>
+    Sie werden zum Beispiel keine Kommentare oder Bewertungen zu Bädern abgeben können. </string>
+    <string name="do_not_show_anymore">Diese Meldung nicht mehr anzeigen</string>
     <string name="cancel">Abbrechen</string>
     <string name="continue_anyway">Weiter</string>
 

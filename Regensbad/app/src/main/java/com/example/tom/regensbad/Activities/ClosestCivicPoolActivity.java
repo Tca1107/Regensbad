@@ -677,9 +677,32 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         int id = item.getItemId();
         if (id == android.R.id.home){
             finish();}
+        if (id == R.id.action_myAccount) {
+            changeToMyAccountActivity();
+        }
+        if (id == R.id.action_logout) {
+            goBackToHomeScreen();
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    // from https://parse.com/docs/android/guide#users
+    private void goBackToHomeScreen() {
+        ParseUser.logOut();
+        Intent goBackToHomeScreen = new Intent (ClosestCivicPoolActivity.this, HomeScreenActivity.class);
+        // From: http://stackoverflow.com/questions/6397576/finish-to-go-back-two-activities
+        goBackToHomeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goBackToHomeScreen);
+    }
+
+    private void changeToMyAccountActivity() {
+        Intent changeToMyAccountActivity = new Intent (ClosestCivicPoolActivity.this, MyAccountActivity.class);
+        startActivity(changeToMyAccountActivity);
+    }
+
+
 
     /* This method was written using the tutorial which is available at:
     http://examples.javacodegeeks.com/android/core/ui/progressbar/android-progress-bar-example/ */

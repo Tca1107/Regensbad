@@ -1,6 +1,7 @@
 package com.example.tom.regensbad.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.net.ConnectivityManager;
@@ -176,7 +177,28 @@ public class AllCommentsActivity extends ActionBarActivity {
         if (id == android.R.id.home) {
             finish();
         }
+        if (id == R.id.action_myAccount) {
+            changeToMyAccountActivity();
+        }
+        if (id == R.id.action_logout) {
+            goBackToHomeScreen();
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+    // from https://parse.com/docs/android/guide#users
+    private void goBackToHomeScreen() {
+        ParseUser.logOut();
+        Intent goBackToHomeScreen = new Intent (AllCommentsActivity.this, HomeScreenActivity.class);
+        // From: http://stackoverflow.com/questions/6397576/finish-to-go-back-two-activities
+        goBackToHomeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goBackToHomeScreen);
+    }
+
+    private void changeToMyAccountActivity() {
+        Intent changeToMyAccountActivity = new Intent (AllCommentsActivity.this, MyAccountActivity.class);
+        startActivity(changeToMyAccountActivity);
+    }
+
 }

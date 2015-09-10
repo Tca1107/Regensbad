@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -153,7 +154,7 @@ public class ResetPasswordActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_reset_password, menu);
+        getMenuInflater().inflate(R.menu.menu_user_online, menu);
         return true;
     }
 
@@ -167,7 +168,27 @@ public class ResetPasswordActivity extends ActionBarActivity {
             finish();
             return true;
         }
+        if (id == R.id.action_myAccount) {
+            changeToMyAccountActivity();
+        }
+        if (id == R.id.action_logout) {
+            goBackToHomeScreen();
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // from https://parse.com/docs/android/guide#users
+    private void goBackToHomeScreen() {
+        ParseUser.logOut();
+        Intent goBackToHomeScreen = new Intent (ResetPasswordActivity.this, HomeScreenActivity.class);
+        // From: http://stackoverflow.com/questions/6397576/finish-to-go-back-two-activities
+        goBackToHomeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goBackToHomeScreen);
+    }
+
+    private void changeToMyAccountActivity() {
+        Intent changeToMyAccountActivity = new Intent (ResetPasswordActivity.this, MyAccountActivity.class);
+        startActivity(changeToMyAccountActivity);
     }
 }

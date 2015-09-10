@@ -363,9 +363,30 @@ View.OnClickListener{
         int id = item.getItemId();
         if (id == android.R.id.home){
         finish();}
+        if (id == R.id.action_myAccount){
+            changeToMyAccountActivity();
+        }
+        if (id == R.id.action_logout){
+            goBackToHomeScreen();
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+    // from https://parse.com/docs/android/guide#users
+    private void goBackToHomeScreen() {
+        ParseUser.logOut();
+        Intent goBackToHomeScreen = new Intent (CivicPoolDetailActivity.this, HomeScreenActivity.class);
+        // From: http://stackoverflow.com/questions/6397576/finish-to-go-back-two-activities
+        goBackToHomeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goBackToHomeScreen);
+    }
+
+    private void changeToMyAccountActivity() {
+        Intent changeToMyAccountActivity = new Intent (CivicPoolDetailActivity.this, MyAccountActivity.class);
+        startActivity(changeToMyAccountActivity);
+    }
+
 
     @Override
     public void onDataDistanceDataReceived(double dist) {
