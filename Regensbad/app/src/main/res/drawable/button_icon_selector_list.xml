@@ -6,11 +6,11 @@
 
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/ic_label_outline_blue_primary_color"/>
+        android:drawable="@drawable/ic_list_blue_24dp" />
 
 
     <item
-        android:drawable="@drawable/ic_label_outline_white"
+        android:drawable="@drawable/ic_list_white_24dp"
         />
 
 

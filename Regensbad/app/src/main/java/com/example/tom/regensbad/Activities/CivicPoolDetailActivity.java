@@ -469,9 +469,7 @@ View.OnClickListener{
         dialogBuilder.setPositiveButton(R.string.submit_comment, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String userComment = commentFromUser.getText().toString();
-                int userRating = (int)ratingFromUser.getRating();
-                postObjectToParseBackend(userComment, userRating);
+
             }
         });
         dialogBuilder.setNegativeButton(R.string.cancel_submit_comment, new Dialog.OnClickListener() {
@@ -480,19 +478,36 @@ View.OnClickListener{
                 // nothing since the dialog only closes
             }
         });
-        AlertDialog dialog = dialogBuilder.create();
+        final AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+
+        // Created with help from: http://stackoverflow.com/questions/27345584/how-to-prevent-alertdialog-to-close
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userComment = commentFromUser.getText().toString();
+                int userRating = (int) ratingFromUser.getRating();
+                boolean closeDialog = postObjectToParseBackend(userComment, userRating);
+                if (closeDialog == true) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
     }
 
     /* This method was created using the official parse.com documentation as a source:
     * https://parse.com/docs/android/guide#objects .*/
-    private void postObjectToParseBackend(String userComment, int userRating) {
+    private boolean postObjectToParseBackend(String userComment, int userRating) {
         if (userComment.length() < MIN_COMMENT_LENGTH) {
             Toast.makeText(CivicPoolDetailActivity.this, COMMENT_TOO_SHORT, Toast.LENGTH_LONG).show();
+            return false;
         } else if (userComment.length() > MAX_COMMENT_LENGTH) {
             Toast.makeText(CivicPoolDetailActivity.this, COMMENT_TOO_LONG, Toast.LENGTH_LONG).show();
+            return false;
         } else if (userRating < MIN_RATING) {
             Toast.makeText(CivicPoolDetailActivity.this, FORGOT_RATING, Toast.LENGTH_LONG).show();
+            return false;
         } else {
             ParseObject commentObject = new ParseObject(PARSE_COMMENT_RATING);
             commentObject.put(PARSE_USERNAME, ParseUser.getCurrentUser().getUsername());
@@ -506,6 +521,7 @@ View.OnClickListener{
                     ID, userRating, date);
             updateLatestComment(commentRating);
             updateCivicPoolAverageRatingOnParse();
+            return true;
         }
     }
 

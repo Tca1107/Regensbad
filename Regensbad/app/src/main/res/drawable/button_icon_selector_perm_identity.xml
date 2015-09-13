@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- This xml file was written using http://www.compiletimeerror.com/2014/03/android-button-selector-tutorial-with.html
+    as a guideline. -->
+
     <item
         android:drawable="@drawable/ic_perm_identity_blue_primary_color"
         android:state_pressed="true"/>

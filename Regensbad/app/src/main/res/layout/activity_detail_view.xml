@@ -130,7 +130,7 @@
             android:text="@string/string_showOnMap"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
-            android:drawableLeft="@drawable/ic_place_white_24dp"
+            android:drawableLeft="@drawable/button_icon_selector_place"
             android:textAllCaps="false"/>
 
         <View
@@ -147,7 +147,7 @@
             android:text="@string/string_nav"
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
-            android:drawableLeft="@drawable/ic_navigation_white_24dp"
+            android:drawableLeft="@drawable/button_icon_selector_navigation"
             android:textAllCaps="false"/>
     </LinearLayout>
 
@@ -281,7 +281,7 @@
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
             android:textAllCaps="false"
-            android:drawableLeft="@drawable/ic_list_white_24dp"
+            android:drawableLeft="@drawable/button_icon_selector_list"
             android:paddingLeft="5dp"
             />
 
@@ -300,7 +300,7 @@
             android:background="@drawable/button_selector"
             android:textColor="@drawable/button_text_color"
             android:textAllCaps="false"
-            android:drawableLeft="@drawable/ic_comment_white_24dp"
+            android:drawableLeft="@drawable/button_icon_selector_comment"
             android:paddingLeft="5dp"/>
     </LinearLayout>
 

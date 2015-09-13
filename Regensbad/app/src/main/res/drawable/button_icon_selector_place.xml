@@ -5,13 +5,11 @@
     as a guideline. -->
 
     <item
-        android:state_pressed="true"
-        android:drawable="@drawable/ic_label_outline_blue_primary_color"/>
-
+        android:drawable="@drawable/ic_place_blue_24dp"
+        android:state_pressed="true"/>
 
     <item
-        android:drawable="@drawable/ic_label_outline_white"
+        android:drawable="@drawable/ic_place_white_24dp"
         />
-
 
 </selector>
