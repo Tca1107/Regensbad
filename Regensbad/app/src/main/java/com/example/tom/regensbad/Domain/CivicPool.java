@@ -20,9 +20,15 @@ public class CivicPool implements Comparable<CivicPool> {
     private int civicID;
     private double currentDistance;
     private float currentRating;
+    private String openTimeSat;
+    private String closeTimeSat;
+    private String openTimeSun;
+    private String closeTimeSun;
 
 
-    public CivicPool(String name, String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime, String picPath, int civicID, double currentDistance, float currentRating) {
+    public CivicPool(String name, String type, double lati, double longi, String phoneNumber, String website, String openTime, String closeTime,
+                     String picPath, int civicID, double currentDistance, float currentRating, String openTimeSat, String closeTimeSat,
+                     String openTimeSun, String closeTimeSun) {
         this.name = name;
         this.type = type;
         this.lati = lati;
@@ -35,6 +41,10 @@ public class CivicPool implements Comparable<CivicPool> {
         this.civicID = civicID;
         this.currentDistance = currentDistance;
         this.currentRating = currentRating;
+        this.openTimeSat = openTimeSat;
+        this.closeTimeSat = closeTimeSat;
+        this.openTimeSun = openTimeSun;
+        this.closeTimeSun = closeTimeSun;
 
     }
 
@@ -99,5 +109,13 @@ public class CivicPool implements Comparable<CivicPool> {
     public void setDecimalPlacesInCurrentDistance(double distance) {
         currentDistance = distance;
     }
+
+    public String getOpenTimeSat () {return openTimeSat;}
+
+    public String getCloseTimeSat () {return closeTimeSat;}
+
+    public String getOpenTimeSun () {return openTimeSun;}
+
+    public String getCloseTimeSun () {return closeTimeSun;}
 
 }

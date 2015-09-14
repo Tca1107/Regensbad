@@ -47,6 +47,7 @@ import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -84,6 +85,10 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final String PARSE_CREATED_AT = "createdAt";
     private static final String PARSE_CURRENT_RATING = "currentRating";
     private static final String PARSE_UP_VOTES = "upVotes";
+    private static final String PARSE_OPEN_TIME_SAT = "openTimeSat";
+    private static final String PARSE_CLOSE_TIME_SAT = "closeTimeSat";
+    private static final String PARSE_OPEN_TIME_SUN = "openTimeSun";
+    private static final String PARSE_CLOSE_TIME_SUN = "closeTimeSun";
 
     /* Constant of the type String needed for the creation of a drawable from a String. */
     private static final String DRAWABLE = "drawable";
@@ -91,6 +96,12 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     /* Separators */
     private static final int SUBSTRING_SEPARATOR_START = 0;
     private static final int SUBSTRING_SEPARATOR_END = 2;
+
+    /* Weekdays */
+    private static final int MONDAY = 2;
+    private static final int FRIDAY = 6;
+    private static final int SATURDAY = 7;
+    private static final int SUNDAY = 1;
 
     /* Numeric constants needed to calculate distances and to bring the in an acceptable form. */
     private static final int FLOAT_DISTANCE_LENGTH = 1;
@@ -319,9 +330,30 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         String poolName = closestPool.getString(PARSE_NAME);
         calculateDistanceByCar(poolName);
         textName.setText(poolName);
+
+        int weekday = getWeekDayInfo();
+        if (MONDAY <= weekday && weekday <= FRIDAY) {
+            createTimeView(closestPool.getString(PARSE_OPEN_TIME), closestPool.getString(PARSE_CLOSE_TIME));
+        } else if (weekday == SATURDAY) {
+            createTimeView(closestPool.getString(PARSE_OPEN_TIME_SAT), closestPool.getString(PARSE_CLOSE_TIME_SAT));
+        } else {
+            createTimeView(closestPool.getString(PARSE_OPEN_TIME_SUN), closestPool.getString(PARSE_CLOSE_TIME_SUN));
+        }
+
         createTimeView(closestPool.getString(PARSE_OPEN_TIME), closestPool.getString(PARSE_CLOSE_TIME));
         textPhoneNumber.setText(closestPool.getString(PARSE_PHONE_NUMBER));
         setPoolPicture(closestPool.getString(PARSE_PIC_PATH));
+    }
+
+    /* Method written with the help of: http://stackoverflow.com/questions/18600257/how-to-get-the-weekday-of-a-date
+    http://stackoverflow.com/questions/8077530/android-get-current-timestamp and
+    http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .*/
+    private int getWeekDayInfo() {
+        long time = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        int weekday = calendar.get(Calendar.DAY_OF_WEEK);
+        return weekday;
     }
 
     /*Following four lines retrieved from: http://stackoverflow.com/questions/13105430/android-setting-image-from-string
@@ -512,9 +544,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         dialogBuilder.setPositiveButton(R.string.submit_comment, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String userComment = commentFromUser.getText().toString();
-                int userRating = (int)ratingFromUser.getRating();
-                postObjectToParseBackend(userComment, userRating);
+
             }
         });
         dialogBuilder.setNegativeButton(R.string.cancel_submit_comment, new Dialog.OnClickListener() {
@@ -523,19 +553,34 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                 // nothing since the dialog only closes
             }
         });
-        AlertDialog dialog = dialogBuilder.create();
+        final AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+        // Created with help from: http://stackoverflow.com/questions/27345584/how-to-prevent-alertdialog-to-close
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userComment = commentFromUser.getText().toString();
+                int userRating = (int) ratingFromUser.getRating();
+                boolean closeDialog = postObjectToParseBackend(userComment, userRating);
+                if (closeDialog == true) {
+                    dialog.dismiss();
+                }
+            }
+        });
     }
 
     /* This method was created using the official parse.com documentation as a source:
     * https://parse.com/docs/android/guide#objects .*/
-    private void postObjectToParseBackend(String userComment, int userRating) {
+    private boolean postObjectToParseBackend(String userComment, int userRating) {
         if (userComment.length() < MIN_COMMENT_LENGTH) {
             Toast.makeText(ClosestCivicPoolActivity.this, COMMENT_TOO_SHORT, Toast.LENGTH_LONG).show();
+            return false;
         } else if (userComment.length() > MAX_COMMENT_LENGTH) {
             Toast.makeText(ClosestCivicPoolActivity.this, COMMENT_TOO_LONG, Toast.LENGTH_LONG).show();
+            return false;
         } else if (userRating < MIN_RATING) {
             Toast.makeText(ClosestCivicPoolActivity.this, FORGOT_RATING, Toast.LENGTH_LONG).show();
+            return false;
         } else {
             ParseObject commentObject = new ParseObject(PARSE_COMMENT_RATING);
             commentObject.put(PARSE_USERNAME, ParseUser.getCurrentUser().getUsername());
@@ -549,6 +594,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                     closestPoolCivicID, userRating, date);
             updateLatestComment(commentRating);
             updateCivicPoolAverageRatingOnParse();
+            return true;
         }
     }
 

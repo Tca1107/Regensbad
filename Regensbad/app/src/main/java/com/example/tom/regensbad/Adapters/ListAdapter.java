@@ -20,6 +20,7 @@ import com.parse.ParseQuery;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -40,13 +41,11 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
     private static final String OPEN = "geöffnet";
     private static final String CLOSED = "geschlossen";
 
-    private static final String PARSE_COMMENT_RATING = "CommentRating";
-    private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
-    private static final String PARSE_USERNAME = "userName";
-    private static final String PARSE_DATE = "date";
-    private static final String PARSE_COMMENT = "comment";
-    private static final String PARSE_RATING = "rating";
-    private static final String PARSE_CREATED_AT = "createdAt";
+    /* Weekdays */
+    private static final int MONDAY = 2;
+    private static final int FRIDAY = 6;
+    private static final int SATURDAY = 7;
+    private static final int SUNDAY = 1;
 
     private ArrayList<CivicPool> listItems;
     private Context context;
@@ -99,49 +98,46 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
     }
 
 
-    /*
-    /* This method retrieves the latest CommentRating Object from parse.com It was written using the parse.com documentation at:
-  https://parse.com/docs/android/guide#objects-retrieving-objects
-  https://parse.com/docs/android/guide#queries .
-    private void getDataForRating(int poolID) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
-        query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, poolID);
-        // following line from http://stackoverflow.com/questions/27971733/how-to-get-latest-updated-parse-object-in-android
-        query.orderByDescending(PARSE_CREATED_AT);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (list != null) {
-                    setRatingInListElement(list);
-                }
-            }
-        });
-
+    /* Method written with the help of: http://stackoverflow.com/questions/18600257/how-to-get-the-weekday-of-a-date
+  http://stackoverflow.com/questions/8077530/android-get-current-timestamp and
+  http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .*/
+    private int getWeekDayInfo() {
+        long time = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        int weekday = calendar.get(Calendar.DAY_OF_WEEK);
+        return weekday;
     }
 
-
-    private void setRatingInListElement(List<ParseObject> list) {
-        int counter = 0;
-        float aggregated = 0;
-        for (int i = 0; i < list.size(); i++) {
-            ParseObject currentObject = list.get(i);
-            aggregated += (int)currentObject.getNumber(PARSE_RATING);
-            counter++;
+    private boolean getOpenStatus(int currentTime, CivicPool pool) {
+      int weekday = getWeekDayInfo();
+        if (MONDAY <= weekday && weekday <= FRIDAY) {
+            int openTime = Integer.valueOf(pool.getOpenTime());
+            int closeTime = Integer.valueOf(pool.getCloseTime());
+            if (openTime <= currentTime && currentTime <= closeTime) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (weekday == SATURDAY) {
+            int openTime = Integer.valueOf(pool.getOpenTimeSat());
+            int closeTime = Integer.valueOf(pool.getCloseTimeSat());
+            if (openTime <= currentTime && currentTime <= closeTime) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            int openTime = Integer.valueOf(pool.getOpenTimeSun());
+            int closeTime = Integer.valueOf(pool.getCloseTimeSun());
+            if (openTime <= currentTime && currentTime <= closeTime) {
+                return true;
+            } else {
+                return false;
+            }
         }
-        float rating = aggregated/counter;
-        ratingBar.setRating(rating);
-    } */
 
 
-
-  private boolean getOpenStatus(int currentTime, CivicPool pool) {
-      int openTime = Integer.valueOf(pool.getOpenTime());
-      int closeTime = Integer.valueOf(pool.getCloseTime());
-      if (openTime <= currentTime && currentTime <= closeTime) {
-          return true;
-      } else {
-          return false;
-      }
 
     }
 

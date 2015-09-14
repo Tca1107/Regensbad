@@ -48,6 +48,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -81,7 +82,14 @@ View.OnClickListener{
     private static final String PARSE_CIVIC_POOL = "CivicPool";
     private static final String PARSE_CURRENT_RATING = "currentRating";
     private static final String PARSE_CIVIC_ID = "civicID";
-    private static final String PARSE_UP_VOTES = "upVotes";
+
+
+
+    /* Weekdays */
+    private static final int MONDAY = 2;
+    private static final int FRIDAY = 6;
+    private static final int SATURDAY = 7;
+    private static final int SUNDAY = 1;
 
     /* Constants used to calculate the current time. */
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSZ";
@@ -197,6 +205,7 @@ View.OnClickListener{
         Bundle extras = i.getExtras();
         ID = extras.getInt("ID");
         pool = db.getPoolItem(ID);
+        Log.d("CIVICPOOOOOL", String.valueOf(pool));
     }
 
     private void initializeUIElements() {
@@ -263,8 +272,30 @@ View.OnClickListener{
     }
 
     private void createTimeView() {
-        String timeString = " " + pool.getOpenTime().substring(0,2) + ":" + pool.getOpenTime().substring(2) + " - " + pool.getCloseTime().substring(0, 2) + ":" + pool.getCloseTime().substring(2);
-        textOpenTime.setText(timeString);
+        int weekday = getWeekDayInfo();
+        if (MONDAY <= weekday && weekday <= FRIDAY) {
+            String timeString = " " + pool.getOpenTime().substring(0,2) + ":" + pool.getOpenTime().substring(2) + " - " + pool.getCloseTime().substring(0, 2) + ":" + pool.getCloseTime().substring(2);
+            textOpenTime.setText(timeString);
+        } else if (weekday == SATURDAY) {
+            String timeString = " " + pool.getOpenTimeSat().substring(0,2) + ":" + pool.getOpenTimeSat().substring(2) + " - " + pool.getCloseTimeSat().substring(0, 2) + ":" + pool.getCloseTimeSat().substring(2);
+            textOpenTime.setText(timeString);
+        } else {
+            String timeString = " " + pool.getOpenTimeSun().substring(0,2) + ":" + pool.getOpenTimeSun().substring(2) + " - " + pool.getCloseTimeSun().substring(0, 2) + ":" + pool.getCloseTimeSun().substring(2);
+            textOpenTime.setText(timeString);
+        }
+
+
+    }
+
+    /* Method written with the help of: http://stackoverflow.com/questions/18600257/how-to-get-the-weekday-of-a-date
+   http://stackoverflow.com/questions/8077530/android-get-current-timestamp and
+   http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .*/
+    private int getWeekDayInfo() {
+        long time = System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        int weekday = calendar.get(Calendar.DAY_OF_WEEK);
+        return weekday;
     }
 
 

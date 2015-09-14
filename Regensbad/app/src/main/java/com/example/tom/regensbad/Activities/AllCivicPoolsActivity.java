@@ -79,6 +79,10 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private static final String PARSE_PIC_PATH = "picPath";
     private static final String PARSE_CIVIC_ID = "civicID";
     private static final String PARSE_CURRENT_RATING = "currentRating";
+    private static final String PARSE_OPEN_TIME_SAT = "openTimeSat";
+    private static final String PARSE_CLOSE_TIME_SAT = "closeTimeSat";
+    private static final String PARSE_OPEN_TIME_SUN = "openTimeSun";
+    private static final String PARSE_CLOSE_TIME_SUN = "closeTimeSun";
 
     private static final String PROGRESS_BAR_MESSAGE = "Bäder werden heruntergeladen.";
     private static final int PROGRESS_BAR_MIN = 0;
@@ -252,7 +256,12 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             int civicID = (int) civicPoolToAdd.getNumber(PARSE_CIVIC_ID);
             double currentDistance = calculateCurrentDistance(latitude, longitude);
             float currentRating = (int) civicPoolToAdd.getNumber(PARSE_CURRENT_RATING);
-            CivicPool civicPoolFromParse = new CivicPool(name, type, latitude, longitude, phoneNumber, website, openTime, closeTime, picPath, civicID, currentDistance, (float)currentRating);
+            String openTimeSat = civicPoolToAdd.getString(PARSE_OPEN_TIME_SAT);
+            String closeTimeSat = civicPoolToAdd.getString(PARSE_CLOSE_TIME_SAT);
+            String openTimeSun = civicPoolToAdd.getString(PARSE_OPEN_TIME_SUN);
+            String closeTimeSun = civicPoolToAdd.getString(PARSE_CLOSE_TIME_SUN);
+            CivicPool civicPoolFromParse = new CivicPool(name, type, latitude, longitude, phoneNumber, website, openTime,
+                    closeTime, picPath, civicID, currentDistance, (float)currentRating, openTimeSat, closeTimeSat, openTimeSun, closeTimeSun);
             pools.add(civicPoolFromParse);
             db.addCivicPoolItem(civicPoolFromParse);
             if (i == NUMBER_OF_POOLS_ON_SCREEN) {

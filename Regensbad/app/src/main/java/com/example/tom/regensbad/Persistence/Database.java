@@ -40,6 +40,10 @@ public class Database {
         private static final String KEY_CIVICID = "civicID";
         private static final String KEY_DISTANCE = "currentDistance";
         private static final String KEY_RATING = "currentRating";
+        private static final String KEY_OPEN_TIME_SAT = "openTimeSat";
+        private static final String KEY_CLOSE_TIME_SAT = "closeTimeSat";
+        private static final String KEY_OPEN_TIME_SUN = "openTimeSun";
+        private static final String KEY_CLOSE_TIME_SUN = "closeTimeSun";
 
         private static String REMOVE_ALL_ROWS = "1";
         private static final double DOUBLE_CUTTING_FACTOR = 100.0;
@@ -57,6 +61,10 @@ public class Database {
         private static final int COLUMN_CIVICID_INDEX = 10;
         private static final int COLUMN_DISTANCE_INDEX = 11;
         private static final int COLUMN_RATING_INDEX = 12;
+        private static final int COLUMN_OPEN_TIME_SAT = 13;
+        private static final int COLUMN_CLOSE_TIME_SAT = 14;
+        private static final int COLUMN_OPEN_TIME_SUN = 15;
+        private static final int COLUMN_CLOSE_TIME_SUN = 16;
 
 
         private PoolDBOpenHelper dbHelper;
@@ -117,13 +125,16 @@ public class Database {
             newPoolValues.put(KEY_CIVICID, civicPool.getID());
             newPoolValues.put(KEY_DISTANCE, civicPool.getCurrentDistance());
             newPoolValues.put(KEY_RATING, civicPool.getCurrentRating());
-            Log.d("currentDistance1117", String.valueOf(civicPool.getCurrentDistance()));
+            newPoolValues.put(KEY_OPEN_TIME_SAT, civicPool.getOpenTimeSat());
+            newPoolValues.put(KEY_CLOSE_TIME_SAT, civicPool.getCloseTimeSat());
+            newPoolValues.put(KEY_OPEN_TIME_SUN, civicPool.getOpenTimeSun());
+            newPoolValues.put(KEY_CLOSE_TIME_SUN, civicPool.getCloseTimeSun());
             return db.insert(DATABASE_TABLE, null, newPoolValues);
         }
 
 
         public CivicPool getPoolItem(int poolItemID) {
-            Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH, KEY_CIVICID, KEY_DISTANCE, KEY_RATING}, KEY_CIVICID + "=" + poolItemID, null, null, null, null, null);
+            Cursor cursor = db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_TYPE, KEY_LATI, KEY_LONGI, KEY_PHONENUMBER, KEY_WEBSITE, KEY_OPENTIME, KEY_CLOSETIME, KEY_PICPATH, KEY_CIVICID, KEY_DISTANCE, KEY_RATING, KEY_OPEN_TIME_SAT, KEY_CLOSE_TIME_SAT, KEY_OPEN_TIME_SUN, KEY_CLOSE_TIME_SUN}, KEY_CIVICID + "=" + poolItemID, null, null, null, null, null);
 
             CivicPool result;
             if (cursor.moveToFirst()) {
@@ -139,8 +150,14 @@ public class Database {
                 String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
                 double currentDistance = cursor.getDouble(COLUMN_DISTANCE_INDEX);
                 float currentRating = cursor.getFloat(COLUMN_RATING_INDEX);
+                String openTimeSat = cursor.getString(COLUMN_OPEN_TIME_SAT);
+                String closeTimeSat = cursor.getString(COLUMN_CLOSE_TIME_SAT);
+                String openTimeSun = cursor.getString(COLUMN_OPEN_TIME_SUN);
+                String closeTimeSun = cursor.getString(COLUMN_CLOSE_TIME_SUN);
 
-                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phoneNumber, website, openTime, closeTime, picPath, Integer.parseInt(civicID), currentDistance, currentRating);
+                result = new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi),
+                        phoneNumber, website, openTime, closeTime, picPath, Integer.parseInt(civicID), currentDistance,
+                        currentRating, openTimeSat, closeTimeSat, openTimeSun, closeTimeSun);
                 return result;
             } else {
                 return null;
@@ -192,12 +209,18 @@ public class Database {
                     String civicID = cursor.getString(COLUMN_CIVICID_INDEX);
                     float currentDistance = cursor.getFloat(COLUMN_DISTANCE_INDEX);
                     float currentRating = cursor.getFloat(COLUMN_RATING_INDEX);
+                    String openTimeSat = cursor.getString(COLUMN_OPEN_TIME_SAT);
+                    String closeTimeSat = cursor.getString(COLUMN_CLOSE_TIME_SAT);
+                    String openTimeSun = cursor.getString(COLUMN_OPEN_TIME_SUN);
+                    String closeTimeSun = cursor.getString(COLUMN_CLOSE_TIME_SUN);
 
                     Log.d("getAllPoolItems", String.valueOf(currentDistance));
                     // TEST
 
 
-                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber, website, opentime, closetime, picpath, Integer.parseInt(civicID), currentDistance, currentRating));
+                    poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber,
+                            website, opentime, closetime, picpath, Integer.parseInt(civicID), currentDistance, currentRating,
+                            openTimeSat, closeTimeSat, openTimeSun, closeTimeSun));
 
                 } while (cursor.moveToNext());
             }
@@ -220,7 +243,11 @@ public class Database {
                     + KEY_PICPATH + " text not null, "
                     + KEY_CIVICID + " integer, "
                     + KEY_DISTANCE + " float, "
-                    + KEY_RATING + " float);";
+                    + KEY_RATING + " float, "
+                    + KEY_OPEN_TIME_SAT + " text, "
+                    + KEY_CLOSE_TIME_SAT + " text, "
+                    + KEY_OPEN_TIME_SUN + " text, "
+                    + KEY_CLOSE_TIME_SUN + " text);";
 
             public PoolDBOpenHelper(Context c, String dbname, SQLiteDatabase.CursorFactory factory, int version) {
                 super(c, dbname, factory, version);
