@@ -145,6 +145,8 @@ View.OnClickListener{
     private DistanceDataProvider distanceDataProvider;
     private Database db;
     private CivicPool pool;
+    private int listsize;
+    private float sumOfRatings = 0;
     
 
     @Override
@@ -344,7 +346,8 @@ View.OnClickListener{
             counter++;
         }
         float rating = aggregated/counter;
-        averageRating.setRating(rating);
+        sumOfRatings = aggregated;
+        averageRating.setRating((int) rating);
     }
 
 
@@ -511,7 +514,6 @@ View.OnClickListener{
         });
         final AlertDialog dialog = dialogBuilder.create();
         dialog.show();
-
         // Created with help from: http://stackoverflow.com/questions/27345584/how-to-prevent-alertdialog-to-close
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -524,7 +526,10 @@ View.OnClickListener{
                 }
             }
         });
-
+        if (listsize == 0) {
+            listsize = 1;
+        }
+        averageRating.setRating((int)((sumOfRatings + ratingFromUser.getRating())/listsize));
     }
 
     /* This method was created using the official parse.com documentation as a source:
@@ -551,12 +556,12 @@ View.OnClickListener{
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
                     ID, userRating, date);
             updateLatestComment(commentRating);
-            updateCivicPoolAverageRatingOnParse();
+            updateCivicPoolAverageRatingOnParse(userRating);
             return true;
         }
     }
 
-    private void updateCivicPoolAverageRatingOnParse() {
+    private void updateCivicPoolAverageRatingOnParse(final int userRating) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
         query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, ID);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -567,7 +572,26 @@ View.OnClickListener{
                     for (int i = 0; i < list.size(); i++) {
                         score += (list.get(i)).getInt(PARSE_RATING);
                     }
-                    final float averageRatingParse = score/list.size();
+                    listsize = list.size();
+                    if (list.size() == 0) {
+                        final float averageRatingParse = userRating;
+                        Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
+                        query.whereEqualTo(PARSE_CIVIC_ID, ID);
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> list, ParseException e) {
+                                if (e == null) {
+                                    ParseObject object = list.get(0);
+                                    Log.d("AVERAGERATINGSSS88", String.valueOf(averageRatingParse));
+                                    object.put(PARSE_CURRENT_RATING, averageRatingParse);
+                                    object.saveInBackground();
+                                    averageRating.setRating(averageRatingParse);
+                                }
+                            }
+                        }); }
+                    else {
+                    final float averageRatingParse = (userRating + score)/(list.size() + 1);
                     Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
                     ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
                     query.whereEqualTo(PARSE_CIVIC_ID, ID);
@@ -582,7 +606,7 @@ View.OnClickListener{
                                 averageRating.setRating(averageRatingParse);
                             }
                         }
-                    });
+                    });}
 
                 }
             }

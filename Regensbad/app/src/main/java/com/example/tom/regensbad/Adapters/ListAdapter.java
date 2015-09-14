@@ -82,7 +82,7 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
             poolName.setText(pool.getName());
             poolType.setText(pool.getType());
             distance.setText(String.valueOf(pool.getCurrentDistance()));
-            ratingBar.setRating(pool.getCurrentRating());
+            ratingBar.setRating((int)(pool.getCurrentRating()));
 
 
             String currentTime = fetchCurrentTime();

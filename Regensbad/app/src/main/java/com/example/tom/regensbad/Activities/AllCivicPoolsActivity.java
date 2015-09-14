@@ -83,6 +83,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private static final String PARSE_CLOSE_TIME_SAT = "closeTimeSat";
     private static final String PARSE_OPEN_TIME_SUN = "openTimeSun";
     private static final String PARSE_CLOSE_TIME_SUN = "closeTimeSun";
+    private static final String PARSE_COMMENT_RATING = "CommentRating";
+    private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
 
     private static final String PROGRESS_BAR_MESSAGE = "Bäder werden heruntergeladen.";
     private static final int PROGRESS_BAR_MIN = 0;
@@ -178,12 +180,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
                     });}
                 Log.d("PROGRESS", String.valueOf(progressBarStatus));
                     if (progressBarStatus >= PROGRESS_BAR_MAX) {
-                       /* try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } */
                         progressBar.dismiss();
+                        progressBarStatus = 0;
                     }
 
                 }
@@ -272,6 +270,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             Collections.sort(pools);
         }
     }
+
+
 
     private void updateProgressBarStatus(int addValue) {
         progressBarStatus += addValue;
@@ -457,6 +457,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             return false;
         }
     }
+
 
 
     @Override

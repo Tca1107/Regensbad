@@ -184,6 +184,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private double poolLongi;
     private String poolWebsite;
     private String poolPhoneNumber;
+    private int listsize = 0;
+    private float sumOfRatings = 0;
 
 
 
@@ -274,7 +276,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             counter++;
         }
         float rating = aggregated/counter;
-        averageRating.setRating(rating);
+        sumOfRatings = aggregated;
+        averageRating.setRating((int)rating);
     }
 
 
@@ -567,6 +570,10 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                 }
             }
         });
+        if (listsize == 0) {
+            listsize = 1;
+        }
+        averageRating.setRating((int)((sumOfRatings + ratingFromUser.getRating())/listsize));
     }
 
     /* This method was created using the official parse.com documentation as a source:
@@ -593,12 +600,12 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             CommentRating commentRating = new CommentRating(ParseUser.getCurrentUser().getUsername(),userComment,
                     closestPoolCivicID, userRating, date);
             updateLatestComment(commentRating);
-            updateCivicPoolAverageRatingOnParse();
+            updateCivicPoolAverageRatingOnParse(userRating);
             return true;
         }
     }
 
-    private void updateCivicPoolAverageRatingOnParse() {
+    private void updateCivicPoolAverageRatingOnParse(final int userRating) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
         query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -609,23 +616,43 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                     for (int i = 0; i < list.size(); i++) {
                         score += (list.get(i)).getInt(PARSE_RATING);
                     }
-                    final float averageRatingParse = score/list.size();
-                    Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
-                    query.whereEqualTo(PARSE_CIVIC_ID, closestPoolCivicID);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> list, ParseException e) {
-                            if (e == null) {
-                                ParseObject object = list.get(0);
-                                Log.d("AVERAGERATINGSSS88", String.valueOf(averageRatingParse));
-                                object.put(PARSE_CURRENT_RATING, averageRatingParse);
-                                object.saveInBackground();
-                                averageRating.setRating(averageRatingParse);
-
+                    listsize = list.size();
+                    if (list.size() == 0) {
+                        final float averageRatingParse = userRating;
+                        Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
+                        query.whereEqualTo(PARSE_CIVIC_ID, closestPoolCivicID);
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> list, ParseException e) {
+                                if (e == null) {
+                                    ParseObject object = list.get(0);
+                                    Log.d("AVERAGERATINGSSS88", String.valueOf(averageRatingParse));
+                                    object.put(PARSE_CURRENT_RATING, averageRatingParse);
+                                    object.saveInBackground();
+                                    averageRating.setRating(averageRatingParse);
+                                }
                             }
-                        }
-                    });
+                        });
+
+                    } else {
+                        Log.d("Lange", String.valueOf(list.size()));
+                        final float averageRatingParse = (userRating + score)/(list.size() + 1);
+                        Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
+                        query.whereEqualTo(PARSE_CIVIC_ID, closestPoolCivicID);
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> list, ParseException e) {
+                                if (e == null) {
+                                    ParseObject object = list.get(0);
+                                    Log.d("AVERAGERATINGSSS88", String.valueOf(averageRatingParse));
+                                    object.put(PARSE_CURRENT_RATING, averageRatingParse);
+                                    object.saveInBackground();
+                                    averageRating.setRating(averageRatingParse);
+                                }
+                            }
+                        });}
 
                 }
             }
