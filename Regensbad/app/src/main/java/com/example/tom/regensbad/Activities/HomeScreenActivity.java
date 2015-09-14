@@ -99,7 +99,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-
         initializeUIElements();
         initializeActionBar();
         initializeWeatherLastUpdateDataProvider();
@@ -242,7 +241,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                changeToSearchCivicPoolsActivity(query);
+                if (weatherLastUpdateDataProvider.getLatestUpdateTime().equals("")) {
+                    changeToNoDataAvailableActivity();
+                } else {
+                    changeToSearchCivicPoolsActivity(query);
+                }
                 return false;
             }
 
@@ -293,12 +296,25 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button_closest_lake:
-                changeToClosestCivicPoolActivity();
+                if (weatherLastUpdateDataProvider.getLatestUpdateTime().equals("")) {
+                    changeToNoDataAvailableActivity();
+                } else {
+                    changeToClosestCivicPoolActivity();
+                }
                 break;
             case R.id.button_goToList:
-                changeToAllCivicPoolsActivity();
+                if (weatherLastUpdateDataProvider.getLatestUpdateTime().equals("")) {
+                    changeToNoDataAvailableActivity();
+                } else {
+                    changeToAllCivicPoolsActivity();
+                }
                 break;
         }
+    }
+
+    private void changeToNoDataAvailableActivity() {
+        Intent changeToNoDataAvailableActivity = new Intent (HomeScreenActivity.this, NoDataAvailableActivity.class);
+        startActivity(changeToNoDataAvailableActivity);
     }
 
 

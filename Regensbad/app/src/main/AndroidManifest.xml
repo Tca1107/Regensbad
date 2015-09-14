@@ -25,9 +25,9 @@
 
     <!-- From: http://stackoverflow.com/questions/17667935/failed-to-load-map-error-contacting-google-servers-this-is-probably-an-authent -->
     <uses-feature
-         android:glEsVersion="0x00020000"
-         android:required="true" >
-     </uses-feature>
+        android:glEsVersion="0x00020000"
+        android:required="true" >
+    </uses-feature>
 
     <application
         android:allowBackup="true"
@@ -118,7 +118,11 @@
         <activity
             android:name=".Activities.AllCommentsActivity"
             android:label="@string/title_activity_all_comments"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Activities.NoDataAvailableActivity"
+            android:label="@string/title_activity_no_data_available" >
         </activity>
     </application>
 

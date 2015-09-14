@@ -122,10 +122,10 @@
     <string name="string_lakeName">Name des Sees</string>
     <string name="string_bathType">Typ</string>
     <string name="string_distance">5,2</string>
-    <string name="degrees">25°</string>
+    <string name="degrees">00°</string>
     <string name="weather_description">stark bewölkt</string>
-    <string name="max_temp">H 30°</string>
-    <string name="min_temp">T 18°</string>
+    <string name="max_temp">H 00°</string>
+    <string name="min_temp">T 00°</string>
     <string name="username_list">Nutzername</string>
     <string name="dummy_commnet">Leider hat noch kein Nutzer einen Kommentar zu diesem See bzw. diesem Bad abgegeben. Seien Sie der erste! Drücken Sie einfach auf "Kommentar verfassen". </string>
     <string name="dummy_date">04.11.2015  14:30</string>
@@ -143,6 +143,7 @@
     <string name="title_activity_search_civic_pools">Suchergebnisse</string>
     <string name="title_activity_my_account">Mein Account</string>
     <string name="title_activity_all_comments">AllCommentsActivity</string>
+    <string name="title_activity_no_data_available">NoDataAvailableActivity</string>
 
 
 

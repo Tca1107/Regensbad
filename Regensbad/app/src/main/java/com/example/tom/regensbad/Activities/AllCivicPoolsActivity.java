@@ -115,6 +115,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
 
 
+
     private void fetchUserLocation() {
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
         locationUpdater.setLocationUpdateListener(this);
