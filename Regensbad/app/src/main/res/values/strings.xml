@@ -87,6 +87,9 @@
     <string name="button_closest_lake">Nähestes Bad finden</string>
     <string name="button_all_lakes">Alle Badeorte anzeigen</string>
 
+    <!--No Connection Activity-->
+    <string name="no_connection">Inhalte konnten nicht geldaden werden, da keine Verbindung zum Server besteht. Stellen Sie bitte eine Internetverbindung her.</string>
+
     <!--Single List Item-->
     <string name="string_km">km</string>
     <string name="string_open">geöffnet</string>
