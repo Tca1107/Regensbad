@@ -42,7 +42,7 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.15"
@@ -55,6 +55,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/linear_layout_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -84,12 +85,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:numStars="5"
+            android:layout_below="@+id/linear_layout_one"
             style="@android:style/Widget.DeviceDefault.Light.RatingBar.Small"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/ratingbar_detailAverageRating"
+            android:id="@+id/linearLayout">
 
             <ImageView
                 android:layout_width="19dp"
@@ -107,8 +112,17 @@
                 android:text="@string/string_km"/>
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_info_blue_36dp"/>
 
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
