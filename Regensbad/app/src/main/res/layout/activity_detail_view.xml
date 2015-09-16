@@ -112,14 +112,14 @@
                 android:text="@string/string_km"/>
         </LinearLayout>
 
-        <ImageView
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
+            android:id="@+id/image_button_information"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:background="@drawable/ic_info_blue_36dp"/>
+            android:background="@drawable/button_icon_selector_further_information"/>
 
 
     </RelativeLayout>

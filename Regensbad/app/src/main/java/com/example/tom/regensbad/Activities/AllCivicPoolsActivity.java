@@ -194,6 +194,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     }
 
     private void GetLatestUpdateFromDatabase() {
+        progressBarStatus = PROGRESS_BAR_MAX;
         ArrayList<CivicPool> myPoolArray = new ArrayList<CivicPool>();
         myPoolArray.addAll(db.getAllPoolItems());
         ArrayList<CivicPool> myPoolArrayWithCorrectDistances = setTheDecimalPlacesOfCurrentDistanceRight(myPoolArray);

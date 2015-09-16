@@ -122,7 +122,8 @@
         </activity>
         <activity
             android:name=".Activities.NoDataAvailableActivity"
-            android:label="@string/title_activity_no_data_available" >
+            android:label="@string/title_activity_no_data_available"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

@@ -28,7 +28,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -166,6 +166,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private TextView latestComment;
     private Button makeACommnent;
     private Button allComments;
+    private ImageButton furtherInformation;
 
 
     /* Instance variables needed for the progress dialog/progress bar. */
@@ -186,6 +187,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private String poolPhoneNumber;
     private int listsize = 0;
     private float sumOfRatings = 0;
+    private String dayTicket;
+    private String infoOnCivicPool;
 
 
 
@@ -228,6 +231,24 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                 // GetLatestUpdateFromDatabase(); maybe rather sorry you are not connected to the internet
             }
 
+    }
+
+
+    // Written using parse documentation
+    private void getDataForFurtherInformation() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FurtherInformation");
+        query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
+        Log.d("correspondingCivicID", String.valueOf(closestPoolCivicID));
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (list.size() != 0) {
+                    ParseObject object = list.get(0);
+                    dayTicket = object.getString("dayTicket");
+                    infoOnCivicPool = object.getString("sports");
+                }
+                }
+        });
     }
 
 
@@ -277,7 +298,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         }
         float rating = aggregated/counter;
         sumOfRatings = aggregated;
-        averageRating.setRating((int)rating);
+        averageRating.setRating((int) rating);
     }
 
 
@@ -316,6 +337,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         setTheInstanceVariables(closestPool);
         setDataOnScreen(closestPool, controlDistance);
         getDataForLatestComment();
+        getDataForFurtherInformation();
     }
 
     private void setTheInstanceVariables(ParseObject closestPool) {
@@ -324,7 +346,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         poolLongi = (double)closestPool.getNumber(PARSE_LONGI);
         poolPhoneNumber = closestPool.getString(PARSE_PHONE_NUMBER);
         poolWebsite = closestPool.getString(PARSE_WEBSITE);
-
     }
 
     /* Sets the data of the closest civic pool to the screen. */
@@ -462,7 +483,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         dateComment = (TextView)findViewById(R.id.text_view_comment_date);
         allComments = (Button)findViewById(R.id.button_show_all_comments);
         makeACommnent = (Button)findViewById(R.id.button_make_a_comment);
-
+        furtherInformation = (ImageButton)findViewById(R.id.image_button_information);
     }
 
 
@@ -493,6 +514,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         textPhoneNumber.setOnClickListener(this);
         allComments.setOnClickListener(this);
         makeACommnent.setOnClickListener(this);
+        furtherInformation.setOnClickListener(this);
     }
 
     @Override
@@ -513,6 +535,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
             case R.id.button_show_all_comments:
                 switchToAllCommentsActivity();
                 break;
+            case R.id.image_button_information:
+                showFurtherInformationDialog();
+                break;
             case R.id.button_make_a_comment:
                 if (ParseUser.getCurrentUser() != null) {
                     showCommentDialog();
@@ -523,6 +548,20 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
         }
 
+    }
+
+    private void showFurtherInformationDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Informationen");
+        dialogBuilder.setPositiveButton("okay", new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        dialogBuilder.setMessage("Tagesticket: " + dayTicket + "\n" + infoOnCivicPool);
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
     }
 
     private void showYouAreNotSignedInToast() {
@@ -761,7 +800,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     }
 
 
-    // from https://parse.com/docs/android/guide#users
+    // Created with the help of: https://parse.com/docs/android/guide#users
     private void goBackToHomeScreen() {
         ParseUser.logOut();
         Intent goBackToHomeScreen = new Intent (ClosestCivicPoolActivity.this, HomeScreenActivity.class);
@@ -804,11 +843,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                     });}
                 Log.d("PROGRESS", String.valueOf(progressBarStatus));
                 if (progressBarStatus >= PROGRESS_BAR_MAX) {
-                       /* try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } */
                     progressBar.dismiss();
                 }
 
