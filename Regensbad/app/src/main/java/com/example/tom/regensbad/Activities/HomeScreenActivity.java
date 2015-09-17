@@ -31,15 +31,21 @@ import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.Weather;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
+import com.example.tom.regensbad.Persistence.FurtherInformationDatabase;
 import com.example.tom.regensbad.Persistence.WeatherDataProvider;
 import com.example.tom.regensbad.Persistence.WeatherLastUpdateDataProvider;
 import com.example.tom.regensbad.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 
@@ -80,6 +86,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private static final int SUBSTRING_END_MINUTES = 16;
     private static final int TIME_FACTOR = 1000;
 
+    private static final String PARSE_FURTHER_INFORMATION = "FurtherInformation";
+    private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
+    private static final String PARSE_SPORTS = "sports";
+    private static final String PARSE_DAY_TICKET = "dayTicket";
+
 
     private TextView cityName;
     private TextView maxDegrees;
@@ -93,6 +104,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private Button buttonGoToList;
     private WeatherDataProvider weatherDataProvider;
     private WeatherLastUpdateDataProvider weatherLastUpdateDataProvider;
+    private FurtherInformationDatabase furtherInformationDatabase;
 
 
     @Override
@@ -104,7 +116,43 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         initializeWeatherLastUpdateDataProvider();
         initializeDownLoadOfWeatherData();
         registerOnClickListeners();
+        fillFurtherInformationDatabase();
+    }
 
+    private void fillFurtherInformationDatabase() {
+        furtherInformationDatabase = new FurtherInformationDatabase(this);
+        furtherInformationDatabase.open();
+        if (checkIfConnectedToInternet() == true) {
+            furtherInformationDatabase.deleteAllFurtherInformationItems();
+            fetchFurtherInformationFromParse();
+        }
+    }
+
+    /* This method retrieves the civic pool objects from the parse.com backend and adds them
+    to the array list, that the adapter is set on. It was written using the parse.com documentation at:
+    https://parse.com/docs/android/guide#objects-retrieving-objects
+     https://parse.com/docs/android/guide#queries .*/
+    private void fetchFurtherInformationFromParse() {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_FURTHER_INFORMATION);
+            query.whereExists(PARSE_CORRESPONDING_CIVIC_ID);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (e == null) {
+                        saveFurtherInformationDataToDatabase(list);
+                    }
+                }
+            });
+        }
+
+    private void saveFurtherInformationDataToDatabase(List<ParseObject> list) {
+        for (int i = 0; i < list.size(); i++) {
+            ParseObject furtherInformationFromParse = list.get(i);
+            int civicID = furtherInformationFromParse.getInt(PARSE_CORRESPONDING_CIVIC_ID);
+            String dayTicket = furtherInformationFromParse.getString(PARSE_DAY_TICKET);
+            String sports = furtherInformationFromParse.getString(PARSE_SPORTS);
+            furtherInformationDatabase.addFurtherInformationItem(civicID, dayTicket, sports);
+        }
     }
 
 
@@ -490,6 +538,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     protected void onDestroy () {
         super.onDestroy();
         weatherLastUpdateDataProvider.close();
+        furtherInformationDatabase.close();
     }
 
     @Override

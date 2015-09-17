@@ -27,7 +27,6 @@ import com.example.tom.regensbad.Adapters.ListAdapter;
 import com.example.tom.regensbad.Domain.CivicPool;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.Database;
-import com.example.tom.regensbad.Persistence.RatingDatabase;
 import com.example.tom.regensbad.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -35,11 +34,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 

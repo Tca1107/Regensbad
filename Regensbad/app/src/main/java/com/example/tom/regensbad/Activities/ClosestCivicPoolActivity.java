@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.example.tom.regensbad.Domain.CommentRating;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.DistanceDataProvider;
+import com.example.tom.regensbad.Persistence.FurtherInformationDatabase;
 import com.example.tom.regensbad.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -148,6 +149,12 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     private static final int ZERO_UP_VOTES = 0;
 
+
+    private static final String OKAY = "ok";
+    private static final String PIECES_OF_INFORMATION = "Weitere Informationen";
+    private static final String DAY_TICKET_PRICE = "Tagesticket: ";
+    private static final String NO_CONTENT_AVAILABLE = "Leider kein Inhalt verfügbar, da keine Verbindung zum Internet besteht.";
+
     /* User interface elements */
     private ImageView poolPicture;
     private TextView textName;
@@ -187,6 +194,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private String poolPhoneNumber;
     private int listsize = 0;
     private float sumOfRatings = 0;
+
+
+    private FurtherInformationDatabase furtherInformationDatabase;
     private String dayTicket;
     private String infoOnCivicPool;
 
@@ -201,7 +211,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         fetchUserLocation();
         fetchDataFromParse();
     }
-
 
 
 
@@ -234,22 +243,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     }
 
 
-    // Written using parse documentation
-    private void getDataForFurtherInformation() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("FurtherInformation");
-        query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
-        Log.d("correspondingCivicID", String.valueOf(closestPoolCivicID));
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (list.size() != 0) {
-                    ParseObject object = list.get(0);
-                    dayTicket = object.getString("dayTicket");
-                    infoOnCivicPool = object.getString("sports");
-                }
-                }
-        });
-    }
 
 
     /* This method retrieves the latest CommentRating Object from parse.com It was written using the parse.com documentation at:
@@ -337,7 +330,14 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         setTheInstanceVariables(closestPool);
         setDataOnScreen(closestPool, controlDistance);
         getDataForLatestComment();
-        getDataForFurtherInformation();
+        initializeFurtherInformationDatabase();
+    }
+
+    private void initializeFurtherInformationDatabase() {
+        furtherInformationDatabase = new FurtherInformationDatabase(this);
+        furtherInformationDatabase.open();
+        dayTicket = furtherInformationDatabase.getDayTicket(closestPoolCivicID);
+        infoOnCivicPool = furtherInformationDatabase.getSports(closestPoolCivicID);
     }
 
     private void setTheInstanceVariables(ParseObject closestPool) {
@@ -552,16 +552,27 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     private void showFurtherInformationDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setTitle("Informationen");
-        dialogBuilder.setPositiveButton("okay", new Dialog.OnClickListener() {
+        dialogBuilder.setTitle(PIECES_OF_INFORMATION);
+        dialogBuilder.setPositiveButton(OKAY, new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                // nothing since the dialog only closes
             }
         });
-        dialogBuilder.setMessage("Tagesticket: " + dayTicket + "\n" + infoOnCivicPool);
+        if (dayTicket.equals("")) {
+            dialogBuilder.setMessage(NO_CONTENT_AVAILABLE);
+        } else {
+            String formattedInfoOnCivicPool = formatInfoOnCivicPoolString();
+            dialogBuilder.setMessage(DAY_TICKET_PRICE + dayTicket + "\n" + formattedInfoOnCivicPool);
+        }
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+    }
+
+    // Created with the help of http://stackoverflow.com/questions/3429546/how-do-i-add-a-bullet-symbol-in-textview
+    private String formatInfoOnCivicPoolString() {
+        String result = infoOnCivicPool.replace(" ", "\n\u2022 ");
+        return result;
     }
 
     private void showYouAreNotSignedInToast() {
@@ -884,6 +895,11 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         updateProgressBarStatus(PROGRESS_BAR_MAX);
     }
 
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        furtherInformationDatabase.close();
+    }
 
 
 }

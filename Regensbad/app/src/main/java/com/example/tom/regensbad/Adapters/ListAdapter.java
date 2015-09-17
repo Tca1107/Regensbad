@@ -2,7 +2,6 @@ package com.example.tom.regensbad.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +10,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.tom.regensbad.Domain.CivicPool;
-import com.example.tom.regensbad.Persistence.RatingDatabase;
 import com.example.tom.regensbad.R;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 /**

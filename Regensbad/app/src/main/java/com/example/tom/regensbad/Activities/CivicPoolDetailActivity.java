@@ -29,6 +29,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -40,6 +41,7 @@ import com.example.tom.regensbad.Domain.CommentRating;
 import com.example.tom.regensbad.LocationService.LocationUpdater;
 import com.example.tom.regensbad.Persistence.Database;
 import com.example.tom.regensbad.Persistence.DistanceDataProvider;
+import com.example.tom.regensbad.Persistence.FurtherInformationDatabase;
 import com.example.tom.regensbad.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -115,11 +117,20 @@ View.OnClickListener{
     private static final int MIN_RATING = 1;
 
 
+    private static final String OKAY = "ok";
+    private static final String PIECES_OF_INFORMATION = "Weitere Informationen";
+    private static final String DAY_TICKET_PRICE = "Tagesticket: ";
+    private static final String NO_CONTENT_AVAILABLE = "Leider kein Inhalt verfügbar, da keine Verbindung zum Internet besteht.";
+
 
     private int ID;
     private double distance;
     private double userLat;
     private double userLong;
+
+    private FurtherInformationDatabase furtherInformationDatabase;
+    private String dayTicket;
+    private String infoOnCivicPool;
 
 
     /* User interface elements */
@@ -140,6 +151,7 @@ View.OnClickListener{
     private TextView latestComment;
     private Button makeACommnent;
     private Button allComments;
+    private ImageButton furtherInformation;
 
 
     private DistanceDataProvider distanceDataProvider;
@@ -159,6 +171,7 @@ View.OnClickListener{
         initializeUIElements();
         registerOnClickListeners();
         setTheCurrentComment();
+        initializeFurtherInformationDatabase();
     }
 
     private void registerOnClickListeners() {
@@ -168,6 +181,14 @@ View.OnClickListener{
         startNavigationButton.setOnClickListener(this);
         textWebsite.setOnClickListener(this);
         textPhoneNumber.setOnClickListener(this);
+        furtherInformation.setOnClickListener(this);
+    }
+
+    private void initializeFurtherInformationDatabase() {
+        furtherInformationDatabase = new FurtherInformationDatabase(this);
+        furtherInformationDatabase.open();
+        dayTicket = furtherInformationDatabase.getDayTicket(ID);
+        infoOnCivicPool = furtherInformationDatabase.getSports(ID);
     }
 
 
@@ -247,6 +268,7 @@ View.OnClickListener{
         dateComment = (TextView)findViewById(R.id.text_view_comment_date);
         allComments = (Button)findViewById(R.id.button_show_all_comments);
         makeACommnent = (Button)findViewById(R.id.button_make_a_comment);
+        furtherInformation = (ImageButton)findViewById(R.id.image_button_information);
     }
 
     /* Following four lines were created with the help of the following web resource:
@@ -477,7 +499,36 @@ View.OnClickListener{
             case R.id.text_phoneNumber:
                 makeACall();
                 break;
+            case R.id.image_button_information:
+                showFurtherInformationDialog();
+                break;
         }
+    }
+
+
+    private void showFurtherInformationDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle(PIECES_OF_INFORMATION);
+        dialogBuilder.setPositiveButton(OKAY, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // nothing since the dialog only closes
+            }
+        });
+        if (dayTicket.equals("")) {
+            dialogBuilder.setMessage(NO_CONTENT_AVAILABLE);
+        } else {
+            String formattedInfoOnCivicPool = formatInfoOnCivicPoolString();
+            dialogBuilder.setMessage(DAY_TICKET_PRICE + dayTicket + "\n" + formattedInfoOnCivicPool);
+        }
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+    // Created with the help of http://stackoverflow.com/questions/3429546/how-do-i-add-a-bullet-symbol-in-textview
+    private String formatInfoOnCivicPoolString() {
+        String result = infoOnCivicPool.replace(" ", "\n\u2022 ");
+        return result;
     }
 
 

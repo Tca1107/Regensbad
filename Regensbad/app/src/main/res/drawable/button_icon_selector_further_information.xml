@@ -6,11 +6,11 @@
 
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/ic_info_white_48dp" />
+        android:drawable="@drawable/ic_info_blue_48dp" />
 
 
     <item
-        android:drawable="@drawable/ic_info_blue_48dp"
+        android:drawable="@drawable/ic_info_white_48dp"
         />
 
 
