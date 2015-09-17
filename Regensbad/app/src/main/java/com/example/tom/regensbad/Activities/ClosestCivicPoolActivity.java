@@ -126,7 +126,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     private static final double DEFAULT_LONG = 12.100722;
 
     /* Constants of the type String needed for the Toasts. */
-    private static final String DEFAULT_LOCATION_TOAST = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
+    private static final String DEFAULT_LOCATION_TOAST = "Kein GPS-Empfang! Der Regensburger Hauptbahnhof wird als Standort angenommen.";
     private static final String NOT_ALLOWED_TO_COMMENT = "Sie haben keinen Account oder sind nicht eingeloggt. Sie können daher keine Kommentare oder Bewertungen abgeben.";
     private static final int MIN_COMMENT_LENGTH = 5;
     private static final int MAX_COMMENT_LENGTH = 250;
