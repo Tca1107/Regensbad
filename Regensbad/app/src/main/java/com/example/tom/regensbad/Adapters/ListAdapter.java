@@ -74,7 +74,7 @@ public class ListAdapter extends ArrayAdapter<CivicPool> {
 
             poolName.setText(pool.getName());
             poolType.setText(pool.getType());
-            distance.setText(String.valueOf(pool.getCurrentDistance()));
+            distance.setText(" " + String.valueOf(pool.getCurrentDistance()) +  " ");
             ratingBar.setRating((int)(pool.getCurrentRating()));
 
 

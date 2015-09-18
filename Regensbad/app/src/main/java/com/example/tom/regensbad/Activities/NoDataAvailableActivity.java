@@ -1,5 +1,6 @@
 package com.example.tom.regensbad.Activities;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -47,9 +48,19 @@ public class NoDataAvailableActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            finish();
+            goBackToHomeScreen();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // Created with the help of: https://parse.com/docs/android/guide#users
+    private void goBackToHomeScreen() {
+        Intent goBackToHomeScreen = new Intent (NoDataAvailableActivity.this, HomeScreenActivity.class);
+        // From: http://stackoverflow.com/questions/6397576/finish-to-go-back-two-activities
+        goBackToHomeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(goBackToHomeScreen);
+    }
+
+
 }

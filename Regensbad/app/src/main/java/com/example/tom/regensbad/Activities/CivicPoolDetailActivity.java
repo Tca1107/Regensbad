@@ -109,6 +109,7 @@ View.OnClickListener{
     /* Constants of the type String needed for the Toasts. */
     private static final String DEFAULT_LOCATION_TOAST = "Kein GPS-Empfang! Es wird der Regensburger Hauptbahnhof als Standort angenommen.";
     private static final String NOT_ALLOWED_TO_COMMENT = "Sie haben keinen Account oder sind nicht eingeloggt. Sie können daher keine Kommentare oder Bewertungen abgeben.";
+    private static final String YOU_ARE_OFFLINE = "Sie sind nicht mit dem Internet verbunden. Sie können daher keine Kommentare oder Bewertungen abgeben.";
     private static final int MIN_COMMENT_LENGTH = 5;
     private static final int MAX_COMMENT_LENGTH = 250;
     private static final String COMMENT_TOO_SHORT = "Ein Kommentar muss mindestens fünf Zeichen umfassen.";
@@ -117,7 +118,9 @@ View.OnClickListener{
     private static final int MIN_RATING = 1;
 
 
-    private static final String OKAY = "ok";
+    private static final double LINE_SPACING = 1.2;
+
+    private static final String OKAY = "OK";
     private static final String PIECES_OF_INFORMATION = "Weitere Informationen";
     private static final String DAY_TICKET_PRICE = "Tagesticket: ";
     private static final String NO_CONTENT_AVAILABLE = "Leider kein Inhalt verfügbar, da keine Verbindung zum Internet besteht.";
@@ -245,7 +248,7 @@ View.OnClickListener{
 
     private void setTheContentOfTheElements() {
         textName.setText(pool.getName());
-        textDistance.setText(String.valueOf(distance));
+        textDistance.setText(" " + String.valueOf(distance) + " ");
         textPhoneNumber.setText(pool.getPhoneNumber());
     }
 
@@ -447,7 +450,7 @@ View.OnClickListener{
     @Override
     public void onDataDistanceDataReceived(double dist) {
         distance = dist;
-        textDistance.setText(String.valueOf(distance));
+        textDistance.setText(" " + String.valueOf(distance) + " ");
     }
 
     @Override
@@ -478,8 +481,10 @@ View.OnClickListener{
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.button_make_a_comment:
-                if (ParseUser.getCurrentUser() != null) {
+                if (ParseUser.getCurrentUser() != null && checkIfConnectedToInternet() == true) {
                     showCommentDialog();
+                } else if (checkIfConnectedToInternet() == false) {
+                    showYouAreOfflineToast();
                 } else {
                     showYouAreNotSignedInToast();
                 }
@@ -507,6 +512,40 @@ View.OnClickListener{
 
 
     private void showFurtherInformationDialog() {
+        if (dayTicket.equals("")) {
+            showNoConnectionDialog();
+        } else {
+            showFurtherInformationDialogWithData();
+        }
+
+    }
+
+    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source. */
+    private void showFurtherInformationDialogWithData() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_further_information, null);
+        dialogBuilder.setView(dialogView);
+
+        TextView priceForDay = (TextView)dialogView.findViewById(R.id.text_view_day_ticket);
+        priceForDay.setText(DAY_TICKET_PRICE + dayTicket);
+        TextView furtherInfoOnCivicPool = (TextView)dialogView.findViewById(R.id.text_view_info_on_civic_pool);
+        String formattedInfoOnCivicPool = formatInfoOnCivicPoolString();
+        furtherInfoOnCivicPool.setText(formattedInfoOnCivicPool);
+        furtherInfoOnCivicPool.setLineSpacing(0, (float) LINE_SPACING);
+
+        dialogBuilder.setTitle(PIECES_OF_INFORMATION);
+        dialogBuilder.setPositiveButton(OKAY, new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // nothing since the dialog only closes
+            }
+        });
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+    private void showNoConnectionDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         dialogBuilder.setTitle(PIECES_OF_INFORMATION);
         dialogBuilder.setPositiveButton(OKAY, new Dialog.OnClickListener() {
@@ -515,15 +554,13 @@ View.OnClickListener{
                 // nothing since the dialog only closes
             }
         });
-        if (dayTicket.equals("")) {
-            dialogBuilder.setMessage(NO_CONTENT_AVAILABLE);
-        } else {
-            String formattedInfoOnCivicPool = formatInfoOnCivicPoolString();
-            dialogBuilder.setMessage(DAY_TICKET_PRICE + dayTicket + "\n" + formattedInfoOnCivicPool);
-        }
+        dialogBuilder.setMessage(NO_CONTENT_AVAILABLE);
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
     }
+
+
+
 
     // Created with the help of http://stackoverflow.com/questions/3429546/how-do-i-add-a-bullet-symbol-in-textview
     private String formatInfoOnCivicPoolString() {
@@ -534,6 +571,10 @@ View.OnClickListener{
 
     private void showYouAreNotSignedInToast() {
         Toast.makeText(CivicPoolDetailActivity.this, NOT_ALLOWED_TO_COMMENT, Toast.LENGTH_LONG).show();
+    }
+
+    private void showYouAreOfflineToast() {
+        Toast.makeText(CivicPoolDetailActivity.this, YOU_ARE_OFFLINE, Toast.LENGTH_LONG).show();
     }
 
     /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source. */

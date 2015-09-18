@@ -91,10 +91,10 @@
     <string name="no_connection">Inhalte konnten nicht geldaden werden, da keine Verbindung zum Server besteht. Stellen Sie bitte eine Internetverbindung her.</string>
 
     <!--Single List Item-->
-    <string name="string_km">km</string>
+    <string name="string_km"> km</string>
     <string name="string_open">geöffnet</string>
     <string name="string_closed">geschlossen</string>
-    <string name="string_km_airline">km Luftlinie</string>
+    <string name="string_km_airline"> km Luftlinie</string>
 
     <!--AllCivicPoolsActivity-->
     <string name="sort_AtoZ">nach Alphabet sortieren</string>
