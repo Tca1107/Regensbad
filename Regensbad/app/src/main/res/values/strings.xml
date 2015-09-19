@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Regensbad</string>
     <string name="app_label">Regensbad</string>
-    <string name="search_hint">Bad Suchen</string>
+    <string name="search_hint">Badname eingeben</string>
     <string name="regensburg">Regensburg</string>
 
     <string name="hello_world">Hello world!</string>

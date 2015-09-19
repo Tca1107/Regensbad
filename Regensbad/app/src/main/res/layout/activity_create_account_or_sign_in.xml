@@ -51,6 +51,7 @@
             android:textSize="15sp"
             android:background="@drawable/edit_text_shape"
             android:paddingLeft="15dp"
+            android:singleLine="true"
             />
     </LinearLayout>
 
@@ -75,6 +76,7 @@
                 android:inputType="text"
                 android:paddingLeft="15dp"
                 android:background="@drawable/edit_text_shape"
+                android:singleLine="true"
                 />
     </LinearLayout>
 
