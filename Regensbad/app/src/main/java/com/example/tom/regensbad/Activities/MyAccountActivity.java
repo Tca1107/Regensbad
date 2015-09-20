@@ -57,9 +57,11 @@ public class MyAccountActivity extends ActionBarActivity implements View.OnClick
 
     private void setValuesToTextViews() {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        String username = currentUser.getUsername();
-        String mailAddress = currentUser.getEmail();
-        setTheseValuesToTheTextViews(username, mailAddress);
+        if (currentUser != null) {
+            String username = currentUser.getUsername();
+            String mailAddress = currentUser.getEmail();
+            setTheseValuesToTheTextViews(username, mailAddress);
+        }
     }
 
     private void setTheseValuesToTheTextViews(String username, String mailAddress) {
