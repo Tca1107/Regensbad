@@ -75,16 +75,25 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         if (origin.equals("detail")){
             ID = extras.getInt("ID");
             singlePool = db.getPoolItem(ID);
+
         }
     }
 
     private void setSingleStartPosition() {
         /*From: http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in*/
-        CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(singlePool.getLati(), singlePool.getLongi()));
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(START_ZOOM);
-
-        mMap.moveCamera(start);
-        mMap.animateCamera(zoom);
+        if (singlePool != null) {
+            CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(singlePool.getLati(), singlePool.getLongi()));
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(START_ZOOM);
+            mMap.moveCamera(start);
+            mMap.animateCamera(zoom);
+        } else {
+            Intent i = getIntent();
+            Bundle extras = i.getExtras();
+            CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(extras.getDouble("latitude"),extras.getDouble("longitude")));
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(START_ZOOM);
+            mMap.moveCamera(start);
+            mMap.animateCamera(zoom);
+        }
     }
 
     private void initializeUIElements() {
