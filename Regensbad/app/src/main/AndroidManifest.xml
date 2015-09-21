@@ -29,7 +29,9 @@
         android:required="true" >
     </uses-feature>
 
+    <!-- First line from: http://stackoverflow.com/questions/30135858/parse-error-parseenablelocaldatastorecontext-must-be-invoked-before-parse -->
     <application
+        android:name="com.example.tom.regensbad.HelperClasses.ParseInitializationApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_regensbad_logo"
         android:label="@string/app_name"
