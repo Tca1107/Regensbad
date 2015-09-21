@@ -47,7 +47,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     private static final double START_LAT = 49.012985;
     private static final double START_LANG = 12.092370;
     private static final float START_ZOOM = 12;
-    private static final float START_ZOOM_ALL = 9;
+    private static final float START_ZOOM_ALL = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
