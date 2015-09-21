@@ -267,19 +267,22 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null && checkIfConnectedToInternet() == true) {
             getMenuInflater().inflate(R.menu.menu_home_screen, menu);
-            addTheSearchView(menu);
+            // addTheSearchView(menu);
             return super.onCreateOptionsMenu(menu);
         } else {
             getMenuInflater().inflate(R.menu.menu_home_screen_user_not_signed_in, menu);
-            addTheSearchView(menu);
+            // addTheSearchView(menu);
             return super.onCreateOptionsMenu(menu);
         }
     }
 
 
+
+
+
     /* This method was created using the following to resources as guidelines:
     /* http://developer.android.com/guide/topics/search/search-dialog.html */
-    /* http://developer.android.com/guide/topics/ui/actionbar.html#ActionView .*/
+    /* http://developer.android.com/guide/topics/ui/actionbar.html#ActionView .
     private void addTheSearchView(Menu menu) {
         MenuItem searchItem = menu.findItem(R.id.action_button_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -306,12 +309,15 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
 
 
+
     private void changeToSearchCivicPoolsActivity(String query) {
         Intent changeToSearchCivicPoolsActivity = new Intent(HomeScreenActivity.this, SearchCivicPoolsActivity.class);
         changeToSearchCivicPoolsActivity.putExtra(KEY_FOR_INTENT_EXTRA, query);
         startActivity(changeToSearchCivicPoolsActivity);
     }
 
+
+    */
 
 
     @Override

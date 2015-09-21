@@ -16,13 +16,13 @@
 
 <!-- http://developer.android.com/guide/topics/ui/actionbar.html#ActionView-->
 
+    <!--
     <item android:id="@+id/action_button_search"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/search_title_description"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.widget.SearchView"/>
-
-
+    -->
 
     <item android:id="@+id/action_myAccount" android:title="@string/action_myAccount"
         android:orderInCategory="100" app:showAsAction="never" />
