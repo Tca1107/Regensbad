@@ -156,9 +156,15 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     private void setUpMap() {
         handleClick();
         if(origin.equals("detail")){
-            setSingleStartPosition();
-            singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(singlePool.getLati(), singlePool.getLongi())).title(singlePool.getName()).snippet(snippetText));
-        }
+            if (singlePool != null) {
+                setSingleStartPosition();
+                singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(singlePool.getLati(), singlePool.getLongi())).title(singlePool.getName()).snippet(snippetText));
+            } else {
+                Intent i = getIntent();
+                Bundle extras = i.getExtras();
+                singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(extras.getDouble("latitude"), extras.getDouble("longitude") )).title(extras.getString("name")).snippet(snippetText));
+            }
+            }
         if (origin.equals("all")){
             setAllStartPosition();
             setUpAllMarkers();
@@ -193,9 +199,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     @Override
     public void onInfoWindowClick(Marker marker) {
         if (marker.equals(singleMarker)){
-            Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
-            showDetailView.putExtra("ID", singlePool.getID());
-            startActivity(showDetailView);
+            if (singlePool != null) {
+                Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
+                showDetailView.putExtra("ID", singlePool.getID());
+                startActivity(showDetailView);
+            } else {
+                Intent i = getIntent();
+                Bundle extras = i.getExtras();
+                Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
+                showDetailView.putExtra("ID", extras.getString("ID"));
+                startActivity(showDetailView);
+            }
         }else {
             //From: http://stackoverflow.com/questions/16714327/differentiate-between-different-markers-in-maps-api-v2-unique-identifiers
             int id = map.get(marker);

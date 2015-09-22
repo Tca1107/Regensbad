@@ -825,6 +825,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         goToMap.putExtra("ID", closestPoolCivicID);
         goToMap.putExtra("latitude", poolLati);
         goToMap.putExtra("longitude", poolLongi);
+        goToMap.putExtra("name", textName.getText().toString());
         goToMap.putExtra("origin", "detail");
         startActivity(goToMap);
     }
