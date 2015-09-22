@@ -278,12 +278,10 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         if (list.size() > 0) {
             String date = "";
             ParseObject currentObject = list.get(0);
-            Log.d("Datum", String.valueOf(currentObject.getDate(PARSE_CREATED_AT)));
             usernameComment.setText(currentObject.getString(PARSE_USERNAME));
             comment.setText(currentObject.getString(PARSE_COMMENT));
             dateComment.setText(currentObject.getString(PARSE_DATE));
             ratingComment.setRating((int) currentObject.getNumber(PARSE_RATING));
-            Log.d("RATING", String.valueOf(currentObject.getNumber(PARSE_RATING)));
             setRatingInDetailView(list);
         }
     }
@@ -778,7 +776,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                         + formattedTime.substring(SUBSTRING_MONTH_START, SUBSTRING_MONTH_END) + "."
                         + formattedTime.substring(SUBSTRING_YEAR_START, SUBSTRING_YEAR_END) + "  "
                         + formattedTime.substring(SUBSTRING_TIME_START, SUBSTRING_TIME_END);
-        Log.d("aktuelle Zeit", formattedTimeString);
         return formattedTimeString;
     }
 
@@ -904,7 +901,6 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
                             progressBar.setProgress(progressBarStatus);
                         }
                     });}
-                Log.d("PROGRESS", String.valueOf(progressBarStatus));
                 if (progressBarStatus >= PROGRESS_BAR_MAX) {
                     progressBar.dismiss();
                 }

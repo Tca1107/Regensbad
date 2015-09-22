@@ -1,5 +1,6 @@
 package com.example.tom.regensbad.Activities;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,7 +51,6 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         initializeUIElements();
         registerOnClickListeners();
         initializeActionBar();
-        //setFontOfAppName();
     }
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
@@ -88,6 +89,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         submitNewAccount = (Button)findViewById(R.id.button_create_new_account);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {
         //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
         Window window = CreateAccountOrSignInActivity.this.getWindow();
@@ -96,19 +98,6 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         window.setStatusBarColor(CreateAccountOrSignInActivity.this.getResources().getColor(R.color.blue_dark_primary_color));
 
     }
-
-
-    /*
-    /* This method was created using the tutorial on including external fonts in Android Studio which can be found
-    * at the following website: http://www.thedevline.com/2014/03/how-to-include-fonts-in-android.html .
-    * The font used is a font of Google Fonts named "Pacifico", which can be found at the following website:
-    * https://www.google.com/fonts/ .
-    private void setFontOfAppName() {
-        Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
-        appName.setTypeface(typeface);
-    }
-
-    */
 
 
     @Override
@@ -222,8 +211,5 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         Intent changeToCreateAccountActivity = new Intent (CreateAccountOrSignInActivity.this, CreateAccountActivity.class);
         startActivity(changeToCreateAccountActivity);
     }
-
-
-
 
 }

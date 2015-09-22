@@ -156,8 +156,4 @@ public class MyAccountActivity extends ActionBarActivity implements View.OnClick
             return false;
         }
     }
-
-
-
-
 }

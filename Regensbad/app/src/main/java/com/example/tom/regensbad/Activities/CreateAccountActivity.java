@@ -1,5 +1,6 @@
 package com.example.tom.regensbad.Activities;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -97,7 +99,6 @@ public class CreateAccountActivity extends ActionBarActivity {
             Typeface typeface = Typeface.createFromAsset(getAssets(), FONT_PACIFICO_FILE_PATH);
             ((TextView)view.findViewById(R.id.text_view_action_bar_home_screen)).setTypeface(typeface);
             this.getSupportActionBar().setCustomView(view);
-            // hier noch Methode zum Icon einfügen, sobald wir das Icon haben
     }
 
 
@@ -117,6 +118,7 @@ public class CreateAccountActivity extends ActionBarActivity {
         submitNewAccount = (Button)findViewById(R.id.button_submit_new_account);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {
         //From: http://stackoverflow.com/questions/27093287/how-to-change-status-bar-color-to-match-app-in-lollipop-android
         Window window = CreateAccountActivity.this.getWindow();
@@ -133,7 +135,6 @@ public class CreateAccountActivity extends ActionBarActivity {
         String mailAddress = this.mailAddress.getText().toString();
         String username = this.username.getText().toString();
         String password = this.password.getText().toString();
-        // hier noch toasten was genau fehlt, falls was leer is
         ParseUser user = new ParseUser();
         user.setEmail(mailAddress);
         user.setUsername(username);
@@ -155,9 +156,6 @@ public class CreateAccountActivity extends ActionBarActivity {
     }
 
     private void switchToHomeScreenActivityWithALoggedInUser() {
-        // just for debugging (following two lines)
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        Log.d("current Uzer", currentUser.toString());
         Intent switchToHomeScreenActivity = new Intent (CreateAccountActivity.this, HomeScreenActivity.class);
         startActivity(switchToHomeScreenActivity);
     }

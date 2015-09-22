@@ -231,7 +231,6 @@ View.OnClickListener{
         Bundle extras = i.getExtras();
         ID = extras.getInt("ID");
         pool = db.getPoolItem(ID);
-        Log.d("CIVICPOOOOOL", String.valueOf(pool));
     }
 
     private void initializeUIElements() {
@@ -352,12 +351,10 @@ View.OnClickListener{
         String date = "";
         if (list.size() > 0) {
             ParseObject currentObject = list.get(0);
-            Log.d("Datum", String.valueOf(currentObject.getDate(PARSE_CREATED_AT)));
             usernameComment.setText(currentObject.getString(PARSE_USERNAME));
             comment.setText(currentObject.getString(PARSE_COMMENT));
             dateComment.setText(currentObject.getString(PARSE_DATE));
             ratingComment.setRating((int) currentObject.getNumber(PARSE_RATING));
-            Log.d("RATING", String.valueOf(currentObject.getNumber(PARSE_RATING)));
             setRatingInDetailView(list);
         }
     }
@@ -667,7 +664,6 @@ View.OnClickListener{
                     listsize = list.size();
                     if (list.size() == 0) {
                         final float averageRatingParse = userRating;
-                        Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
                         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
                         query.whereEqualTo(PARSE_CIVIC_ID, ID);
                         query.findInBackground(new FindCallback<ParseObject>() {
@@ -675,7 +671,6 @@ View.OnClickListener{
                             public void done(List<ParseObject> list, ParseException e) {
                                 if (e == null) {
                                     ParseObject object = list.get(0);
-                                    Log.d("AVERAGERATINGSSS88", String.valueOf(averageRatingParse));
                                     object.put(PARSE_CURRENT_RATING, averageRatingParse);
                                     object.saveInBackground();
                                     averageRating.setRating(averageRatingParse);
@@ -684,7 +679,6 @@ View.OnClickListener{
                         }); }
                     else {
                     final float averageRatingParse = (userRating + score)/(list.size() + 1);
-                    Log.d("AVERAGERATINGSSS77", String.valueOf(averageRatingParse));
                     ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_CIVIC_POOL);
                     query.whereEqualTo(PARSE_CIVIC_ID, ID);
                     query.findInBackground(new FindCallback<ParseObject>() {
@@ -692,7 +686,6 @@ View.OnClickListener{
                         public void done(List<ParseObject> list, ParseException e) {
                             if (e == null) {
                                 ParseObject object = list.get(0);
-                                Log.d("AVERAGERATINGSSS88", String.valueOf(averageRatingParse));
                                 object.put(PARSE_CURRENT_RATING, averageRatingParse);
                                 object.saveInBackground();
                                 averageRating.setRating(averageRatingParse);
@@ -723,7 +716,6 @@ View.OnClickListener{
                 + formattedTime.substring(SUBSTRING_MONTH_START, SUBSTRING_MONTH_END) + "."
                 + formattedTime.substring(SUBSTRING_YEAR_START, SUBSTRING_YEAR_END) + "  "
                 + formattedTime.substring(SUBSTRING_TIME_START, SUBSTRING_TIME_END);
-        Log.d("aktuelle Zeit", formattedTimeString);
         return formattedTimeString;
     }
 

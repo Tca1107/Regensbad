@@ -175,7 +175,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
                             progressBar.setProgress(progressBarStatus);
                         }
                     });}
-                Log.d("PROGRESS", String.valueOf(progressBarStatus));
                     if (progressBarStatus >= PROGRESS_BAR_MAX) {
                         progressBar.dismiss();
                         progressBarStatus = 0;
@@ -207,7 +206,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         ArrayList<CivicPool> arrayToReturn = new ArrayList<CivicPool>();
         for (int i = 0; i < myPoolArray.size(); i++) {
             CivicPool pool = myPoolArray.get(i);
-            // myPoolArray.remove(i);
             pool.setDecimalPlacesInCurrentDistance(cutTheRedundantPlaces(pool.getCurrentDistance()));
             arrayToReturn.add(pool);
         }
@@ -227,11 +225,9 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    Log.d("Seen RETRIEVED", String.valueOf(list.size()) + " Seen");
                     pools.clear();
                     assignParseDataToArrayList(list);
                     initializeAdapter();
-                    Log.d("We are through", "yeah we are");
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -282,7 +278,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         float[]dist=new float[FLOAT_DISTANCE_LENGTH];
         Location.distanceBetween(userLat, userLong, poolLat, poolLong, dist);
         double toReturn = cutTheRedundantPlaces((double) dist[DISTANCE_LOCATION_IN_FLOAT]/KILOMETERS_FACTOR);
-        Log.d("TORETURNADW", String.valueOf(toReturn));
         return toReturn;
     }
 

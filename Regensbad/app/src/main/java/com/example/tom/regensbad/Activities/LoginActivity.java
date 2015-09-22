@@ -68,9 +68,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private void checkIfUserIsStillLoggedIn() {
         try {
             ParseUser currentUser = ParseUser.getCurrentUser();
-            Log.d("currentUser", currentUser.toString());
             if (currentUser != null && checkIfConnectedToInternet() == true) {
-                Log.d("currentUser", currentUser.toString());
                 switchToHomeScreenActivity();
             }
         } catch (NullPointerException e) {

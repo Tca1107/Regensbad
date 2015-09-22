@@ -61,6 +61,4 @@ public class NoDataAvailableActivity extends ActionBarActivity {
         goBackToHomeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(goBackToHomeScreen);
     }
-
-
 }

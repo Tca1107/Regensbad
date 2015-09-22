@@ -77,7 +77,6 @@ public class AllCommentsActivity extends ActionBarActivity {
    https://parse.com/docs/android/guide#queries .*/
     private void getDataForLatestComment() {
         int poolID = getPoolID();
-        Log.d("POOLID", String.valueOf(poolID));
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
         query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, poolID);
         // following line from http://stackoverflow.com/questions/27971733/how-to-get-latest-updated-parse-object-in-android
@@ -105,7 +104,6 @@ public class AllCommentsActivity extends ActionBarActivity {
             CommentRating commentRating = new CommentRating(userName, comment, correspondingCivicID, rating, date);
             commentRatingsArrayList.add(commentRating);
         }
-        Log.d("arrayList", String.valueOf(commentRatingsArrayList));
         commentAdapter.notifyDataSetChanged();
 
     }

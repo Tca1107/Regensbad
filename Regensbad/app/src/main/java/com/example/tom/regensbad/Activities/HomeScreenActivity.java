@@ -384,7 +384,6 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
     @Override
     public void onDataWeatherDataReceived(Weather weather) {
-        Log.d("Communication", "worked");
         if (weather != null) {
             insertWeatherDataInLastUpdateProvider(weather);
             setWeatherDataForHomeScreen(weather);
