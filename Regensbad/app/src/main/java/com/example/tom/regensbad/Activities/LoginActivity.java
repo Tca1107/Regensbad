@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.tom.regensbad.HelperClasses.ParseInitializationApplication;
 import com.example.tom.regensbad.R;
 import com.parse.Parse;
 import com.parse.ParseUser;
@@ -143,8 +144,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     * https://parse.com/apps/quickstart#parse_data/mobile/android/native/existing .
     * This method sets up parse.com as the backend of the application. */
     private void setUpParseComAsBackend() {
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, PARSE_COM_APPLICATION_ID, PARSE_COM_CLIENT_ID);
+        //Parse.enableLocalDatastore(this);
+        //Parse.initialize(this, PARSE_COM_APPLICATION_ID, PARSE_COM_CLIENT_ID);
     }
 
     /* Processes the user's clicks on the buttons. */
