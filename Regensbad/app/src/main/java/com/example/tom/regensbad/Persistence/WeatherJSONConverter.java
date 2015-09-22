@@ -53,17 +53,6 @@ public class WeatherJSONConverter {
             String weatherDescription = weatherObject.getString(DESCRIPTION);
             String weatherIcon = weatherObject.getString(ICON_CODE);
 
-            //Logs for debugging
-            Log.d("windgeschwind", windSpeed);
-            Log.d("humidity", humidity);
-            Log.d("minDegrees", minDegrees);
-            Log.d("maxDegrees", maxDegrees);
-            Log.d("sunrise", String.valueOf(sunrise));
-            Log.d("sunset", String.valueOf(sunset));
-            Log.d("degrees:", degrees);
-            Log.d("weatherDescription", weatherDescription);
-            Log.d("weatherIcon", weatherIcon);
-
             weatherToReturn = new Weather (degrees, maxDegrees, minDegrees, humidity, sunrise, sunset,
                     windSpeed, weatherDescription, weatherIcon);
         } catch (JSONException exception) {
@@ -72,8 +61,4 @@ public class WeatherJSONConverter {
 
         return weatherToReturn;
     }
-
-
-
-
 }

@@ -63,7 +63,6 @@ public class FurtherInformationDatabase {
         if (cursor.moveToFirst()) {
             do {
                 if (cursor.getInt(COLUMN_ID_INDEX) == correspondingCivicID) {
-                    Log.d("DAY_TICKET", cursor.getString(COLUMN_DAY_TICKET_INDEX) );
                     return cursor.getString(COLUMN_DAY_TICKET_INDEX);
                 }
             } while (cursor.moveToNext());
@@ -76,7 +75,6 @@ public class FurtherInformationDatabase {
         if (cursor.moveToFirst()) {
             do {
                 if (cursor.getInt(COLUMN_ID_INDEX) == correspondingCivicID) {
-                    Log.d("DAY_TICKET", cursor.getString(COLUMN_SPORTS_INDEX) );
                     return cursor.getString(COLUMN_DAY_TICKET_INDEX);
                 }
             } while (cursor.moveToNext());

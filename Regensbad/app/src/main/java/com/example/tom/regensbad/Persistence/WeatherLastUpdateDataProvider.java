@@ -132,7 +132,6 @@ public class WeatherLastUpdateDataProvider {
         long time = System.currentTimeMillis();
         String formattedTime = formatTimeString(time);
         String formattedTimeOnlyHoursAndMinutes = formattedTime.substring(SUBSTRING_START, SUBSTRING_END);
-        Log.d("aktuelle Zeit", formattedTimeOnlyHoursAndMinutes);
         return formattedTimeOnlyHoursAndMinutes;
     }
 
@@ -183,11 +182,4 @@ public class WeatherLastUpdateDataProvider {
 
         }
     }
-
-
-
-
-
-
-
 }

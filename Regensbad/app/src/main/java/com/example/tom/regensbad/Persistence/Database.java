@@ -101,7 +101,6 @@ public class Database {
                     idCheck = cursor.getInt(0);
                     String picPath = cursor.getString(1);
                     if (idCheck == poolID) {
-                        Log.d("Bild", picPath);
                         return picPath;
                     }
                 } while (cursor.moveToNext());
@@ -216,10 +215,6 @@ public class Database {
                     String openTimeSun = cursor.getString(COLUMN_OPEN_TIME_SUN);
                     String closeTimeSun = cursor.getString(COLUMN_CLOSE_TIME_SUN);
 
-                    Log.d("getAllPoolItems", String.valueOf(currentDistance));
-                    // TEST
-
-
                     poolItems.add(new CivicPool(name, type, Double.parseDouble(lati), Double.parseDouble(longi), phonenumber,
                             website, opentime, closetime, picpath, Integer.parseInt(civicID), currentDistance, currentRating,
                             openTimeSat, closeTimeSat, openTimeSun, closeTimeSun));
@@ -265,7 +260,5 @@ public class Database {
 
             }
         }
-
-
     }
 

@@ -67,7 +67,6 @@ import com.example.tom.regensbad.R;
                 locationManager.requestLocationUpdates(bestProvider, time, distance,
                         this);
             } else {
-                Log.d("REGENSBURGER", "BAHNHOF");
                 publishLocationUpdate(REGENSBURG_MAIN_STATION_GPS);
             }
         }
@@ -81,7 +80,6 @@ import com.example.tom.regensbad.R;
         }
 
         private String createFormattedLocation(Location location) {
-            Log.d("LOCATION", String.valueOf(location));
             String latLongString;
 
             if (location != null) {

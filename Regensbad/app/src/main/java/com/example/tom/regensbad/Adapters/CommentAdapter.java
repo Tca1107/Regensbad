@@ -72,8 +72,4 @@ public class CommentAdapter extends ArrayAdapter<CommentRating> {
         }
         return view;
     }
-
-
-
-
 }
