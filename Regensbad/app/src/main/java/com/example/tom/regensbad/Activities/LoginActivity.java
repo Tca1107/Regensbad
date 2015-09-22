@@ -57,6 +57,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
 
+
+
     /* This method of code (the following five lines) was taken from the parse.com quick start guide, which can be found under the following link:
     * https://parse.com/apps/quickstart#parse_data/mobile/android/native/existing .
     * This method checks whether the user is still logged in and, if so, makes the system open the HomeScreenActivity immediately.
