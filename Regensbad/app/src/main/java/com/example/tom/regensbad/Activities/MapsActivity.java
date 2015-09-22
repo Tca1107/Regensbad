@@ -162,6 +162,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
             } else {
                 Intent i = getIntent();
                 Bundle extras = i.getExtras();
+                setSingleStartPosition();
                 singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(extras.getDouble("latitude"), extras.getDouble("longitude") )).title(extras.getString("name")).snippet(snippetText));
             }
             }
@@ -204,11 +205,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 showDetailView.putExtra("ID", singlePool.getID());
                 startActivity(showDetailView);
             } else {
-                Intent i = getIntent();
-                Bundle extras = i.getExtras();
-                Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
-                showDetailView.putExtra("ID", extras.getString("ID"));
-                startActivity(showDetailView);
+                finish();
             }
         }else {
             //From: http://stackoverflow.com/questions/16714327/differentiate-between-different-markers-in-maps-api-v2-unique-identifiers
