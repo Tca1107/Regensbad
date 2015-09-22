@@ -359,9 +359,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
             case R.id.button_all_civic_pools_on_map:
                 showAllCivicPoolsOnMap();
                 return true;
-            case R.id.sort_AtoZ:
-                sortList();
-                return true;
             case R.id.sort_rating:
                 sortRating();
                 return true;
@@ -390,16 +387,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         startActivity(startMapWithAllPools);
     }
 
-    //from http://stackoverflow.com/questions/9109890/android-java-how-to-sort-a-list-of-objects-by-a-certain-value-within-the-object
-    private void sortList() {
-        Collections.sort(pools, new Comparator<CivicPool>() {
-            @Override
-            public int compare(CivicPool arg0, CivicPool arg1) {
-                return arg0.getName().compareToIgnoreCase(arg1.getName());
-            }
-        });
-        adapter.notifyDataSetChanged();
-    }
+
 
     private void sortRating() {
         Collections.sort(pools, new Comparator<CivicPool>() {
