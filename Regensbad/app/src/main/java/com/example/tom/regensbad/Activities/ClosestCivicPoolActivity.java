@@ -221,7 +221,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
      with Android", which is available at:
      http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
-     It enables the bck button and styles the action bar the way it is defined in the corresponding xml layout file.*/
+     It enables the back button and styles the action bar the way it is defined in the corresponding xml layout file.
+     It sets up the action bar and loads the respective xml file with the help of a layout inflater.*/
     private void initializeActionBar() {
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -286,6 +287,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         }
     }
 
+    /* Updates the rating of a specified CivicPool in the DetailViewActivity. */
     private void setRatingInDetailView(List<ParseObject> list) {
         int counter = 0;
         float aggregated = 0;
@@ -317,7 +319,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         });
     }
 
-    /* Depending on the user's current position, this method calculates which one of is the closest. */
+    /* Depending on the user's current position, this method calculates which one of all the civic pools is the closest. */
     private void getDataAndFindClosestCivicPool(List<ParseObject> list) {
         double controlDistance = CONTROL_DISTANCE;
         int poolIndex = 0;
@@ -380,7 +382,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     /* Method written with the help of: http://stackoverflow.com/questions/18600257/how-to-get-the-weekday-of-a-date
     http://stackoverflow.com/questions/8077530/android-get-current-timestamp and
-    http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .*/
+    http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .
+    Gets the current weekday. */
     private int getWeekDayInfo() {
         long time = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
@@ -439,7 +442,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     }
 
-    /* Look at Android developer documentation:
+    /* This method was created with the help of the Android developer documentation:
      * http://developer.android.com/reference/android/location/Location.html#distanceBetween(double, double, double, double, float[])*/
     private double calculateDistance(double poolLat, double poolLong) {
         float[]dist=new float[FLOAT_DISTANCE_LENGTH];
@@ -496,6 +499,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     }
 
 
+    /* Sets the location updater and registers the activity as a listener. */
     private void fetchUserLocation() {
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
         locationUpdater.setLocationUpdateListener(this);
@@ -526,6 +530,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         furtherInformation.setOnClickListener(this);
     }
 
+    /* Handles all the click events. If a user is not logged in, he or she cannot make comments or rate civic pools.
+    * The same is valid for if the system is not connected to the internet. */
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
@@ -571,7 +577,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
     }
 
-    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source. */
+    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source.
+    * Loads a dialog that sets the data received from the parse backend on the screen. */
     private void showFurtherInformationDialogWithData() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -626,7 +633,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
 
 
-    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source. */
+    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source.
+    * It loads a dialog that lets the user make comments and rate the respective civic pool.
+    * Moreover, it updates the pool's rating on parse and saves the user's rating and his or her comment in the backend. */
     private void showCommentDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -674,7 +683,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
     }
 
     /* This method was created using the official parse.com documentation as a source:
-    * https://parse.com/docs/android/guide#objects .*/
+    * https://parse.com/docs/android/guide#objects .
+    * It saves the comment and the rating the user gave to the civic pool to the parse backend. */
     private boolean postObjectToParseBackend(String userComment, int userRating) {
         if (userComment.length() < MIN_COMMENT_LENGTH) {
             Toast.makeText(ClosestCivicPoolActivity.this, COMMENT_TOO_SHORT, Toast.LENGTH_LONG).show();
@@ -702,6 +712,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         }
     }
 
+    /* Updates the average rating of a specified civic pool on parse after the user has committed a rating and a comment.
+  * It is somewhat difficult as it has to pay attention to a lot of special cases and conditions.
+  * Moreover, it also updates the user interface, more specifically the rating of the pool on the screen. */
     private void updateCivicPoolAverageRatingOnParse(final int userRating) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
         query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, closestPoolCivicID);
@@ -759,6 +772,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
 
 
+    /* Updates the latest comment after the user has entered a new one. */
     private void updateLatestComment(CommentRating commentRating) {
         usernameComment.setText(commentRating.getUserName());
         ratingComment.setRating(commentRating.getRating());
@@ -877,7 +891,8 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
 
 
     /* This method was written using the tutorial which is available at:
-    http://examples.javacodegeeks.com/android/core/ui/progressbar/android-progress-bar-example/ */
+    http://examples.javacodegeeks.com/android/core/ui/progressbar/android-progress-bar-example/ .
+    It sets up a progress bar that closes when the download of the data for the civicpool objects is done.*/
     private void createProgressBar() {
         progressBar = new ProgressDialog(this);
         progressBar.setCancelable(true);
@@ -918,6 +933,7 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         progressBarStatus += value;
     }
 
+    /* Interface method. Called when the formatted location is received. */
     @Override
     public void onFormattedLocationReceived(String formattedLocation) {
         int separator = 0;
@@ -937,6 +953,9 @@ public class ClosestCivicPoolActivity extends ActionBarActivity implements Locat
         }
     }
 
+    /* Interface method that uses the observer pattern. Whenever the respective AsyncTask is finished, this method is called
+    * in the respective class and the present activity, which is registered as a listener, gets the distance data and sets it to the
+    * UI element. */
     @Override
     public void onDataDistanceDataReceived(double dist) {
         textDistance.setText(" " + String.valueOf(dist) + " ");

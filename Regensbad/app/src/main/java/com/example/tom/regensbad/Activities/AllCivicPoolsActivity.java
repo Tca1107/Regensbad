@@ -64,6 +64,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private static final int FIX_UPDATE_TIME = 500; // milliseconds
     private static final int FIX_UPDATE_DISTANCE = 5; // meters
 
+
+    // String constants that are needed for the data retrieval from the backend
     private static final String PARSE_CIVIC_POOL = "CivicPool";
     private static final String PARSE_NAME = "name";
     private static final String PARSE_TYPE = "type";
@@ -83,6 +85,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     private static final String PARSE_COMMENT_RATING = "CommentRating";
     private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
 
+    // prpgress bar constants
     private static final String PROGRESS_BAR_MESSAGE = "Bäder werden heruntergeladen.";
     private static final int PROGRESS_BAR_MIN = 0;
     private static final int PROGRESS_BAR_MAX = 100;
@@ -114,7 +117,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
 
 
-
+    /* Initializes the LocationUpdater and sets a listener on this activity. Moreover, it asks for location updates.*/
     private void fetchUserLocation() {
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
         locationUpdater.setLocationUpdateListener(this);
@@ -126,7 +129,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
     with Android", which is available at:
-     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+     It sets up the action bar and loads the respective xml file with the help of a layout inflater.*/
     private void initializeActionBar() {
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -139,6 +143,9 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     }
 
 
+    /* If the system is connected to the internet all the data needed for the civicpool objects is loaded from the backend.
+    * Moreover, a progress bar is initialized and the database containing the information for the civicpools is deleted.
+    * If the system is not connected to the internet, the needed data is retrieved from the database. */
     private void fetchDataFromParse() {
         if (checkIfConnectedToInternet() == true) {
             createProgressBar();
@@ -151,7 +158,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     }
 
     /* This method was written using the tutorial which is available at:
-    http://examples.javacodegeeks.com/android/core/ui/progressbar/android-progress-bar-example/ */
+    http://examples.javacodegeeks.com/android/core/ui/progressbar/android-progress-bar-example/
+    It sets up a progress bar that closes when the download of the data for the civicpool objects is done. */
     private void createProgressBar() {
         progressBar = new ProgressDialog(this);
         progressBar.setCancelable(true);
@@ -189,6 +197,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         return progressBarStatus;
     }
 
+    /* Retrieves the data for the civic pools from the respective database. */
     private void GetLatestUpdateFromDatabase() {
         progressBarStatus = PROGRESS_BAR_MAX;
         ArrayList<CivicPool> myPoolArray = new ArrayList<CivicPool>();
@@ -202,6 +211,8 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         adapter.notifyDataSetChanged();
     }
 
+    /* Cuts off the redundant places of the distance from the user to the civicpool, which is represented by a double.
+    * The result is a number with two digits after the comma. */
     private ArrayList<CivicPool> setTheDecimalPlacesOfCurrentDistanceRight(ArrayList<CivicPool> myPoolArray) {
         ArrayList<CivicPool> arrayToReturn = new ArrayList<CivicPool>();
         for (int i = 0; i < myPoolArray.size(); i++) {
@@ -234,6 +245,9 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         });
     }
 
+    /* Using respective calls, this method gets all the data from needed to create civic pool objects that are put in
+     * the array list that the adapter works with. Also, every civicpool object is put into the respective database after
+      * it has been downloaded. */
     private void assignParseDataToArrayList(List<ParseObject> list) {
         for (int i = 0; i < list.size(); i++) {
             ParseObject civicPoolToAdd = list.get(i);
@@ -266,14 +280,15 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     }
 
 
-
+    /* Updates the status of the progressbar*/
     private void updateProgressBarStatus(int addValue) {
         progressBarStatus += addValue;
     }
 
 
-    /* Look at Android developer documentation:
-    * http://developer.android.com/reference/android/location/Location.html#distanceBetween(double, double, double, double, float[])*/
+    /* This method was created with the help of the Android developer documentation:
+    * http://developer.android.com/reference/android/location/Location.html#distanceBetween(double, double, double, double, float[])
+    * It calculates the distance between the user's location and the respective civic pool (by airline).*/
     private double calculateCurrentDistance(double poolLat, double poolLong) {
         float[]dist=new float[FLOAT_DISTANCE_LENGTH];
         Location.distanceBetween(userLat, userLong, poolLat, poolLong, dist);
@@ -286,7 +301,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         return Math.round(longDistanceDouble * DOUBLE_CUTTING_FACTOR)/DOUBLE_CUTTING_FACTOR;
     }
 
-
+    /* Handles the clicks on an item in the list view. Starts the CivicPoolDetailActivity. */
     private void handleClick() {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -339,6 +354,7 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
     }
 
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -386,7 +402,6 @@ public class AllCivicPoolsActivity extends ActionBarActivity implements
         startMapWithAllPools.putExtra("origin", "all");
         startActivity(startMapWithAllPools);
     }
-
 
 
     private void sortRating() {

@@ -120,6 +120,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         return super.onOptionsItemSelected(item);
     }
 
+    /* Handles the clicks and shows a respective dialog, if the system is not connected to the internet. */
     @Override
     public void onClick(View v) {
        switch(v.getId()) {

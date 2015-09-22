@@ -187,6 +187,7 @@ View.OnClickListener{
         furtherInformation.setOnClickListener(this);
     }
 
+    /* Initializes the database where the information for the FurtherInformation objects is stored. */
     private void initializeFurtherInformationDatabase() {
         furtherInformationDatabase = new FurtherInformationDatabase(this);
         furtherInformationDatabase.open();
@@ -197,7 +198,8 @@ View.OnClickListener{
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
     with Android", which is available at:
-     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+     It sets up the action bar and loads the respective xml file with the help of a layout inflater.*/
     private void initializeActionBar() {
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -209,6 +211,17 @@ View.OnClickListener{
         this.getSupportActionBar().setCustomView(view);
     }
 
+    /* Initializes the a location updater and requests location updates.
+    * Moreover it sets an object of the class DistanceDataProvider, which then starts an AsyncTask with the specified download string.
+    * This download retrieves the distance between the user's place and the specified civic pool (by car).
+    *
+    * This method calculates the "real" distance between the user's position and the closest pool.
+    * This is to say, it tells the user how many kilometers he or she would need to drive by their car in order
+    * to reach the site of the civic pool. This is done by executing an async task, downloading information from the
+    * Google Maps API. At first, we tried to use the async task for each and every object in the AllCivicPoolsActivity, as well.
+    * However, executing an async task more than once in a single running activity is unfortunately not possible, which is why we
+    * had to resort to calculating beelines instead of actual driver's routes. Calculating the former is possible without
+    * using the async task class and can therefore be performed faster and more than once at a time. */
     private void getDistance() {
         LocationUpdater locationUpdater = new LocationUpdater(Context.LOCATION_SERVICE, FIX_UPDATE_TIME, FIX_UPDATE_DISTANCE, this);
         locationUpdater.setLocationUpdateListener(this);
@@ -225,7 +238,7 @@ View.OnClickListener{
     }
 
 
-
+    /* Gets the intent extras. */
     private void getExtras() {
         Intent i = getIntent();
         Bundle extras = i.getExtras();
@@ -274,7 +287,9 @@ View.OnClickListener{
     }
 
     /* Following four lines were created with the help of the following web resource:
-    http://stackoverflow.com/questions/13105430/android-setting-image-from-string */
+    http://stackoverflow.com/questions/13105430/android-setting-image-from-string .
+    This method prevents the imageView from being stretched all over the ScrollView. It thus makes it way smaller and
+    brings it into an acceptable width/heigth ratio. */
     private void setPoolPictureFromPathString() {
         setScreenHeight();
         String picPath = db.getPicPath(ID);
@@ -284,7 +299,8 @@ View.OnClickListener{
         poolPicture.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 
-    // Created with the help of: http://stackoverflow.com/questions/22743153/android-device-screen-resolution
+    /* This method was created with the help of: http://stackoverflow.com/questions/22743153/android-device-screen-resolution .
+    * It helps to set the image size of the image view properly. */
     private void setScreenHeight() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -297,6 +313,7 @@ View.OnClickListener{
         }
     }
 
+    /* Sets the right opening times to the respective textview element. It checks the weekday and loads the apt data. */
     private void createTimeView() {
         int weekday = getWeekDayInfo();
         if (MONDAY <= weekday && weekday <= FRIDAY) {
@@ -313,9 +330,11 @@ View.OnClickListener{
 
     }
 
-    /* Method written with the help of: http://stackoverflow.com/questions/18600257/how-to-get-the-weekday-of-a-date
+    /* Method written with the help of:
+    http://stackoverflow.com/questions/18600257/how-to-get-the-weekday-of-a-date
    http://stackoverflow.com/questions/8077530/android-get-current-timestamp and
-   http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .*/
+   http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .
+   Gets the current weekday. */
     private int getWeekDayInfo() {
         long time = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
@@ -359,6 +378,7 @@ View.OnClickListener{
         }
     }
 
+    /* Updates the rating of a specified CivicPool in the DetailViewActivity. */
     private void setRatingInDetailView(List<ParseObject> list) {
         int counter = 0;
         float aggregated = 0;
@@ -429,7 +449,7 @@ View.OnClickListener{
         return super.onOptionsItemSelected(item);
     }
 
-    // from https://parse.com/docs/android/guide#users
+    // Created with the help of https://parse.com/docs/android/guide#users
     private void goBackToHomeScreen() {
         ParseUser.logOut();
         Intent goBackToHomeScreen = new Intent (CivicPoolDetailActivity.this, HomeScreenActivity.class);
@@ -444,12 +464,16 @@ View.OnClickListener{
     }
 
 
+    /* Interface method that uses the observer pattern. Whenever the respective AsyncTask is finished, this method is called
+    * in the respective class and the present activity, which is registered as a listener, gets the distance data and sets it to the
+    * UI element. */
     @Override
     public void onDataDistanceDataReceived(double dist) {
         distance = dist;
         textDistance.setText(" " + String.valueOf(distance) + " ");
     }
 
+    /* Interface method. Called when the formatted location is received. */
     @Override
     public void onFormattedLocationReceived(String formattedLocation) {
         int separator = 0;
@@ -474,6 +498,8 @@ View.OnClickListener{
         super.onDestroy();
     }
 
+    /* Handles all the click events. If a user is not logged in, he or she cannot make comments or rate civic pools.
+    * The same is valid for if the system is not connected to the internet. */
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
@@ -517,7 +543,8 @@ View.OnClickListener{
 
     }
 
-    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source. */
+    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source.
+    * Loads a dialog that sets the data received from the parse backend on the screen. */
     private void showFurtherInformationDialogWithData() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -559,7 +586,8 @@ View.OnClickListener{
 
 
 
-    // Created with the help of http://stackoverflow.com/questions/3429546/how-do-i-add-a-bullet-symbol-in-textview
+    // This method was created with the help of http://stackoverflow.com/questions/3429546/how-do-i-add-a-bullet-symbol-in-textview .
+    // It adds bullet points to the parts of the offer of the civic pools.
     private String formatInfoOnCivicPoolString() {
         String result = infoOnCivicPool.replace(" ", "\n\u2022 ");
         return result;
@@ -574,7 +602,9 @@ View.OnClickListener{
         Toast.makeText(CivicPoolDetailActivity.this, YOU_ARE_OFFLINE, Toast.LENGTH_LONG).show();
     }
 
-    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source. */
+    /* This method was created using http://developer.android.com/guide/topics/ui/dialogs.html#CustomDialog as a source.
+    * It loads a dialog that lets the user make comments and rate the respective civic pool.
+    * Moreover, it updates the pool's rating on parse and saves the user's rating and his or her comment in the backend. */
     private void showCommentDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
@@ -622,7 +652,8 @@ View.OnClickListener{
     }
 
     /* This method was created using the official parse.com documentation as a source:
-    * https://parse.com/docs/android/guide#objects .*/
+    * https://parse.com/docs/android/guide#objects .
+    * It saves the comment and the rating the user gave to the civic pool to the parse backend. */
     private boolean postObjectToParseBackend(String userComment, int userRating) {
         if (userComment.length() < MIN_COMMENT_LENGTH) {
             Toast.makeText(CivicPoolDetailActivity.this, COMMENT_TOO_SHORT, Toast.LENGTH_LONG).show();
@@ -650,6 +681,9 @@ View.OnClickListener{
         }
     }
 
+    /* Updates the average rating of a specified civic pool on parse after the user has committed a rating and a comment.
+    * It is somewhat difficult as it has to pay attention to a lot of special cases and conditions.
+    * Moreover, it also updates the user interface, more specifically the rating of the pool on the screen. */
     private void updateCivicPoolAverageRatingOnParse(final int userRating) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PARSE_COMMENT_RATING);
         query.whereEqualTo(PARSE_CORRESPONDING_CIVIC_ID, ID);
@@ -699,6 +733,7 @@ View.OnClickListener{
 
     }
 
+    /* Updates the latest comment after the user has entered a new one. */
     private void updateLatestComment(CommentRating commentRating) {
         usernameComment.setText(commentRating.getUserName());
         ratingComment.setRating(commentRating.getRating());
