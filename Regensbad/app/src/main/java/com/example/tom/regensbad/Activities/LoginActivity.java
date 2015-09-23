@@ -161,6 +161,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     }
 
+    /* Shows a dialog every time the User hits the button "Ueberspringen" and informs him or her that he or she will not be able to use the app in its
+    * entire functionality, if he or she does not register with an account. */
     private void showDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder (this);
         dialogBuilder.setTitle(getResources().getString(R.string.button_skip));

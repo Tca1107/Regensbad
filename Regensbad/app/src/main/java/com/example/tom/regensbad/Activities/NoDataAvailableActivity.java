@@ -14,6 +14,10 @@ import com.example.tom.regensbad.R;
 
 public class NoDataAvailableActivity extends ActionBarActivity {
 
+    /* This activity is more or less a "dummy activity" which informs the user about the fact that he or she does not have a connection to the internet,
+    * which is why no content can be shown. */
+
+
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
@@ -25,8 +29,9 @@ public class NoDataAvailableActivity extends ActionBarActivity {
     }
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
-   with Android", which is available at:
-    http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+    with Android", which is available at:
+    http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+    It sets up the action bar and loads the respective xml file with the help of a layout inflater. */
     private void initializeActionBar() {
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
         this.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -54,7 +59,8 @@ public class NoDataAvailableActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Created with the help of: https://parse.com/docs/android/guide#users
+    // This method was created with the help of: https://parse.com/docs/android/guide#users
+    // Goes back to the HomeScreenActivity and clears the activity complete activity stack by using a respective flag with the intent.
     private void goBackToHomeScreen() {
         Intent goBackToHomeScreen = new Intent (NoDataAvailableActivity.this, HomeScreenActivity.class);
         // From: http://stackoverflow.com/questions/6397576/finish-to-go-back-two-activities

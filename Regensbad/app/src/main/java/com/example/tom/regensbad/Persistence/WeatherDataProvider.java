@@ -65,7 +65,8 @@ public class WeatherDataProvider extends AsyncTask<String, Integer, String> {
        }
 
 
-    /* Needed for Observer Pattern. */
+    /* Interface which is needed for the Observer Pattern.
+     * This informs the listener activities when the download of the weather data is finished. */
     public interface WeatherDataReceivedListener {
         public void onDataWeatherDataReceived(Weather weather);
     }

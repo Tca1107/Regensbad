@@ -30,6 +30,8 @@ public class WeatherJSONConverter {
     private String JSONResult;
     private Weather weatherToReturn;
 
+    /* The creation of this class was inspired by a similar class being used in the "3.Studienleistung", that is to say the MensaAppStarterProject. */
+
     public WeatherJSONConverter (String JSONResult) {
         this.JSONResult = JSONResult;
     }

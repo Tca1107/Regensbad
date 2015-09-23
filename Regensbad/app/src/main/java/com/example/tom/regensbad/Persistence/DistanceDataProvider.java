@@ -27,7 +27,6 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
     }
 
 
-
     /* For the following methods the file "09 Bundesligatabelle: Lösung" on GRIPS was used as a guideline. */
     @Override
     protected String doInBackground(String... params) {
@@ -62,7 +61,7 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
 
     }
 
-    //From: http://stackoverflow.com/questions/14618016/distancebetween-returns-inaccurate-result
+    //This method was created using http://stackoverflow.com/questions/14618016/distancebetween-returns-inaccurate-result .
     private void getDistanceInfo(String result) {
         try{
             JSONObject jsonObject = new JSONObject(result);
@@ -79,6 +78,9 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
 
     }
 
+
+    /* Interface that was written for the sake of being able to user the observer pattern.
+    * This informs the listener activities when the download is finished and the distance data is available. */
 
     public interface DistanceDataReceivedListener {
         public void onDataDistanceDataReceived(double dist);

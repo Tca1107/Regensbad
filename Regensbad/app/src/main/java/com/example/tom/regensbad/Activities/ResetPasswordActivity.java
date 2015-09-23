@@ -136,8 +136,9 @@ public class ResetPasswordActivity extends ActionBarActivity {
     }
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
-    with Android", which is available at:
-     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+     with Android", which is available at:
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+     It sets up the action bar and loads the respective xml file with the help of a layout inflater.*/
     private void initializeActionBar() {
         String actionBarTitle = getResources().getString(R.string.app_name);
         getSupportActionBar().setTitle(actionBarTitle);
@@ -180,8 +181,11 @@ public class ResetPasswordActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // from https://parse.com/docs/android/guide#users
+    // From https://parse.com/docs/android/guide#users
+    // From: http://stackoverflow.com/questions/6397576/finish-to-go-back-two-activities
+    // Logs out the user, goes back to the HomeScreenActivity, and clears the activity complete activity stack by using a respective flag with the intent.
     private void goBackToHomeScreen() {
+        // from https://parse.com/docs/android/guide#users
         ParseUser.logOut();
         Intent goBackToHomeScreen = new Intent (ResetPasswordActivity.this, HomeScreenActivity.class);
         // From: http://stackoverflow.com/questions/6397576/finish-to-go-back-two-activities

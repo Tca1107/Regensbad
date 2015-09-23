@@ -43,7 +43,8 @@ public class MyAccountActivity extends ActionBarActivity implements View.OnClick
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
    with Android", which is available at:
-    http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+    http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+    It sets up the action bar and loads the respective xml file with the help of a layout inflater. */
     private void initializeActionBar() {
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -55,6 +56,9 @@ public class MyAccountActivity extends ActionBarActivity implements View.OnClick
         this.getSupportActionBar().setCustomView(view);
     }
 
+
+    /* Sets the users name and his or her mailaddress to the corresponding user interface elements.
+    * More precisely, it gets these values from the current Parse User and calls a method that does so. */
     private void setValuesToTextViews() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
@@ -64,6 +68,7 @@ public class MyAccountActivity extends ActionBarActivity implements View.OnClick
         }
     }
 
+    /* Sets the users name and his or her mailaddress to the corresponding user interface elements. */
     private void setTheseValuesToTheTextViews(String username, String mailAddress) {
         userName.setText(getResources().getString(R.string.user_name) + " " + username);
         this.mailAddress.setText(getResources().getString(R.string.mail_address_in_my_account_activity) + " " + mailAddress);
@@ -132,6 +137,7 @@ public class MyAccountActivity extends ActionBarActivity implements View.OnClick
 
     private void logoutAndGoBack() {
         // from https://parse.com/docs/android/guide#users
+        // Logs out user
         ParseUser.logOut();
         finish();
     }

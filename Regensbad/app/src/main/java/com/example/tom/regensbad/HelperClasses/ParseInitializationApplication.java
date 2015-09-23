@@ -8,7 +8,7 @@ import com.parse.Parse;
  * Created by Tom on 21.09.2015.
  */
 
-/* This class was created with the help of: http://stackoverflow.com/questions/30135858/parse-error-parseenablelocaldatastorecontext-must-be-invoked-before-parse*
+/* This class was created with the help of: http://stackoverflow.com/questions/30135858/parse-error-parseenablelocaldatastorecontext-must-be-invoked-before-parse .*
    It was created to prevent the application from crashing, if it is closed and opened again right away. A respective line was added to the AndroidManifest.xml.
  */
 
