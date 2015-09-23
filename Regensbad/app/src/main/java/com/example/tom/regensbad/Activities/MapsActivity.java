@@ -72,7 +72,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         origin = extras.getString("origin");
-        if (origin.equals("detail")){
+        if (origin.equals("detail")){ //Case if User is getting to MapsActivity through DetailActivity
             ID = extras.getInt("ID");
             singlePool = db.getPoolItem(ID);
 
@@ -80,6 +80,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
     }
 
     private void setSingleStartPosition() {
+        /*If user starts the app for the first time and immediately clicks an show Map in the ClosestCivicPoolActivity, the database is not loaded.
+        * For that case, this activity gets the important information through the intent.*/
         /*From: http://stackoverflow.com/questions/14074129/google-maps-v2-set-both-my-location-and-zoom-in*/
         if (singlePool != null) {
             CameraUpdate start = CameraUpdateFactory.newLatLng(new LatLng(singlePool.getLati(), singlePool.getLongi()));
@@ -155,6 +157,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
      */
     private void setUpMap() {
         handleClick();
+        /*If user starts the app for the first time and immediately clicks an show Map in the ClosestCivicPoolActivity, the database is not loaded.
+        * For that case, this activity gets the important information through the intent.*/
         if(origin.equals("detail")){
             if (singlePool != null) {
                 setSingleStartPosition();
@@ -166,7 +170,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
                 singleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(extras.getDouble("latitude"), extras.getDouble("longitude") )).title(extras.getString("name")).snippet(snippetText));
             }
             }
-        if (origin.equals("all")){
+        if (origin.equals("all")){ //Case if user gets to this activity through the showAllPoolsOnMapButton
             setAllStartPosition();
             setUpAllMarkers();
         }
@@ -199,15 +203,15 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnInfoWi
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        if (marker.equals(singleMarker)){
-            if (singlePool != null) {
+        if (marker.equals(singleMarker)){ //If only one marker is shown on the Map.
+            if (singlePool != null) { //If database has been loaded.
                 Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
                 showDetailView.putExtra("ID", singlePool.getID());
                 startActivity(showDetailView);
-            } else {
+            } else { //If database has not been loaded, the MapActivity closes.
                 finish();
             }
-        }else {
+        }else { //If all marker are shown.
             //From: http://stackoverflow.com/questions/16714327/differentiate-between-different-markers-in-maps-api-v2-unique-identifiers
             int id = map.get(marker);
             Intent showDetailView = new Intent(MapsActivity.this, CivicPoolDetailActivity.class);
