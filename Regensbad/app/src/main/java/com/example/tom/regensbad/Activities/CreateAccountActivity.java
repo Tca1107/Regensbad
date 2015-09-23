@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tom.regensbad.R;
 import com.parse.ParseException;
@@ -33,6 +34,12 @@ public class CreateAccountActivity extends ActionBarActivity {
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
+
+    private static final String MAIL_TOAST = "Bitte geben Sie eine Email-Adresse ein.";
+    private static final String NAME_TOAST = "Bitte geben Sie einen Nutzernamen ein.";
+    private static final String PASSWORD_TOAST = "Bitte geben Sie ein Passwort ein.";
+
+
 
     private View marginKeeper;
     private TextView createNewAccount;
@@ -86,8 +93,9 @@ public class CreateAccountActivity extends ActionBarActivity {
 
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
-    with Android", which is available at:
-     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+     with Android", which is available at:
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+     It sets up the action bar and loads the respective xml file with the help of a layout inflater.*/
     private void initializeActionBar() {
             String actionBarTitle = getResources().getString(R.string.app_name);
             getSupportActionBar().setTitle(actionBarTitle);
@@ -129,30 +137,49 @@ public class CreateAccountActivity extends ActionBarActivity {
     }
 
     /* This method was created using the parse.com documentation, which can be found under
-   https://parse.com/docs/android/guide#users as a guideline.
-   This method creates a new user account and saves the information to the backend. */
+      https://parse.com/docs/android/guide#users as a guideline.
+      It creates a new user account and saves the information to the backend. */
     private void processUserInputForAccountCreation() {
         String mailAddress = this.mailAddress.getText().toString();
         String username = this.username.getText().toString();
         String password = this.password.getText().toString();
-        ParseUser user = new ParseUser();
-        user.setEmail(mailAddress);
-        user.setUsername(username);
-        user.setPassword(password);
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay, R.string.submisson_succesful_title);
-                } else {
-                    showDialog(R.layout.dialog_sign_in_failed, R.string.okay, R.string.submisson_failed_title);
+        boolean dialogShowing = showWhatIsMissing(mailAddress, username, password);
+        if (dialogShowing == true) {
+            ParseUser user = new ParseUser();
+            user.setEmail(mailAddress);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.signUpInBackground(new SignUpCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        showDialog(R.layout.dialog_sign_in_succeeded, R.string.okay, R.string.submisson_succesful_title);
+                    } else {
+                        showDialog(R.layout.dialog_sign_in_failed, R.string.okay, R.string.submisson_failed_title);
+                    }
                 }
-            }
-        });
+            });
+        }
 
     }
 
-    private void showWhatIsMissing(String mailAddress, String username, String password) {
+    /* Gives feedback to the user about which information is missing, that is mailAddress, username, or password. */
+    private boolean showWhatIsMissing(String mailAddress, String username, String password) {
+        if (mailAddress.equals("")){
+            Toast.makeText(CreateAccountActivity.this, MAIL_TOAST, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else if (username.equals("")){
+            Toast.makeText(CreateAccountActivity.this, NAME_TOAST, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else if (password.equals("")){
+            Toast.makeText(CreateAccountActivity.this, PASSWORD_TOAST, Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
     private void switchToHomeScreenActivityWithALoggedInUser() {

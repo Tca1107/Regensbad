@@ -52,7 +52,7 @@ import java.util.TimeZone;
 public class HomeScreenActivity extends ActionBarActivity implements View.OnClickListener, WeatherDataProvider.WeatherDataReceivedListener, LocationUpdater.OnLocationUpdateReceivedListener {
 
     /* The weather icons used in this activity are taken from the website: http://www.iconarchive.com/tag/weather
-    * They are free to use (GNU Lesser General Public Licence). */
+    * They are free to use (GNU Lesser General Public Licence), even commercially. */
 
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
@@ -62,6 +62,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
     private static final String CELSIUS= "°";
 
+    /* Weather constants to figure out which kind of icon is needed. */
     private static final int WEATHER_DIVISION_CONSTANT = 100;
     private static final int WEATHER_ID_THUNDERSTORM = 2;
     private static final int WEATHER_ID_LIGHT_RAIN = 3;
@@ -84,14 +85,17 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     private static final int SUBSTRING_END_HOURS = 13;
     private static final int SUBSTRING_START_MINUTES = 14;
     private static final int SUBSTRING_END_MINUTES = 16;
+
     private static final int TIME_FACTOR = 1000;
 
+    /*Constant for the download fromt he parse backend. */
     private static final String PARSE_FURTHER_INFORMATION = "FurtherInformation";
     private static final String PARSE_CORRESPONDING_CIVIC_ID = "correspondingCivicID";
     private static final String PARSE_SPORTS = "sports";
     private static final String PARSE_DAY_TICKET = "dayTicket";
 
 
+    /* UI elements*/
     private TextView cityName;
     private TextView maxDegrees;
     private TextView minDegrees;
@@ -119,6 +123,12 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         fillFurtherInformationDatabase();
     }
 
+    /* This method downloads all the data from the FurtherInformation class from the parse backend.
+    * This is later displayed in the CivicPoolDetailActivity and the ClosesCivicPoolActivity.
+    * But as the parse methods work with callback methods which take some time to load all the data,
+    * this is done here in the HomeScreenActivity in order to fill the database
+    * already before the respective activities are called. When needed, the information is then in the mentioned activities only
+    * read from the database. Of course, all this is only possible if the system is connected to the internet.  */
     private void fillFurtherInformationDatabase() {
         furtherInformationDatabase = new FurtherInformationDatabase(this);
         furtherInformationDatabase.open();
@@ -145,6 +155,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
             });
         }
 
+    /* All the objects from the list of objects that the parse callback method returns are asked for their respective data.
+     * Out of this data a new FurtherInformation instance is created which is then added to the FurtheriInfromation database.  */
     private void saveFurtherInformationDataToDatabase(List<ParseObject> list) {
         for (int i = 0; i < list.size(); i++) {
             ParseObject furtherInformationFromParse = list.get(i);
@@ -156,11 +168,18 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
 
+    /* Initializes the WeatherLastUpdateProvider, that is to say the database in which the latest weather data is stored. */
     private void initializeWeatherLastUpdateDataProvider() {
         weatherLastUpdateDataProvider = new WeatherLastUpdateDataProvider(this);
         weatherLastUpdateDataProvider.open();
     }
 
+    /* Initializes the download of the weather data (in form of a JSON object) from openweathermap.org.
+    In doing so, the system uses an AsyncTask.
+    * The present activity is registered as a listener and thus contains the fitting interface methods (see onDataWeatherDataReceived).
+    * Whenever the download is finished, the HomeScreenActivity is informed about the change of data in the mentioned
+    * interface method. Thus, the Observer Pattern applies here. Just as in the case with the location updater.
+    * */
     private void initializeDownLoadOfWeatherData() {
         if (checkIfConnectedToInternet () == true) {
             weatherDataProvider = new WeatherDataProvider();
@@ -186,13 +205,14 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
 
+    /* Gets the data for the weather "widget" from the respective database. */
     private void fetchLatestUpdateFromLatestUpdateDataProvider() {
         Weather weather = weatherLastUpdateDataProvider.getLatestUpdate();
         if (weather != null) {
         setWeatherDataForHomeScreen(weather);
         } else {
-            // create new dialog with weather could not be downloaded or something!
-            // Es steht kein letztes Update zur Verfügung
+            // Intentionally left empty. If there is no internet connection the dummy texts will be loaded, which inform the user about
+            // the fact that no internet connetion is available.
         }
     }
 
@@ -204,7 +224,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
     with Android", which is available at:
-     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+     It sets up the action bar and loads the respective xml file with the help of a layout inflater.*/
     private void initializeActionBar() {
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
         this.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -279,6 +300,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
 
 
+    // The following method would add a searchview in the action bar. Initially we wanted to add search functionality to the application.
+    // Due to the lack of time we were, however, not able to implement this kind of functionality.
+    // We wanted to leave the respective methods in the code, still, because we could reactivate it when we have time for it.
+    // For further information, please consult our "Projektbericht".
+
 
     /* This method was created using the following to resources as guidelines:
     /* http://developer.android.com/guide/topics/search/search-dialog.html */
@@ -346,6 +372,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         startActivity(changeToMyAccountActivity);
     }
 
+
+    /* Handles the clicks on the buttons. If there is no connection ot the internet and the database is empty,
+    * which means that the user uses the pp for the very first time and is not connected to the internet,
+    * the NoDataAvailableActivity is loaded. This is a very unlikely case. However, in doing so, we wanted to preclude the app from crashing or the user
+    * being left with no fitting feedback. */
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
@@ -388,10 +419,12 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
             insertWeatherDataInLastUpdateProvider(weather);
             setWeatherDataForHomeScreen(weather);
         } else {
-            // show last updated Object! --> NO! Do not do that here!
+            // Intentionally left blank.
         }
     }
 
+    /* Sets the data which was received either from the database or most likely from the respective openweathermap.org API to the user interface elements.
+     * Moreover, it calls the assignWeatherIcon method which, depending on the sent ID, adds an icon to the imageview. */
     private void setWeatherDataForHomeScreen(Weather weather) {
         int weatherDegreesInt = calculateWeatherInt(Double.valueOf(weather.getDegrees()));
         int weatherMaxDegreesInt = calculateWeatherInt(Double.valueOf(weather.getMaxDegrees()));
@@ -405,11 +438,13 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         assignWeatherIcon(weather.getweatherIcon(), weather.getSunrise(), weather.getSunset());
     }
 
+    /* Inserts the most recent weather data into the weather database after having deleted the data which has been in it before. */
     private void insertWeatherDataInLastUpdateProvider(Weather weather) {
         weatherLastUpdateDataProvider.deleteLatestUpdate();
         weatherLastUpdateDataProvider.addLatestUpdate(weather);
     }
 
+    /* Cuts off redundant decimal digits from the degree double. Casts the double to an integer. */
     private int calculateWeatherInt(double degreeDouble) {
         return (int)degreeDouble;
     }
@@ -437,7 +472,11 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
 
     /* This method/algorithm was written using the tutorial being accessible at the following website:
-    * http://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587 .*/
+    * http://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587
+    * Depending on which weatherIconID it receives it sets the image of the weatherIcon imageview.
+    * That is to say it loads the respective drawable resource.
+    * For further information consult the comment on the assignWeatherIcon method.
+    * Actually this method acts in the same way like the assignDayLightWeatherIcons. The icons, however, are meant to be night icons.*/
     private void assignNightWeatherIcons(String weatherIconID) {
         int weatherID = Integer.valueOf(weatherIconID);
         int reducedWeatherIconID = (weatherID / WEATHER_DIVISION_CONSTANT);
@@ -473,7 +512,10 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
 
 
     /* This method/algorithm was written using the tutorial being accessible at the following website:
-    * http://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587 .*/
+    * http://code.tutsplus.com/tutorials/create-a-weather-app-on-android--cms-21587 .
+    * Depending on the weatherIconID this method receives as a parameter, the weather icon is set.
+    * Contrary to the assignNightWeatherIcons, these are, however, icons that are apt for daylight.
+    * Please consult the comments on the assignNightWeatherIcons as well as assignWeatherIcon method for further information. */
     private void assignDayLightWeatherIcons(String weatherIconID) {
         int weatherID = Integer.valueOf(weatherIconID);
         int reducedWeatherIconID = (weatherID / WEATHER_DIVISION_CONSTANT);
@@ -507,7 +549,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     }
 
     /* The idea to multiply sunrise and sunset with TIME_FACTOR = 1000 was taken from
-    http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .*/
+    http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java .
+    This method checks whether the system is used at day or night. */
     private boolean checkIfItIsDayOrNight(long sunrise, long sunset) {
         String sunriseString = formatTimeString(sunrise * TIME_FACTOR);
         String sunsetString = formatTimeString(sunset * TIME_FACTOR);
@@ -524,6 +567,7 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
         }
     }
 
+    /* Cuts of the redundant information from the time string by creating an integer from an earlier created substring. */
     private int convertToNumbersOnly(String timeString) {
         return Integer.valueOf(timeString.substring(SUBSTRING_START_HOURS,SUBSTRING_END_HOURS)
                 + timeString.substring(SUBSTRING_START_MINUTES, SUBSTRING_END_MINUTES));
@@ -550,6 +594,8 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     protected void onResume () {
         super.onResume();
         // following line from: http://stackoverflow.com/questions/12561033/how-to-dynamicaly-change-menu-in-oncreateoptionsmenu
+        // This call ensures that after the user has logged out, that is to say, when he or she comes from the MyAccountActivity or else,
+        // the right menu resource is loaded.
         this.invalidateOptionsMenu();
 
     }

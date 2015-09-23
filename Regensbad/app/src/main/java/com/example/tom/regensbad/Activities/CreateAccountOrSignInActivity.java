@@ -55,7 +55,8 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
 
     /* This method was written using the tutorial "How to customize / change ActionBar font, text, color, icon, layout and so on
     with Android", which is available at:
-     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .*/
+     http://www.javacodegeeks.com/2014/08/how-to-customize-change-actionbar-font-text-color-icon-layout-and-so-on-with-android.html .
+     It sets up the action bar and loads the respective xml file with the help of a layout inflater.*/
     private void initializeActionBar() {
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -67,7 +68,7 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
         this.getSupportActionBar().setCustomView(view);
     }
 
-
+    /* Registers OnClickListeners. */
     private void registerOnClickListeners() {
         signIn.setOnClickListener(this);
         forgotPassword.setOnClickListener(this);
@@ -102,16 +103,11 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        // getMenuInflater().inflate(R.menu.menu_create_account_or_sign_in, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == android.R.id.home){
             finish();
@@ -154,9 +150,6 @@ public class CreateAccountOrSignInActivity extends ActionBarActivity implements 
             return false;
         }
     }
-
-
-
 
     private void changeToResetPasswordActivity() {
         Intent changeToResetPasswordActivity = new Intent (CreateAccountOrSignInActivity.this, ResetPasswordActivity.class);

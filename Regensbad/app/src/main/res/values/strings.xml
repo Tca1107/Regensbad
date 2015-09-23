@@ -46,7 +46,7 @@
     <string name="create_new_account_with_colon">Neuen Account anlegen: </string>
     <string name="create_account_activity_name">Registrieren</string>
     <string name="mail_address">E-Mail Adresse</string>
-    <string name="submission_failed">Die Registrierung war leider nicht erfolgreich. Versuchen Sie es mit einem anderen Nutzernamen.</string>
+    <string name="submission_failed">Die Registrierung war leider nicht erfolgreich. Bitte überprüfen Sie Ihre Internetverbindung.</string>
     <string name="submission_succeeded">Die Registrierung war erfolgreich.</string>
     <string name="submission_successful_description">Registrierung erflogreich</string>
     <string name="create_account_no_internet_connection">Die Registrierung war leider nicht erfolgreich. Offenbar besteht keine Verbindung zum Internet.</string>
