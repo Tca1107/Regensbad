@@ -61,7 +61,7 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
 
     }
 
-    //This method was created using http://stackoverflow.com/questions/14618016/distancebetween-returns-inaccurate-result .
+    //This method was taken from http://stackoverflow.com/questions/14618016/distancebetween-returns-inaccurate-result .
     private void getDistanceInfo(String result) {
         try{
             JSONObject jsonObject = new JSONObject(result);
