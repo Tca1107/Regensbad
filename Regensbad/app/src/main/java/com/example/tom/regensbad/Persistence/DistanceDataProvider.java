@@ -19,6 +19,12 @@ import java.net.URL;
  */
 public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
 
+    private static final String JSON_ROUTES = "routes";
+    private static final String JSON_LEGS = "legs";
+    private static final String JSON_DISTANCE = "distance";
+    private static final String JSON_TEXT = "text";
+    private static final String JSON_REPLACE_ALL = "[^\\.0123456789]";
+
     private DistanceDataReceivedListener distanceDataReceivedListener;
 
 
@@ -61,16 +67,16 @@ public class DistanceDataProvider extends AsyncTask<String, Integer, String>{
 
     }
 
-    //This method was taken from http://stackoverflow.com/questions/14618016/distancebetween-returns-inaccurate-result .
+    // The code for this method was taken from http://stackoverflow.com/questions/14618016/distancebetween-returns-inaccurate-result .
     private void getDistanceInfo(String result) {
         try{
             JSONObject jsonObject = new JSONObject(result);
-            JSONArray routes = jsonObject.getJSONArray("routes");
+            JSONArray routes = jsonObject.getJSONArray(JSON_ROUTES);
             JSONObject routesTwo = routes.getJSONObject(0);
-            JSONArray legs = routesTwo.getJSONArray("legs");
+            JSONArray legs = routesTwo.getJSONArray(JSON_LEGS);
             JSONObject steps = legs.getJSONObject(0);
-            JSONObject distance = steps.getJSONObject("distance");
-            double dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]",""));
+            JSONObject distance = steps.getJSONObject(JSON_DISTANCE);
+            double dist = Double.parseDouble(distance.getString(JSON_TEXT).replaceAll(JSON_REPLACE_ALL,""));
             distanceDataReceivedListener.onDataDistanceDataReceived(dist);
         }catch(JSONException e){
             e.printStackTrace();
