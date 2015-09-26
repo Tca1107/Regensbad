@@ -54,6 +54,13 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     /* The weather icons used in this activity are taken from the website: http://www.iconarchive.com/tag/weather
     * They are free to use (GNU Lesser General Public Licence), even commercially. */
 
+    /* In the application "Regensbad", the icons used for user interface elements, such as buttons, were taken from the website:
+    * https://www.google.com/design/icons/ . There they are freely available. */
+
+    /* In the application "Regensbad", the font "Pacifico" used for the name "Regensbad" was taken from the following website:
+    * https://www.google.com/fonts/ .
+    * There it is freely available. */
+
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
