@@ -61,6 +61,10 @@ public class HomeScreenActivity extends ActionBarActivity implements View.OnClic
     * https://www.google.com/fonts/ .
     * There it is freely available. */
 
+    /* For the creation of the application's logo, the follwoing two resources were taken as a guideline:
+    * http://de.dreamstime.com/lizenzfreie-stockfotografie-wasser-logo-image34167707
+    * https://pixabay.com/de/sonnenschirm-regenschirm-brolly-99125/ .*/
+
     /* Constant of the type String that defines the filepath of the "Pacifico" font used for the main heading. */
     private static final String FONT_PACIFICO_FILE_PATH = "Pacifico.ttf";
 
